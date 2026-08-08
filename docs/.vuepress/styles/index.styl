@@ -1,0 +1,227 @@
+// 项目链接双列卡片
+.project-grid
+  display grid
+  grid-template-columns repeat(2, 1fr)
+  gap 1.25rem
+  margin 1.5rem 0 2rem
+
+  @media (max-width: 720px)
+    grid-template-columns 1fr
+
+.project-card
+  border 1px solid #e0e0e6
+  border-radius 8px
+  padding 1.1rem 1.25rem
+  background-color #fafafa
+  transition border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease
+
+  &:hover
+    border-color #b8b8c2
+    box-shadow 0 2px 8px rgba(0, 0, 0, 0.06)
+    transform translateY(-2px)
+
+  p
+    margin 0.35rem 0
+
+  h3
+    margin 0 0 0.5rem
+    padding-bottom 0.4rem
+    border-bottom 1px dashed #d4d4da
+    font-size 1.05rem
+
+  ul
+    margin 0.35rem 0 0
+    padding-left 1.2rem
+
+    li
+      margin 0.2rem 0
+
+// ========== 下载区双列卡片 ==========
+.download-grid
+  display grid
+  grid-template-columns repeat(2, 1fr)
+  gap 1.25rem
+  margin 1.5rem 0 2rem
+
+  @media (max-width: 720px)
+    grid-template-columns 1fr
+
+.download-card
+  border 1px solid #e0e0e6
+  border-radius 8px
+  padding 1.1rem 1.25rem
+  background-color #fafafa
+  transition border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease
+
+  &:hover
+    border-color #b8b8c2
+    box-shadow 0 2px 8px rgba(0, 0, 0, 0.06)
+    transform translateY(-2px)
+
+  h3
+    margin 0 0 0.8rem
+    padding-bottom 0.5rem
+    border-bottom 1px dashed #d4d4da
+    font-size 1.1rem
+    text-align center
+
+  table
+    width 100%
+    border-collapse collapse
+    margin 0
+    table-layout auto
+
+    th
+    td
+      padding 0.55rem 0.6rem
+      text-align center
+      font-size 0.92rem
+      border 1px solid #e8e8ee
+      vertical-align middle
+
+    th
+      background-color #f0f0f5
+      font-weight 600
+      color #333
+
+    // 平台列固定宽度，让按钮列（第二列）拿到更多空间
+    th:first-child
+    td:first-child
+      width 32%
+      min-width 6.5rem
+      white-space nowrap
+
+    // 按钮列：吃下剩余空间，避免按钮被挤压
+    td:last-child
+      width 68%
+      text-align left
+      padding-left 0.85rem
+
+.download-btn
+  display inline-block
+  padding 0.4rem 1.1rem
+  border-radius 4px
+  color #fff
+  text-decoration none
+  font-size 0.88rem
+  font-weight 500
+  letter-spacing 0.02em
+  min-width 5rem
+  text-align center
+  transition opacity 0.15s ease, transform 0.15s ease
+
+  &:hover
+    opacity 0.85
+    transform translateY(-1px)
+
+  &--cf
+    background-color #f16436
+
+  &--gh
+    background-color #24292e
+
+  &--mc
+    background-color #e74c3c
+
+// ========== hope v1.20.5 hero 强制垂直布局 + 大尺寸头图 ==========
+// 1) hope v1 在桌面端（≥959px）默认 .home .hero 为 flex 横向布局，导致标题竖排
+//    → 用 !important 覆盖 hope 的同名规则
+// 2) 把头图 max-width 提升到视口 60%（720px），加卡片样式
+// 3) 标题强制一行 white-space: nowrap，避免中英长标题自动换行
+.home .hero
+  display flex !important
+  flex-direction column !important
+  align-items center !important
+  text-align center !important
+  justify-content center !important
+  padding 2rem 1rem 0
+
+  img
+    max-width min(880px, 78vw) !important
+    width 100%
+    height auto !important
+    margin 0 auto 1.75rem !important
+    display block
+    order 0
+    border-radius 14px
+    box-shadow 0 12px 36px rgba(15, 23, 42, 0.18), 0 4px 12px rgba(15, 23, 42, 0.1)
+
+  .hero-info
+    width 100%
+    max-width 60rem
+    margin 0 auto
+    text-align center
+    order 1
+
+  h1
+    font-size 2.4rem
+    font-weight 600
+    margin 0.8rem auto 0.4rem
+    white-space nowrap           // 强制标题单行
+    word-wrap normal
+    word-break keep-all
+    line-height 1.2
+
+  p.description
+    font-size 1.25rem
+    line-height 1.5
+    color #555
+    margin 0.4rem auto 1rem
+    max-width 48rem
+    white-space normal           // 描述允许多行（较长）
+
+  p.action
+    margin 1rem auto
+    display flex
+    flex-wrap wrap
+    justify-content center
+    gap 0.5rem
+
+  .action-button
+    display inline-block
+    margin 0.4rem 0.3rem
+    padding 0.85rem 1.4rem
+    border 2px solid #2188ff
+    border-radius 2rem
+    color #2188ff
+    font-size 1.1rem
+    background-color transparent
+    transition background 0.1s ease, color 0.1s ease
+    white-space nowrap
+
+    &.primary
+      background-color #2188ff
+      color #fff
+
+      &:hover
+        background-color #1f7ae0
+        border-color #1f7ae0
+
+    &:hover
+      background-color #2188ff
+      color #fff
+
+// ========== 极窄屏兜底 ==========
+@media (max-width: 960px)
+  .home .hero h1
+    font-size 2rem
+
+@media (max-width: 720px)
+  .home .hero
+    padding 1rem 0.5rem 0
+
+    img
+      max-width 100% !important
+      border-radius 8px
+
+    h1
+      font-size 1.6rem
+      white-space normal        // 手机端空间窄，标题允许多行
+      word-break keep-all
+
+    p.description
+      font-size 1rem
+
+@media (max-width: 480px)
+  .home .hero h1
+    font-size 1.4rem
