@@ -3,6 +3,44 @@
 
   // ── 工具方法 ────────────────────────────────────────────────────────────────
 
+  /**
+   * 从本脚本自身的位置推断站点对应的 URL 前缀。
+   *   本地开发：脚本位于 /js/components.js            → 返回 "/"
+   *   Pages 子路径：脚本位于 /<repo>/js/components.js → 返回 "/<repo>/"
+   *   自定义域名 / 用户页：行为与本地相同            → 返回 "/"
+   * 有了这个前缀，就可以把 window.location.pathname 还原为"相对站点根"
+   * 的路径，下游的 currentDir()、componentsBase()、langPathMap() 等
+   * 才能在 GitHub Pages 子路径托管下也输出正确结果。
+   */
+  function detectSiteBase() {
+    var script = document.currentScript;
+    if (!script) {
+      // 兜底：反向查找带 components.js 的 <script>
+      var scripts = document.getElementsByTagName('script');
+      for (var i = scripts.length - 1; i >= 0; i--) {
+        var s = scripts[i];
+        if (s.src && s.src.indexOf('components.js') !== -1) {
+          script = s;
+          break;
+        }
+      }
+    }
+    if (!script || !script.src) return '/';
+    try {
+      var url = new URL(script.src);
+      var segs = url.pathname.split('/').filter(Boolean);
+      // 去掉末尾的 "components.js" 与 "js"
+      segs.pop();
+      segs.pop();
+      if (segs.length === 0) return '/';
+      return '/' + segs.join('/') + '/';
+    } catch (e) {
+      return '/';
+    }
+  }
+
+  var SITE_BASE = detectSiteBase();
+
   function escapeHtml(str) {
     return String(str)
       .replace(/&/g, '&amp;')
@@ -23,14 +61,24 @@
     return out.join('/');
   }
 
-  /** 返回相对于站点根的路径段，例如 "guide/sign-usage.html" */
+  /**
+   * 返回当前页面相对站点根的路径（不带前导斜杠）。
+   *   本地 /guide/sign-usage.html                  → "guide/sign-usage.html"
+   *   Pages /<repo>/guide/sign-usage.html          → "guide/sign-usage.html"
+   * 这样下游 currentDir() / componentsBase() 等不必再关心 repo 名前缀。
+   */
   function getCurrentPath() {
-    return normalisePath(window.location.pathname);
+    var fullPath = window.location.pathname;
+    var relPath = fullPath;
+    if (SITE_BASE !== '/' && fullPath.indexOf(SITE_BASE) === 0) {
+      relPath = fullPath.substring(SITE_BASE.length);
+    }
+    return normalisePath(relPath);
   }
 
   function detectLang() {
     const p = getCurrentPath();
-    return p.startsWith('en/') ? 'en' : 'zh';
+    return p === 'en' || p.startsWith('en/') ? 'en' : 'zh';
   }
 
   // ── 页面目录 ──────────────────────────────────────────────────────────────
@@ -257,11 +305,16 @@
     siteNav.querySelectorAll('a[data-key]').forEach(link => {
       const hrefRaw = link.getAttribute('href');
       if (!hrefRaw || hrefRaw.startsWith('#') || hrefRaw.startsWith('http')) return;
-      // 去掉前导 '/'，将根相对路径视作项目根相对路径，与
-      // rewriteComponentLinks 的规范化方式一致。
-      let hrefForResolve = hrefRaw.startsWith('/') ? hrefRaw.substring(1) : hrefRaw;
-      // 相对于当前目录解析 href
-      const hrefAbs = normalisePath(((dir ? dir + '/' : '') + hrefForResolve).replace(/^\//, ''));
+
+      let hrefAbs;
+      if (hrefRaw.startsWith('/')) {
+        // 站点根相对路径：去掉前导斜杠后即"相对站点根"的路径，
+        // 与 getCurrentPath() 语义一致，可直接比较。
+        hrefAbs = normalisePath(hrefRaw);
+      } else {
+        // 深度相对路径：相对当前目录解析
+        hrefAbs = normalisePath(((dir ? dir + '/' : '') + hrefRaw).replace(/^\//, ''));
+      }
       if (hrefAbs === cur) link.classList.add('active');
     });
   }
@@ -379,9 +432,15 @@
     sidebar.querySelectorAll('.sidebar-item, a[data-key]').forEach(item => {
       const hrefRaw = item.getAttribute('href');
       if (!hrefRaw || hrefRaw.startsWith('#') || hrefRaw.startsWith('http')) return;
-      // 去掉前导 '/'，将根相对路径视作项目根相对路径
-      let hrefForResolve = hrefRaw.startsWith('/') ? hrefRaw.substring(1) : hrefRaw;
-      const hrefAbs = normalisePath(((dir ? dir + '/' : '') + hrefForResolve).replace(/^\//, ''));
+
+      let hrefAbs;
+      if (hrefRaw.startsWith('/')) {
+        // 站点根相对路径：与 getCurrentPath() 语义一致
+        hrefAbs = normalisePath(hrefRaw);
+      } else {
+        // 深度相对路径：相对当前目录解析
+        hrefAbs = normalisePath(((dir ? dir + '/' : '') + hrefRaw).replace(/^\//, ''));
+      }
       if (hrefAbs === cur) item.classList.add('active');
       item.addEventListener('click', () => {
         if (window.innerWidth <= 768) closeSidebar();
