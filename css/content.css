@@ -1,0 +1,740 @@
+/* ========== 内容排版 ========== */
+.content h1 {
+    font-size: 28px;
+    color: #1a1a2e;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #d4c9a8;
+    animation: anim-fade-down 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.content h2 {
+    font-size: 22px;
+    color: #1a1a2e;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #d4c9a8;
+    animation: anim-fade-left 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    position: relative;
+    transition: border-bottom-color 0.3s ease, padding-left 0.3s ease;
+}
+
+.content h2:hover {
+    border-bottom-color: #4a90d9;
+    padding-left: 6px;
+}
+
+.content h3 {
+    font-size: 18px;
+    color: #333;
+    margin-top: 25px;
+    margin-bottom: 12px;
+    animation: anim-fade-up 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.content h4 {
+    font-size: 16px;
+    color: #444;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.content h4:hover {
+    color: #1a1a2e;
+    transform: translateX(3px);
+}
+
+.content h5 {
+    font-size: 15px;
+    color: #4a90d9;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    padding-left: 10px;
+    border-left: 3px solid #4a90d9;
+    transition: padding-left 0.25s ease, border-left-width 0.25s ease, color 0.25s ease;
+}
+
+.content h5:hover {
+    padding-left: 14px;
+    border-left-width: 5px;
+    color: #357abd;
+}
+
+.content p {
+    margin-bottom: 15px;
+    color: #444;
+}
+
+.content ul, .content ol {
+    margin-bottom: 15px;
+    padding-left: 25px;
+}
+
+.content li {
+    margin-bottom: 8px;
+    color: #444;
+    transition: color 0.25s ease, transform 0.25s ease, padding-left 0.25s ease;
+}
+
+.content li:hover {
+    color: #1a1a2e;
+    transform: translateX(3px);
+    padding-left: 2px;
+}
+
+.content strong {
+    color: #1a1a2e;
+}
+
+.content a {
+    color: #4a90d9;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.25s ease;
+}
+
+.content a:hover {
+    color: #357abd;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 2px;
+}
+
+.content code {
+    background-color: #f0ebe0;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: "Consolas", "Monaco", monospace;
+    font-size: 0.9em;
+    color: #c7254e;
+    display: inline-block;
+}
+
+.content code:hover {
+    background-color: transparent;
+    color: inherit;
+    transform: none;
+}
+
+.content pre {
+    background-color: #2d2d44;
+    color: #f8f8f2;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 20px;
+    font-family: "Consolas", "Monaco", monospace;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.content pre:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.content pre code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+}
+
+/* 代码块的复制按钮 */
+.content pre {
+    position: relative;
+}
+
+.content .copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.content pre:hover .copy-btn {
+    opacity: 1;
+}
+
+.content .copy-btn:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    color: #fff;
+}
+
+.content .copy-btn.copied {
+    background-color: rgba(76, 175, 80, 0.3);
+    border-color: rgba(76, 175, 80, 0.5);
+    color: #81c784;
+}
+
+/* 默认 blockquote 样式（除 creative-plaza 的变体外，所有页面都使用） */
+.content blockquote {
+    background-color: #fff8e7;
+    border-left: 4px solid #f0a500;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    color: #666;
+    border-radius: 0 6px 6px 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-left-width 0.25s ease;
+}
+
+.content blockquote:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 14px rgba(240, 165, 0, 0.18);
+    border-left-width: 6px;
+}
+
+/* 警告框 —— 视觉上比黄色 blockquote "notice" 更强。
+   用于弃用说明、已知 bug 提示等。 */
+.content .warning-box {
+    background-color: #fdecea;
+    border-left: 4px solid #d9534f;
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    color: #a94442;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+    line-height: 1.7;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-left-width 0.25s ease;
+}
+
+.content .warning-box:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 14px rgba(217, 83, 79, 0.18);
+    border-left-width: 6px;
+}
+
+.content .warning-box p {
+    margin: 0;
+}
+
+.content .warning-box strong {
+    color: #c9302c;
+}
+
+/* 通过框 —— 用于推荐 / 正面通知 */
+.content .access-box {
+    background-color: #e8f5e9;
+    border-left: 4px solid #4caf50;
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    color: #2e7d32;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+    line-height: 1.7;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-left-width 0.25s ease;
+}
+
+.content .access-box:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 14px rgba(76, 175, 80, 0.18);
+    border-left-width: 6px;
+}
+
+.content .access-box p {
+    margin: 0;
+}
+
+.content .access-box strong {
+    color: #1b5e20;
+}
+
+/* 信息框 —— 中性的建议 / 提示（蓝色） */
+.content .info-box {
+    background-color: #e8f0fe;
+    border-left: 4px solid #4a90d9;
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    color: #2a4d7a;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+    line-height: 1.7;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-left-width 0.25s ease;
+}
+
+.content .info-box:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 14px rgba(74, 144, 217, 0.18);
+    border-left-width: 6px;
+}
+
+.content .info-box p {
+    margin: 0;
+}
+
+.content .info-box p + p {
+    margin-top: 8px;
+}
+
+.content .info-box strong {
+    color: #1d5494;
+}
+
+.content .info-box a {
+    color: #1d5494;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(29, 84, 148, 0.45);
+    transition: color 0.18s, border-color 0.18s;
+}
+
+.content .info-box a:hover {
+    color: #4a90d9;
+    border-bottom-color: #4a90d9;
+}
+
+.content hr {
+    border: none;
+    border-top: 1px solid #d4c9a8;
+    margin: 30px 0;
+}
+
+.content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 15px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.4s ease;
+}
+
+.content img:hover {
+    transform: scale(1.015);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+}
+
+/* 表格（被 sign-usage.html 与 resource-pack.html 使用） */
+.content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.content th, .content td {
+    border: 1px solid #d4c9a8;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.content th {
+    background-color: #1a1a2e;
+    color: #fff;
+    position: relative;
+}
+
+.content tbody tr {
+    transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.content tbody tr:hover {
+    background-color: rgba(74, 144, 217, 0.08);
+}
+
+.content tr:nth-child(even) {
+    background-color: rgba(212, 201, 168, 0.1);
+}
+
+/* ========== 内容头（docs.html） ========== */
+.content-header {
+    margin-bottom: 30px;
+}
+
+.content-header .page-title {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.content-header .page-title:only-child {
+    margin-bottom: 0;
+}
+
+/* ========== 介绍文字（docs.html） ========== */
+.intro-text {
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    animation: anim-fade-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s both;
+}
+
+.intro-text:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+    border-color: rgba(74, 144, 217, 0.25);
+}
+
+.intro-text p {
+    color: #555;
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+.intro-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* ========== 介绍框（creative-plaza） ========== */
+.intro-box {
+    padding: 0 1em;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+/* ========== 即将上线（creative-plaza） ========== */
+.coming-soon {
+    text-align: center;
+    padding: 3em 0;
+    font-style: italic;
+    color: #666;
+    font-size: 18px;
+}
+
+/* ========== FAQ 项（disclaimer-faq） ========== */
+.faq-item {
+    margin-bottom: 25px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    border: 1px solid rgba(212, 201, 168, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    animation: anim-fade-up 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.faq-item:nth-child(1) { animation-delay: 0.1s; }
+.faq-item:nth-child(2) { animation-delay: 0.2s; }
+.faq-item:nth-child(3) { animation-delay: 0.3s; }
+.faq-item:nth-child(4) { animation-delay: 0.4s; }
+.faq-item:nth-child(5) { animation-delay: 0.5s; }
+.faq-item:nth-child(n+6) { animation-delay: 0.55s; }
+
+.faq-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.07);
+    border-color: rgba(74, 144, 217, 0.35);
+}
+
+.faq-item h3 {
+    margin-top: 0;
+    color: #4a90d9;
+    transition: color 0.25s ease;
+}
+
+.faq-item:hover h3 {
+    color: #357abd;
+}
+
+/* ========== 免责声明列表（disclaimer-faq） ========== */
+.disclaimer-list {
+    list-style: none;
+    padding: 0;
+}
+
+.disclaimer-list li {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    border-left: 4px solid #d9534f;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-left-width 0.25s ease;
+    animation: anim-fade-up 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.disclaimer-list li:nth-child(1) { animation-delay: 0.1s; }
+.disclaimer-list li:nth-child(2) { animation-delay: 0.2s; }
+.disclaimer-list li:nth-child(3) { animation-delay: 0.3s; }
+.disclaimer-list li:nth-child(4) { animation-delay: 0.4s; }
+.disclaimer-list li:nth-child(n+5) { animation-delay: 0.5s; }
+
+.disclaimer-list li:hover {
+    transform: translateX(4px);
+    box-shadow: 0 8px 22px rgba(217, 83, 79, 0.12);
+    border-left-width: 6px;
+}
+
+.disclaimer-list li strong {
+    color: #d9534f;
+}
+
+/* ========== 图片画廊（rare-traffic-signs） ========== */
+.image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin: 25px 0;
+}
+
+.image-gallery figure {
+    margin: 0;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    animation: anim-pop-in 0.5s cubic-bezier(0.2, 0.8, 0.3, 1.3) both;
+}
+
+.image-gallery figure:nth-child(1) { animation-delay: 0.10s; }
+.image-gallery figure:nth-child(2) { animation-delay: 0.20s; }
+.image-gallery figure:nth-child(3) { animation-delay: 0.30s; }
+.image-gallery figure:nth-child(4) { animation-delay: 0.40s; }
+.image-gallery figure:nth-child(5) { animation-delay: 0.50s; }
+.image-gallery figure:nth-child(n+6) { animation-delay: 0.55s; }
+
+.image-gallery figure:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
+}
+
+.image-gallery figure img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    background-color: #fafafa;
+    padding: 10px;
+    display: block;
+    flex-shrink: 0;
+    transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.image-gallery figure:hover img {
+    transform: scale(1.05);
+}
+
+.image-gallery figcaption {
+    padding: 12px 15px;
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+    background-color: #fafafa;
+    border-top: 1px solid #e8e0c8;
+    line-height: 1.4;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 768px) {
+    .content h1 {
+        font-size: 24px;
+    }
+
+    .content h2 {
+        font-size: 20px;
+    }
+
+    .content pre {
+        font-size: 12px;
+        padding: 15px;
+    }
+
+    .content table {
+        font-size: 14px;
+    }
+
+    .content th, .content td {
+        padding: 8px 10px;
+    }
+
+    .faq-item {
+        padding: 15px;
+    }
+
+    .image-gallery {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .image-gallery figure img {
+        height: 200px;
+    }
+}
+
+/* ========== Lightbox（与 index.html 统一） ========== */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.92);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 60px 80px;
+    animation: lb-fade 0.22s ease;
+}
+
+.lightbox.active {
+    display: flex;
+}
+
+.lightbox-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@keyframes lb-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.lightbox-img {
+    max-width: min(90vw, calc(100vw - 160px));
+    max-height: min(70vh, calc(100vh - 180px));
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+    user-select: none;
+    -webkit-user-drag: none;
+    will-change: transform;
+    transition: transform 0.1s ease-out;
+}
+
+.lightbox-caption {
+    margin-top: 16px;
+    text-align: center;
+    color: #fff;
+    font-size: 16px;
+    letter-spacing: 0.4px;
+}
+
+.lightbox-counter {
+    position: fixed;
+    top: 20px;
+    left: 24px;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.5px;
+}
+
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+    position: fixed;
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 20px;
+    transition: background-color 0.2s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    z-index: 2001;
+}
+
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover {
+    background: rgba(255, 255, 255, 0.28);
+    box-shadow: 0 6px 18px rgba(255, 255, 255, 0.15);
+}
+
+.lightbox-close {
+    top: 20px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    font-size: 26px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-close:hover {
+    transform: rotate(90deg) scale(1.06);
+    box-shadow: 0 6px 18px rgba(255, 255, 255, 0.2);
+}
+
+.lightbox-close:active {
+    transform: rotate(90deg) scale(0.95);
+}
+
+.lightbox-prev,
+.lightbox-next {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 52px;
+    height: 52px;
+    font-size: 28px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-prev { left: 20px; }
+.lightbox-next { right: 20px; }
+
+.lightbox-prev:hover { transform: translateY(-50%) translateX(-3px); }
+.lightbox-next:hover { transform: translateY(-50%) translateX(3px); }
+
+body.lightbox-open {
+    overflow: hidden;
+}
+
+/* 让画廊图片可点击 */
+.image-gallery figure {
+    cursor: zoom-in;
+}
+
+@media (max-width: 768px) {
+    .lightbox {
+        padding: 60px 16px;
+    }
+    .lightbox-img {
+        max-width: min(95vw, calc(100vw - 32px));
+        max-height: min(65vh, calc(100vh - 160px));
+    }
+    .lightbox-prev,
+    .lightbox-next {
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
+        top: auto;
+        bottom: 24px;
+        transform: none;
+        z-index: 2001;
+    }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+    .lightbox-prev:hover { transform: translateX(-3px); }
+    .lightbox-next:hover { transform: translateX(3px); }
+    .lightbox-close {
+        top: 12px;
+        right: 12px;
+        width: 38px;
+        height: 38px;
+        font-size: 22px;
+    }
+    .lightbox-caption {
+        font-size: 14px;
+        margin-top: 12px;
+    }
+    .lightbox-counter {
+        top: 12px;
+        left: 12px;
+        right: auto;
+        font-size: 12px;
+    }
+}

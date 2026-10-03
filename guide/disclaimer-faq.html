@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>免责声明与常见问题 | 豹猫指示牌模组</title>
+    <link rel="stylesheet" href="../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../css/layout.css?v=20261004">
+    <link rel="stylesheet" href="../css/content.css?v=20261004">
+</head>
+<body>
+    <div id="site-header"></div>
+    <div class="main-container">
+        <div id="site-sidebar"></div>
+
+        <main class="content">
+        <div class="content-inner">
+            <h1>免责声明与常见问题</h1>
+
+<h2>免责声明</h2>
+
+<p>本模组仅提供与告示牌相关的框架和功能。玩家或服务器服主通过资源包导入的任何自定义内容（包括但不限于图片、字体、文案等）均由使用者自行承担全部责任。严禁利用本模组制作、传播任何违法违规内容，由使用者自行制作的内容引发的纠纷，模组作者概不负责。</p>
+
+<p>本模组为完全免费的开源模组，从未在任何电商平台（如淘宝、闲鱼等）进行售卖，也从未在网易我的世界发布。<strong>如果您是付费购买的本模组，请尽快申请退款！</strong> 支持正版，抵制倒卖。</p>
+
+<p>本模组目前没有官方论坛。请勿轻信其他第三方渠道或非官方群组，谨防上当受骗。</p>
+
+<p>尽管我们在发布前已进行了测试，但修改游戏内容始终伴随风险。<strong>强烈建议您在安装或更新模组前备份您的游戏存档。</strong> 因模组冲突、操作不当等原因导致的数据丢失或存档损坏，作者无法承担相关责任。</p>
+
+<hr>
+
+<h2 id="faq">常见问题 (FAQ)</h2>
+
+<div class="faq-item" id="q1">
+<h3>Q1：为什么告示牌上的图案颜色，和告示牌方块本身的颜色有色差？</h3>
+<p><strong>A：</strong> 这是由 Minecraft 游戏底层的渲染特性决定的，属于正常现象。本模组作为"迷上城建"的附属，继承了其基于原版的文本组件机制。即使文本和方块在代码里设定了完全相同的颜色（色号），由于它们经过的渲染通道不同，最终在屏幕上呈现的视觉效果依然会存在差异。</p>
+<ul>
+<li><strong>方块</strong>使用的是"<strong>世界着色器（World Shaders）</strong>"，它会根据周围方块的光照等级进行平滑插值，计算出真实的阴影和明暗变化。</li>
+<li><strong>告示牌上的文本或图案</strong>是作为第二图层"画"在方块上的，它们使用的是"<strong>独立字体着色器</strong>"，对环境光的响应远不如方块灵敏。</li>
+</ul>
+<p>如果要彻底解决这个问题，需要完全重写底层的渲染机制，难度极高且容易产生其他模组冲突，因此目前无法完美消除色差。</p>
+</div>
+
+<div class="faq-item" id="q2">
+<h3>Q2：为什么我安装了类似 Caxton、Modern UI 这样的模组后，告示牌的排版和对齐会发生变化？</h3>
+<p><strong>A：</strong> 这是因为本模组的字体渲染排版，很大程度上取决于 Minecraft 原版的字体渲染引擎，而上述模组会深度替换或修改底层的文字渲染机制。不同的渲染引擎对字距、行高和字符大小的计算方式不同，切换渲染机制自然会导致原本对齐的字体偏移、排版错乱或大小改变。</p>
+<p>目前暂无通用的解决方案，我们建议您在同一个存档或服务器中，<strong>始终保持一种字体渲染环境，不要中途随意切换此类模组</strong>。</p>
+</div>
+
+<div class="faq-item" id="q3">
+<h3>Q3：为什么我看不到告示牌上的图案，或者字变成了方框（乱码），甚至完全不显示？</h3>
+<p><strong>A：</strong> 这通常是因为<strong>资源包未正确加载</strong>导致的。</p>
+<p>如果你加入的是多人服务器，或者正在游玩特定存档，说明该内容调用了自定义的资源包。请确保你已经在游戏的"资源包"界面中，正确放入并启用了对应的模组资源包。如果资源包缺失，游戏找不到对应的图片或字体文件，就会显示为错误方框或直接隐形。</p>
+</div>
+
+<div class="faq-item" id="q4">
+<h3>Q4：《豹猫指示牌模组》的后续开发计划是什么？</h3>
+<p><strong>A：</strong> 《豹猫指示牌模组》正式发布前，已在两台服务器经过多版本内测，主体功能已趋于稳定，短期内不会做大规模功能更新。后续开发重点为高版本移植、bug 修复以及少量内容补充。受精力限制，不会跟进全部游戏版本，只会选取部分主流版本更新，不考虑移植到 1.19（不含）以下旧版本。后续计划推出包含其他国家/地区指示牌图案的扩展资源包，同时考虑开放玩家投稿通道，欢迎大家提交自制图案，参与资源包生态建设。</p>
+<p>请注意：以上均为《豹猫指示牌模组》的开发计划，并非《迷上城建》模组的开发计划。有关《迷上城建》的相关计划，请以《迷上城建》模组作者发布的内容为准。</p>
+</div>
+
+<div class="faq-item" id="q5">
+<h3>Q5：为什么我在 Forge/NeoForge 环境下运行会报错？</h3>
+<p><strong>A：</strong> 本模组及其前置模组专为 Fabric 平台开发，暂无 Forge/NeoForge 官方适配计划，目前收到的报错<strong>几乎全部</strong>来自跨平台运行。使用 Sinytra Connector 跨平台加载稳定性差，很容易出现兼容问题。如果仍需要跨平台使用，可以寻找《迷上城建》第三方信雅互联兼容版。<strong>该方案非官方推荐，使用前务必备份存档。由此造成的存档损坏等问题，作者不承担责任。本模组基于 Fabric 平台开发，作者不处理在 Forge 使用信雅互联加载 Fabric 模组引发的相关问题，请谅解。</strong></p>
+<p>如果你仍然要使用，下面是其他玩家提供的解决方案，仅供参考：</p>
+<ul>
+<li><strong>方法 1）</strong>下载玩家制作的《迷上城建》非官方信雅互联修复版本：<a href="https://www.curseforge.com/minecraft/mc-mods/mishang-urban-construction-sinytra-connector-fix" target="_blank">https://www.curseforge.com/minecraft/mc-mods/mishang-urban-construction-sinytra-connector-fix</a>，之后安装豹猫指示牌模组。</li>
+<li><strong>方法 2）</strong>使用信雅互联加载本模组出现崩溃，报错为 <code>NoSuchMethodError</code> 时，删除 <code>mods\.connector</code> 目录下转换完成的本模组文件，重启游戏，让游戏重新进行转换。通过二进制文件检测，两次转换生成的 <code>.class</code> 字节码文件存在差异。</li>
+<li><strong>方法 3）</strong>如果你正在使用的《迷上城建》版本仍在更新，请将《迷上城建》和《豹猫指示牌模组》均升级至最新版本——最新版《迷上城建》已修复了此问题。<strong>此方法仅对仍在更新的《迷上城建》版本有效</strong>，已停止更新的版本请改用方法 1 或方法 2。你可以通过以下链接查看哪些《迷上城建》版本仍在更新：<a href="https://www.bilibili.com/opus/1017477310071177225" target="_blank">https://www.bilibili.com/opus/1017477310071177225</a></li>
+</ul>
+<p><strong>即便存在上述方案，我们依然强烈不建议使用信雅互联运行本模组，在 Forge 上运行 Fabric 模组本身就极不稳定。</strong></p>
+</div>
+
+<div class="faq-item" id="q6">
+<h3>Q6：为什么告示牌距离远了看不到文字？</h3>
+<p><strong>A：</strong> 该现象由前置模组《迷上城建》的渲染机制造成，《豹猫指示牌模组》直接沿用了该模组的告示牌逻辑，距离远了看不到文字是正常现象。不过有玩家提供了解决方案，仅供参考：</p>
+<ul>
+<li><strong>方法 1）</strong>安装 I See You Over There! 模组。该优化模组可自定义调整 Minecraft 实体与方块实体的渲染距离，解决远距离内容不显示的问题，同时提供精细化的性能配置选项。<br>下载地址：<a href="https://modrinth.com/mod/i-see-you-over-there" target="_blank">https://modrinth.com/mod/i-see-you-over-there</a></li>
+</ul>
+</div>
+
+<div class="faq-item" id="q7">
+<h3>Q7：本模组是否会适配 Minecraft Transit Railway？</h3>
+<p><strong>A：</strong> 不会。两者功能和底层机制互不相关，没有适配计划。请勿反馈《豹猫指示牌模组》使用过程中出现的 MTR 相关问题，两个模组互相独立。</p>
+</div>
+
+<div class="faq-item" id="q8">
+<h3>Q8：如何排查问题来自前置模组《迷上城建》还是《豹猫指示牌模组》？</h3>
+<p><strong>排查步骤：</strong></p>
+<ul>
+<li>禁用《豹猫指示牌模组》，查看问题是否还会出现。</li>
+<li>同时禁用《豹猫指示牌模组》及其前置《迷上城建》，查看问题是否还会出现。</li>
+</ul>
+<p>注意：若确认问题由前置模组《迷上城建》导致，请前往《迷上城建》反馈渠道提交问题，并附上游戏日志、模组版本、游戏版本以及复现步骤，方便开发者排查处理。</p>
+<p>如果确认是《豹猫指示牌模组》的问题，请前往《豹猫指示牌模组》反馈渠道提交问题，并附上游戏日志、模组版本、游戏版本以及复现步骤，方便开发者排查处理。</p>
+</div>
+
+<div class="faq-item" id="q9">
+<h3>Q9：我在淘宝、闲鱼等电商平台购买到《豹猫指示牌模组》，或者在《网易版我的世界》购买到《豹猫指示牌模组》，请问该怎么办？</h3>
+<p><strong>A：</strong> 请尽快申请退款，并向官方平台或模组作者进行举报。支持正版，抵制倒卖！本模组从未授权任何电商平台或个人进行商业销售，请广大玩家切勿上当受骗，共同维护良好的游戏生态。</p>
+</div>
+
+
+
+        </div>
+    </main>
+    </div>
+
+    <!-- Right-side page TOC: auto-built from H1-H4 in the article body. -->
+    <aside class="page-toc" id="pageToc" aria-label="本页导航">
+        <div class="page-toc-title">本页导航</div>
+        <nav class="page-toc-nav" id="pageTocNav"></nav>
+    </aside>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" title="返回顶部">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">顶部</span>
+    </div>
+
+    <script src="../js/components.js?v=20261004"></script>
+    <script>
+    (function () {
+        var nav = document.getElementById('pageTocNav');
+        var content = document.querySelector('.content-inner') || document.querySelector('.content');
+        if (!nav || !content) return;
+
+        var headings = content.querySelectorAll('h1, h2, h3');
+        if (!headings.length) return;
+
+        // Assign stable ids to headings that don't have one yet.
+        var slugify = function (s) {
+            return s.toLowerCase()
+                .replace(/[^\p{L}\p{N}\s-]/gu, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .slice(0, 60) || 'section';
+        };
+        var usedIds = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            if (!h.id) {
+                var base = slugify(h.textContent);
+                var id = base;
+                var i = 2;
+                while (usedIds[id] || document.getElementById(id)) {
+                    id = base + '-' + i++;
+                }
+                h.id = id;
+            }
+            usedIds[h.id] = true;
+        });
+
+        // Build the nested list. Stack bottom is the root <ul>; every
+        // push appends a fresh child <ul> to the new <li> so deeper
+        // headings nest inside it.
+        var root = document.createElement('ul');
+        var stack = [{ level: 0, list: root }];
+
+        Array.prototype.forEach.call(headings, function (h) {
+            var level = parseInt(h.tagName.charAt(1), 10);
+            while (stack[stack.length - 1].level >= level) {
+                stack.pop();
+            }
+            var parentList = stack[stack.length - 1].list;
+            var li = document.createElement('li');
+            li.className = 'toc-h' + level;
+            var a = document.createElement('a');
+            a.href = '#' + h.id;
+            a.textContent = h.textContent;
+            a.dataset.targetId = h.id;
+            li.appendChild(a);
+            parentList.appendChild(li);
+            var childList = document.createElement('ul');
+            li.appendChild(childList);
+            stack.push({ level: level, list: childList });
+        });
+
+        nav.appendChild(root);
+
+        var links = nav.querySelectorAll('a');
+        var linkByHeading = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            var link = nav.querySelector('a[data-target-id="' + h.id + '"]');
+            if (link) linkByHeading[h.id] = { link: link, heading: h };
+        });
+
+        var setActive = function (id) {
+            Array.prototype.forEach.call(links, function (a) { a.classList.remove('is-active'); });
+            if (id && linkByHeading[id]) linkByHeading[id].link.classList.add('is-active');
+        };
+
+        // Click handler — smooth-scroll, then update URL without jumping.
+        Array.prototype.forEach.call(links, function (a) {
+            a.addEventListener('click', function (e) {
+                var target = document.getElementById(a.dataset.targetId);
+                if (!target) return;
+                e.preventDefault();
+                var headerOffset = 80;
+                var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+                setActive(a.dataset.targetId);
+                history.replaceState(null, '', '#' + a.dataset.targetId);
+            });
+        });
+
+        // Highlight the heading nearest the top of the viewport.
+        var visibleHeadings = [];
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                var id = entry.target.id;
+                var idx = visibleHeadings.findIndex(function (v) { return v.id === id; });
+                if (entry.isIntersecting) {
+                    if (idx === -1) visibleHeadings.push({ id: id, top: entry.boundingClientRect.top });
+                    else visibleHeadings[idx].top = entry.boundingClientRect.top;
+                } else if (idx !== -1) {
+                    visibleHeadings.splice(idx, 1);
+                }
+            });
+            if (!visibleHeadings.length) return;
+            visibleHeadings.sort(function (a, b) { return a.top - b.top; });
+            var pick = null;
+            for (var i = 0; i < visibleHeadings.length; i++) {
+                if (visibleHeadings[i].top >= 80) { pick = visibleHeadings[i]; break; }
+            }
+            if (!pick) pick = visibleHeadings[0];
+            setActive(pick.id);
+        }, {
+            rootMargin: '-80px 0px -55% 0px',
+            threshold: 0
+        });
+
+        Array.prototype.forEach.call(headings, function (h) { observer.observe(h); });
+    })();
+    </script>
+</body>
+</html>

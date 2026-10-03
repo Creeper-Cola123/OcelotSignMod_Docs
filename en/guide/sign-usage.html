@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Usage of Signs | Ocelot Sign Mod</title>
+    <link rel="stylesheet" href="../../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../../css/layout.css?v=20261004">
+    <link rel="stylesheet" href="../../css/content.css?v=20261004">
+</head>
+<body>
+    <div id="site-header"></div>
+    <div class="main-container">
+        <div id="site-sidebar"></div>
+
+        <main class="content">
+        <div class="content-inner">
+            <h1>Basic Usage of Signs | MishangUC</h1>
+
+<p>This mod adds sign blocks with various textures.</p>
+
+<hr>
+
+<h2>I. Sign Categories</h2>
+
+<p>Signs in the MishangUC mod are mainly divided into the following three types:</p>
+
+<h3>1. Hanging Signs</h3>
+
+<ol>
+<li>This type of sign should be hung below a block, and text can be entered on both sides. If a solid block or a sign pole block is connected above, a sign pole will be displayed.</li>
+<li>The text on the sign is bound to its placement direction; direct rotation is not currently supported. If you need to place a block with NBT data, ensure the placement direction matches the direction it was obtained in; otherwise, text will not appear on the corresponding side. For example, if you obtain a sign facing north/south and place it facing east/west, the original text on the north/south sides will not display.</li>
+</ol>
+
+<h3>2. Wall Signs</h3>
+
+<ol>
+<li>This type of sign can be placed on any surface of a block (side, top, bottom), with only one writable face.</li>
+<li>Wall signs have two special variants: <strong>Invisible Sign</strong> and <strong>Invisible Glow Sign</strong>. The models of these two sign types are invisible, with only text visible. When a player holds either type, placed invisible signs will show an outline for easy identification.</li>
+</ol>
+
+<h3>3. Standing Signs</h3>
+
+<ol>
+<li>Placed on the ground or floating, supporting the original 16 directions. Like hanging signs, both sides can have text input.</li>
+<li>A pole will appear when a block is placed underneath. While empty-handed, hold <code>Shift</code> and click the sign to manually toggle the pole visibility.</li>
+</ol>
+
+<hr>
+
+<h2>II. Basic Text Editing</h2>
+
+<p>When a player right-clicks a sign, the editing interface opens (click the corresponding side for hanging/standing signs). The sign supports multi-line text, with each line independently configurable for the following properties:</p>
+
+<h3>1. Basic Styles</h3>
+
+<p>Bold, italic, underline, strikethrough, random text, etc.</p>
+
+<h3>2. Text Size</h3>
+
+<p>Default value: <code>6</code>. Full-size signs (including both invisible variants) have a default of <code>8</code>.</p>
+
+<h3>3. Offset (X/Y/Z)</h3>
+
+<p>Adjusts text offset along the three axes.</p>
+
+<blockquote>
+<p>⚠️ Adjust the Z-axis carefully, as it may cause text to float off the plane or clip behind the sign and become invisible.</p>
+</blockquote>
+
+<h3>4. Scale (X/Y)</h3>
+
+<p>Stacks with text size. Setting scale to <code>0</code> will hide the text.</p>
+
+<blockquote>
+<p>There is no Z-axis scaling, as it serves no purpose on a 2D plane.</p>
+</blockquote>
+
+<h3>5. Rotation</h3>
+
+<p>Supports rotation around the X, Y, and Z axes.</p>
+
+<h3>6. Alignment</h3>
+
+<p>Supports horizontal and vertical alignment.</p>
+
+<h3>7. Color &amp; Outline</h3>
+
+<ul>
+<li><strong>Text Color</strong>: Built-in 16 colors / custom color.</li>
+<li><strong>Outline Color</strong>: Disabled, auto-match text color (vanilla glow behavior), built-in color, glowing variant of built-in color / custom color.</li>
+</ul>
+
+<h3>8. Shadow</h3>
+
+<blockquote>
+<p>⚠️ Not recommended. Enabling shadows for multi-directional text may cause rendering order issues.</p>
+</blockquote>
+
+<h3>9. Absolute Mode</h3>
+
+<p>When enabled, this line will be ignored during the "Rearrange" function.</p>
+
+<hr>
+
+<h2>III. Advanced Typography &amp; Editing Features</h2>
+
+<h3>1. Button &amp; Value Adjustment</h3>
+
+<h4>Basic Controls</h4>
+
+<ul>
+<li><strong>Left-click</strong>: Adjust</li>
+<li><strong>Right-click / Shift+Left-click</strong>: Reverse adjust</li>
+<li><strong>Middle mouse wheel / Alt+Shift+Left-click</strong>: Reset to default</li>
+</ul>
+
+<p>Mouse wheel scrolling can also be used directly.</p>
+
+<h4>Speed Multipliers</h4>
+
+<ul>
+<li>Hold <code>Ctrl</code> for <strong>×8 speed</strong></li>
+<li>Hold <code>Alt</code> for <strong>1/8 speed</strong></li>
+</ul>
+
+<h4>Custom Value Input</h4>
+
+<p>Click "Set Custom Value" then the target button, or press <code>Tab</code> to focus and <code>Ctrl+E</code> to enter a value.</p>
+
+<blockquote>
+<p>Color support: color name (e.g., <code>red</code>) or hex code (<code>#rgb</code>, <code>#rgba</code>, <code>#rrggbb</code>, <code>#rrggbbaa</code>). For outline, enter <code>none</code> (disabled) or <code>auto</code> (automatic).</p>
+</blockquote>
+
+<h3>2. Text Layout &amp; Multi-Selection</h3>
+
+<h4>Auto Layout</h4>
+
+<p>Click "Adjust Position" to arrange lines from top to bottom based on text size (with 1/8 line spacing, excluding lines with Absolute Mode enabled). Different vertical alignments operate independently.</p>
+
+<h4>Multi-Selection</h4>
+
+<p>Hold <code>Ctrl</code> or <code>Shift</code> to select multiple lines for batch settings or input. Button increments apply relative changes; custom values or defaults apply uniformly to all selected lines.</p>
+
+<h4>Cross-Block Overflow</h4>
+
+<p>Text remains visible beyond the sign area. To center text between two single-block signs, type on the left sign, set center alignment, and offset right by 8 units.</p>
+
+<h3>3. Back Side Copy &amp; Flip</h3>
+
+<h4>Copy from Back Side</h4>
+
+<p>Hanging/standing signs can directly copy text from the opposite side. During copying, X offset, horizontal alignment, and in-text arrows (e.g., <code>→</code>) are automatically reversed, ideal for double-sided signs.</p>
+
+<h4>Flip</h4>
+
+<p>Select a single line and click "Flip" to reverse its X offset, alignment, and arrows. Hold <code>Ctrl</code> and click "Flip" to apply to all lines.</p>
+
+<h3>4. Rendering Notes</h3>
+
+<h4>Z-Fighting</h4>
+
+<p>Easily occurs with translucent text + bold / translucent outline.</p>
+
+<h4>Opacity Behavior</h4>
+
+<p>When outline color is set to "auto", its opacity follows the text. If a specific color is chosen, it is unaffected by text opacity.</p>
+
+<h4>Transparency Occlusion</h4>
+
+<p>Translucent text may prevent translucent content behind it (stained glass, water, clouds) from rendering.</p>
+
+<hr>
+
+<h2>IV. Keyboard Shortcuts (1.19.4+)</h2>
+
+<h3>1. Focus Navigation</h3>
+
+<p><code>Tab</code> switches between text area and button area; arrow keys navigate between buttons/text lines.</p>
+
+<blockquote>
+<p>Example: Press <code>Tab</code> to select "Bold", press <code>Enter</code> to toggle, press <code>Right Arrow</code> to "Italic" and <code>Enter</code> to toggle.</p>
+</blockquote>
+
+<h3>2. Quick Styles</h3>
+
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl + I</code></td>
+<td>Italic</td>
+</tr>
+<tr>
+<td><code>Ctrl + S</code></td>
+<td>Strikethrough</td>
+</tr>
+<tr>
+<td><code>Ctrl + U</code></td>
+<td>Underline</td>
+</tr>
+<tr>
+<td><code>Ctrl + O</code></td>
+<td>Obfuscated</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+<p>Note: <code>Ctrl+B</code> conflicts with narrator and is not used for bold.</p>
+</blockquote>
+
+<h3>3. Line Operations</h3>
+
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Shortcut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>New line</td>
+<td><code>Ctrl+Shift+=</code> or <code>Ctrl+Numpad+</code></td>
+</tr>
+<tr>
+<td>Delete line</td>
+<td><code>Ctrl+-</code> or <code>Ctrl+Numpad-</code></td>
+</tr>
+<tr>
+<td>Move line</td>
+<td><code>Ctrl+Shift+Up/Down Arrow</code></td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2>V. Special Format Commands</h2>
+
+<p>Enter the following special commands in text lines to insert custom content:</p>
+
+<h3>1. Data Components &amp; Graphics</h3>
+
+<ul>
+<li><code>-json &lt;code&gt;</code>: Custom JSON text (lenient mode, quotes for keys/values optional).
+<ul>
+<li>Example: <code>-json {text:Some Text, color:red, bold:true}</code></li>
+</ul>
+</li>
+<li><code>-nbt &lt;component&gt;</code>: Use NBT for text (1.21.5+ only).</li>
+<li><code>-rect &lt;width&gt; &lt;height&gt;</code>: Draws a rectangle of specified size (affected by text size and scale).</li>
+<li><code>-texture &lt;path&gt;</code>: Displays a texture (resource pack dependent; online images not supported). Using <code>-nbt {sprite: 'block/lava_still'}</code> is recommended for stability and animated texture support.</li>
+</ul>
+
+<h3>2. Built-in Patterns (-pattern)</h3>
+
+<p>Using built-in pattern names avoids alignment/size inconsistencies from fonts or Unicode.</p>
+
+<h4>Basic Arrows &amp; Directions</h4>
+
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(empty)</td>
+<td><code>-pattern empty</code></td>
+</tr>
+<tr>
+<td>←</td>
+<td><code>-pattern arrow-left</code> or <code>-pattern al</code></td>
+</tr>
+<tr>
+<td>→</td>
+<td><code>-pattern arrow-right</code> or <code>-pattern ar</code></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><code>-pattern arrow-up</code> or <code>-pattern arrow-top</code> or <code>-pattern au</code> or <code>-pattern at</code></td>
+</tr>
+<tr>
+<td>↓</td>
+<td><code>-pattern arrow-down</code> or <code>-pattern arrow-bottom</code> or <code>-pattern ad</code> or <code>-pattern ab</code></td>
+</tr>
+<tr>
+<td>← (thin)</td>
+<td><code>-pattern arrow-left-thin</code></td>
+</tr>
+<tr>
+<td>→ (thin)</td>
+<td><code>-pattern arrow-right-thin</code></td>
+</tr>
+<tr>
+<td>↑ (thin)</td>
+<td><code>-pattern arrow-up-thin</code></td>
+</tr>
+<tr>
+<td>↓ (thin)</td>
+<td><code>-pattern arrow-down-thin</code></td>
+</tr>
+</tbody>
+</table>
+
+<h4>Diagonal Arrows</h4>
+
+<table>
+<thead>
+<tr>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-pattern arrow-left-up</code> / <code>-pattern arrow-left-top</code> / <code>-pattern alu</code> / <code>-pattern alt</code></td>
+</tr>
+<tr>
+<td><code>-pattern arrow-right-up</code> / <code>-pattern arrow-right-top</code> / <code>-pattern aru</code> / <code>-pattern art</code></td>
+</tr>
+<tr>
+<td><code>-pattern arrow-left-down</code> / <code>-pattern arrow-left-bottom</code> / <code>-pattern ald</code> / <code>-pattern alb</code></td>
+</tr>
+<tr>
+<td><code>-pattern arrow-right-down</code> / <code>-pattern arrow-right-bottom</code> / <code>-pattern ard</code> / <code>-pattern arb</code></td>
+</tr>
+</tbody>
+</table>
+
+<h4>Turn Arrows</h4>
+
+<table>
+<thead>
+<tr>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-pattern arrow-left-turn-up</code> / <code>-pattern altu</code></td>
+</tr>
+<tr>
+<td><code>-pattern arrow-right-turn-up</code> / <code>-pattern artu</code></td>
+</tr>
+<tr>
+<td><code>-pattern arrow-left-turn-down</code> / <code>-pattern altd</code></td>
+</tr>
+<tr>
+<td><code>-pattern arrow-right-turn-down</code> / <code>-pattern artd</code></td>
+</tr>
+</tbody>
+</table>
+
+<h4>Bidirectional Arrows &amp; Circles</h4>
+
+<table>
+<thead>
+<tr>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-pattern arrow-left-right</code> / <code>-pattern alr</code></td>
+</tr>
+<tr>
+<td><code>-pattern arrow-up-down</code> / <code>-pattern aud</code></td>
+</tr>
+<tr>
+<td><code>-pattern circle-small</code> / <code>-pattern small-circle</code></td>
+</tr>
+<tr>
+<td><code>-pattern circle-medium</code> / <code>-pattern medium-circle</code> / <code>-pattern circle</code> / <code>-pattern O</code></td>
+</tr>
+</tbody>
+</table>
+
+<h4>Prohibition &amp; U-Turn</h4>
+
+<table>
+<thead>
+<tr>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-pattern ban</code></td>
+</tr>
+<tr>
+<td><code>-pattern u-turn-left-down</code> / <code>-pattern u-turn-left-bottom</code> / <code>-pattern uld</code> / <code>-pattern ulb</code></td>
+</tr>
+<tr>
+<td><code>-pattern u-turn-right-down</code> / <code>-pattern u-turn-right-bottom</code> / <code>-pattern urd</code> / <code>-pattern urb</code></td>
+</tr>
+<tr>
+<td><code>-pattern u-turn-left-up</code> / <code>-pattern u-turn-right-top</code> / <code>-pattern ulu</code> / <code>-pattern ult</code></td>
+</tr>
+<tr>
+<td><code>-pattern u-turn-right-up</code> / <code>-pattern u-turn-right-top</code> / <code>-pattern uru</code> / <code>-pattern urt</code></td>
+</tr>
+</tbody>
+</table>
+
+<h4>Crosses &amp; Squares</h4>
+
+<table>
+<thead>
+<tr>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-pattern cross-small</code> / <code>-pattern small-scross</code></td>
+</tr>
+<tr>
+<td><code>-pattern cross-medium</code> / <code>-pattern medium-cross</code> / <code>-pattern cross</code> / <code>-pattern X</code></td>
+</tr>
+<tr>
+<td><code>-pattern cross-large</code> / <code>-pattern large-cross</code></td>
+</tr>
+<tr>
+<td><code>-pattern square-small</code> / <code>-pattern small-square</code></td>
+</tr>
+<tr>
+<td><code>-pattern square-medium</code> / <code>-pattern medium-square</code> / <code>-pattern square</code></td>
+</tr>
+<tr>
+<td><code>-pattern square-large</code> / <code>-pattern large-square</code></td>
+</tr>
+<tr>
+<td><code>-pattern square-slant-small</code> / <code>-pattern small-slant-square</code></td>
+</tr>
+<tr>
+<td><code>-pattern square-slant-medium</code> / <code>-pattern medium-slant-square</code></td>
+</tr>
+<tr>
+<td><code>-pattern square-slant-large</code> / <code>-pattern large-slant-square</code></td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+<p>⚠️ Note: Custom styles are not supported for patterns. For complex styling, use the <code>-texture</code> format or vanilla sprite components (example: <code>-nbt {sprite: xxx}</code>).</p>
+</blockquote>
+
+<hr>
+
+<h2>VI. Item Interaction Features</h2>
+
+<h3>1. Waxing &amp; Dewaxing (Honeycomb)</h3>
+
+<p>Using a honeycomb on a sign applies wax, which locks editing and glow state.</p>
+
+<p>Dewaxing with honeycomb is only available in Creative mode (not Survival).</p>
+
+<h3>2. Glow Effect (Glow Ink Sac / Ink Sac)</h3>
+
+<ul>
+<li><strong>Glow Ink Sac</strong>: Makes text glow (brightest in darkness, no effect on outline or block light level).</li>
+<li><strong>Ink Sac</strong>: Removes text glow.</li>
+</ul>
+
+<blockquote>
+<p>For hanging and standing signs, waxing and glowing are applied independently to each side. In non-Creative modes, each successful wax/glow action consumes the corresponding item.</p>
+</blockquote>
+
+        </div>
+    </main>
+    </div>
+
+    <!-- Right-side page TOC: auto-built from H1-H4 in the article body. -->
+    <aside class="page-toc" id="pageToc" aria-label="On this page">
+        <div class="page-toc-title">On this page</div>
+        <nav class="page-toc-nav" id="pageTocNav"></nav>
+    </aside>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" title="Back to Top">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">Top</span>
+    </div>
+
+    <script src="../../js/components.js?v=20261004"></script>
+    <script>
+    (function () {
+        // Wrap each table in .content-inner with a `.table-scroll`
+        // container so wide tables can scroll horizontally on narrow
+        // screens instead of stretching the whole page. Idempotent — it
+        // skips any table that is already inside such a wrapper.
+        var tables = document.querySelectorAll('.content-inner > table');
+        Array.prototype.forEach.call(tables, function (table) {
+            var parent = table.parentNode;
+            if (parent && parent.classList && parent.classList.contains('table-scroll')) return;
+            var wrapper = document.createElement('div');
+            wrapper.className = 'table-scroll';
+            parent.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        });
+
+        var nav = document.getElementById('pageTocNav');
+        var content = document.querySelector('.content-inner') || document.querySelector('.content');
+        if (!nav || !content) return;
+
+        var headings = content.querySelectorAll('h1, h2, h3');
+        if (!headings.length) return;
+
+        // Assign stable ids to headings that don't have one yet.
+        var slugify = function (s) {
+            return s.toLowerCase()
+                .replace(/[^\p{L}\p{N}\s-]/gu, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .slice(0, 60) || 'section';
+        };
+        var usedIds = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            if (!h.id) {
+                var base = slugify(h.textContent);
+                var id = base;
+                var i = 2;
+                while (usedIds[id] || document.getElementById(id)) {
+                    id = base + '-' + i++;
+                }
+                h.id = id;
+            }
+            usedIds[h.id] = true;
+        });
+
+        // Build the nested list. The stack's bottom frame is always the
+        // root <ul>; every push appends a fresh child <ul> to the new
+        // <li> so deeper headings nest inside it.
+        var root = document.createElement('ul');
+        var stack = [{ level: 0, list: root }];
+
+        Array.prototype.forEach.call(headings, function (h) {
+            var level = parseInt(h.tagName.charAt(1), 10);
+            // Pop frames whose level is >= the current heading's level so
+            // we return to the right ancestor. Stack bottom (level 0) is
+            // never popped because 0 < any heading level.
+            while (stack[stack.length - 1].level >= level) {
+                stack.pop();
+            }
+            var parentList = stack[stack.length - 1].list;
+            var li = document.createElement('li');
+            li.className = 'toc-h' + level;
+            var a = document.createElement('a');
+            a.href = '#' + h.id;
+            a.textContent = h.textContent;
+            a.dataset.targetId = h.id;
+            li.appendChild(a);
+            parentList.appendChild(li);
+            // Each li gets its own child list for nested headings.
+            var childList = document.createElement('ul');
+            li.appendChild(childList);
+            stack.push({ level: level, list: childList });
+        });
+
+        nav.appendChild(root);
+
+        var links = nav.querySelectorAll('a');
+        var linkByHeading = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            var link = nav.querySelector('a[data-target-id="' + h.id + '"]');
+            if (link) linkByHeading[h.id] = { link: link, heading: h };
+        });
+
+        var setActive = function (id) {
+            Array.prototype.forEach.call(links, function (a) { a.classList.remove('is-active'); });
+            if (id && linkByHeading[id]) linkByHeading[id].link.classList.add('is-active');
+        };
+
+        // Click handler — smooth-scroll, then update URL without jumping.
+        Array.prototype.forEach.call(links, function (a) {
+            a.addEventListener('click', function (e) {
+                var target = document.getElementById(a.dataset.targetId);
+                if (!target) return;
+                e.preventDefault();
+                var headerOffset = 80;
+                var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+                setActive(a.dataset.targetId);
+                history.replaceState(null, '', '#' + a.dataset.targetId);
+            });
+        });
+
+        // Highlight the heading nearest the top of the viewport.
+        var visibleHeadings = [];
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                var id = entry.target.id;
+                var idx = visibleHeadings.findIndex(function (v) { return v.id === id; });
+                if (entry.isIntersecting) {
+                    if (idx === -1) visibleHeadings.push({ id: id, top: entry.boundingClientRect.top });
+                    else visibleHeadings[idx].top = entry.boundingClientRect.top;
+                } else if (idx !== -1) {
+                    visibleHeadings.splice(idx, 1);
+                }
+            });
+            if (!visibleHeadings.length) return;
+            visibleHeadings.sort(function (a, b) { return a.top - b.top; });
+            // Prefer the topmost one that's still below the header line.
+            var pick = null;
+            for (var i = 0; i < visibleHeadings.length; i++) {
+                if (visibleHeadings[i].top >= 80) { pick = visibleHeadings[i]; break; }
+            }
+            if (!pick) pick = visibleHeadings[0];
+            setActive(pick.id);
+        }, {
+            rootMargin: '-80px 0px -55% 0px',
+            threshold: 0
+        });
+
+        Array.prototype.forEach.call(headings, function (h) { observer.observe(h); });
+    })();
+    </script>
+</body>
+</html>

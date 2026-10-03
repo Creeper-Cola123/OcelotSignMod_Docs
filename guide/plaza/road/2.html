@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中国台湾交通标志 - OcelotSignMod Wiki</title>
+    <link rel="stylesheet" href="../../../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../../../css/layout.css?v=20261004">
+    <link rel="stylesheet" href="../../../css/content.css?v=20261004">
+    <link rel="stylesheet" href="../../../css/plaza.css?v=20261004">
+</head>
+<body class="plaza-page plaza-detail-page">
+    <div id="site-header"></div>
+
+    <main class="content">
+    <div class="content-inner">
+
+        <!-- 返回链接 -->
+        <div class="plaza-page-back-bar">
+            <a href="../creative-plaza.html" class="plaza-page-back">
+                <svg class="plaza-page-back-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+                返回创意广场
+            </a>
+        </div>
+
+        <!-- 详情布局 -->
+        <div class="resource-detail">
+            <h1 class="resource-detail-name">中国台湾交通标志</h1>
+
+            <!-- 左侧主区 -->
+            <div class="resource-detail-main">
+                <div class="resource-detail-section">
+                    <div class="resource-detail-section-title">简介</div>
+                    <div class="resource-detail-intro">
+                        <p>本资源包是为《豹猫指示牌模组》定制的中国台湾主题材质扩展包。本包严格按照中国台湾省最新版交通标志规范标准制作，适配了包含警示、禁令、指示等各类交通标志标示。</p>
+                        <div class="info-box">
+                            <p>提示：本资源包目前图案仍在持续完善中。如果您对资源包有任何修改、补充或优化建议，欢迎通过邮箱方式进行投稿反馈！</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resource-detail-section">
+                    <div class="resource-detail-section-title">画廊</div>
+                    <div class="resource-detail-gallery">
+                        <div class="gallery-preview">
+                            <div class="gallery-main-image-wrap" id="galleryMainWrap">
+                                <img class="gallery-main-image" id="galleryMainImage" src="../../../pic/plaza/road/2/1.webp?v=20261004" alt="画廊图片1">
+                            </div>
+                            <button type="button" class="gallery-nav gallery-prev" id="galleryPrev" aria-label="上一张">‹</button>
+                            <button type="button" class="gallery-nav gallery-next" id="galleryNext" aria-label="下一张">›</button>
+                        </div>
+                        <div class="gallery-thumbnails" id="galleryThumbnails">
+                            <button type="button" class="gallery-thumb active" data-index="0" aria-label="图片1">
+                                <img src="../../../pic/plaza/road/2/1.webp?v=20261004" alt="缩略图1">
+                            </button>
+                            <button type="button" class="gallery-thumb" data-index="1" aria-label="图片2">
+                                <img src="../../../pic/plaza/road/2/2.webp?v=20261004" alt="缩略图2">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resource-detail-section">
+                    <div class="resource-detail-section-title">资源下载</div>
+                    <div class="resource-download-list">
+                        <div class="resource-download-item">
+                            <div class="resource-download-version">VER 1.0</div>
+                            <div class="resource-download-desc">首发版本。中国台湾道路交通标志扩展材质包（适用于 Ocelot Sign Mod）。</div>
+                    <div class="resource-download-action">
+                                <a href="https://wwbtl.lanzout.com/iWks74ahoane" target="_blank" class="resource-download-btn">下载</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧封面区 -->
+            <aside class="resource-detail-aside">
+                <div class="resource-cover">
+                    <img class="resource-cover-image" src="../../../pic/plaza/road/2/cover.webp?v=20261004" alt="中国台湾交通标志封面">
+                </div>
+                <div class="resource-cover-info">
+                    <div class="resource-cover-meta">
+                        <span>作者</span>
+                        <span class="resource-cover-meta-value">豹猫苦力怕可乐<a href="https://space.bilibili.com/226720371/" target="_blank" rel="noopener" class="resource-cover-bilibili-icon" aria-label="B站主页">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                        </a></span>
+                    </div>
+                    <div class="resource-cover-meta">
+                        <span>资源包协议</span>
+                        <span class="resource-cover-meta-value">CC0协议</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+    </div><!-- /.content-inner -->
+    </main>
+
+    <!-- 返回顶部按钮 -->
+    <button class="back-to-top" id="backToTop" title="回到顶部" aria-label="回到顶部">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+    </button>
+
+    <!-- Gallery Lightbox -->
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+        <button type="button" class="lightbox-close" id="lightboxClose" aria-label="关闭">×</button>
+        <button type="button" class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="上一张">‹</button>
+        <button type="button" class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="下一张">›</button>
+        <div class="lightbox-image-wrap">
+            <img id="lightboxImage" class="lightbox-image" alt="">
+        </div>
+        <div class="lightbox-counter" id="lightboxCounter"></div>
+    </div>
+
+    <script src="../../../js/components.js?v=20261004"></script>
+    <script>
+        // Gallery functionality for road detail page
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryImages = [
+                '../../../pic/plaza/road/2/1.webp',
+                '../../../pic/plaza/road/2/2.webp'
+            ];
+            let currentIndex = 0;
+
+            const mainImage = document.getElementById('galleryMainImage');
+            const mainWrap = document.getElementById('galleryMainWrap');
+            const prevBtn = document.getElementById('galleryPrev');
+            const nextBtn = document.getElementById('galleryNext');
+            const thumbContainer = document.getElementById('galleryThumbnails');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxClose = document.getElementById('lightboxClose');
+            const lightboxPrev = document.getElementById('lightboxPrev');
+            const lightboxNext = document.getElementById('lightboxNext');
+            const lightboxCounter = document.getElementById('lightboxCounter');
+
+            if (!mainImage || !lightbox) return;
+
+            function showImage(idx) {
+                if (idx < 0) idx = galleryImages.length - 1;
+                if (idx >= galleryImages.length) idx = 0;
+                currentIndex = idx;
+                mainImage.src = galleryImages[idx];
+
+                const thumbs = thumbContainer.querySelectorAll('.gallery-thumb');
+                thumbs.forEach((thumb, i) => {
+                    thumb.classList.toggle('active', i === currentIndex);
+                });
+
+                const activeThumb = thumbContainer.querySelector('.gallery-thumb.active');
+                if (activeThumb && activeThumb.scrollIntoView) {
+                    try {
+                        activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    } catch (e) {
+                        activeThumb.scrollIntoView();
+                    }
+                }
+            }
+
+            function openLightbox() {
+                lightboxImage.src = galleryImages[currentIndex];
+                lightboxCounter.textContent = (currentIndex + 1) + ' / ' + galleryImages.length;
+                lightbox.classList.add('is-open');
+                lightbox.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('lightbox-open');
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('is-open');
+                lightbox.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('lightbox-open');
+            }
+
+            function lightboxShowImage(idx) {
+                if (idx < 0) idx = galleryImages.length - 1;
+                if (idx >= galleryImages.length) idx = 0;
+                currentIndex = idx;
+                lightboxImage.src = galleryImages[idx];
+                lightboxCounter.textContent = (currentIndex + 1) + ' / ' + galleryImages.length;
+                mainImage.src = galleryImages[idx];
+                const thumbs = thumbContainer.querySelectorAll('.gallery-thumb');
+                thumbs.forEach((thumb, i) => {
+                    thumb.classList.toggle('active', i === currentIndex);
+                });
+            }
+
+            if (prevBtn) {
+                prevBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    showImage(currentIndex - 1);
+                });
+            }
+            if (nextBtn) {
+                nextBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    showImage(currentIndex + 1);
+                });
+            }
+
+            thumbContainer.addEventListener('click', function(e) {
+                const thumb = e.target.closest('.gallery-thumb');
+                if (!thumb) return;
+                e.preventDefault();
+                const idx = parseInt(thumb.getAttribute('data-index'), 10);
+                if (!isNaN(idx)) {
+                    showImage(idx);
+                }
+            });
+
+            mainImage.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                openLightbox();
+            });
+
+            lightboxClose.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeLightbox();
+            });
+
+            lightboxPrev.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                lightboxShowImage(currentIndex - 1);
+            });
+
+            lightboxNext.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                lightboxShowImage(currentIndex + 1);
+            });
+
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (!lightbox.classList.contains('is-open')) return;
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                } else if (e.key === 'ArrowLeft') {
+                    lightboxShowImage(currentIndex - 1);
+                } else if (e.key === 'ArrowRight') {
+                    lightboxShowImage(currentIndex + 1);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

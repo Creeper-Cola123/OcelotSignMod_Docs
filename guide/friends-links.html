@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>友链 | 豹猫指示牌模组</title>
+    <link rel="stylesheet" href="../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../css/layout.css?v=20261004">
+    <link rel="stylesheet" href="../css/content.css?v=20261004">
+    <style>
+    /* ========== 鸣谢板块 ========== */
+    /* 外层：一列，各角色组上下排列 */
+    .credits-section {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        margin-bottom: 32px;
+    }
+    .credits-col-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #d4c9a8;
+    }
+    /* 内层：每个角色组内的卡片分两列排布 */
+    .credits-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    .credit-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 16px;
+        background: rgba(255,255,255,0.55);
+        border: 1px solid rgba(0,0,0,0.08);
+        border-radius: 10px;
+        transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .credit-card:hover {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        transform: translateY(-1px);
+    }
+    .credit-avatar {
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: 0;
+        overflow: hidden;
+        background: #f0f0f0;
+        object-fit: cover;
+    }
+    .credit-avatar--lead  { box-shadow: 0 0 0 2px #e89b3c, 0 0 0 4px rgba(232,155,60,0.22); }
+    .credit-avatar--guide { box-shadow: 0 0 0 2px #6ab04c, 0 0 0 4px rgba(106,176,76,0.22); }
+    .credit-avatar--test  { box-shadow: 0 0 0 2px #74b9ff, 0 0 0 4px rgba(116,185,255,0.22); }
+    .credit-avatar--contrib { box-shadow: 0 0 0 2px #a29bfe, 0 0 0 4px rgba(162,155,254,0.22); }
+    .credit-avatar--solid { box-shadow: 0 0 0 2px #fd79a8, 0 0 0 4px rgba(253,121,168,0.22); }
+    .credit-info { min-width: 0; }
+    .credit-name {
+        font-weight: 600;
+        font-size: 15px;
+        color: #222;
+        margin-bottom: 3px;
+        line-height: 1.4;
+    }
+    .credit-role {
+        font-size: 13px;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    /* ========== 模组名下的版本标签（小号"标识"药丸） ========== */
+    .credit-tags {
+        display: flex;
+        gap: 4px;
+        margin-top: 5px;
+        margin-bottom: 3px;
+        flex-wrap: wrap;
+    }
+    .credit-tag {
+        display: inline-block;
+        padding: 1px 8px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #555;
+        background: rgba(255,255,255,0.85);
+        border: 1px solid rgba(0,0,0,0.18);
+        border-radius: 4px;
+        line-height: 1.5;
+        letter-spacing: 0.02em;
+    }
+    .credit-tag--official  { color: #c2410c; border-color: #fdba74; background: #fff7ed; }
+    .credit-tag--mishang   { color: #15803d; border-color: #86efac; background: #f0fdf4; }
+    .credit-tag--unofficial{ color: #be185d; border-color: #f9a8d4; background: #fdf2f8; }
+    .credit-tag--yunbei    { color: #1d4ed8; border-color: #93c5fd; background: #eff6ff; }
+    .credit-subtitle {
+        font-size: 12px;
+        color: #888;
+        font-weight: 400;
+        margin-top: 4px;
+    }
+
+    /* ========== 鸣谢卡片中的社交链接图标 ========== */
+    .credit-links {
+        display: flex;
+        gap: 6px;
+        margin-top: 7px;
+        flex-wrap: wrap;
+    }
+    .credit-links a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 6px;
+        text-decoration: none !important;
+        transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .credit-links a:hover { transform: translateY(-2px); }
+    .credit-links a:focus-visible { outline: 2px solid #4a90d9; outline-offset: 2px; }
+    .credit-links a svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* 哔哩哔哩 */
+    .credit-links .link-bilibili {
+        background: rgba(0, 175, 240, 0.10);
+        border: 1px solid rgba(0, 175, 240, 0.28);
+    }
+    .credit-links .link-bilibili:hover {
+        background: rgba(0, 175, 240, 0.22);
+        box-shadow: 0 3px 8px rgba(0, 175, 240, 0.26);
+    }
+    .credit-links .link-bilibili svg { fill: #00aff0; }
+
+    /* GitHub */
+    .credit-links .link-github {
+        background: rgba(36, 41, 46, 0.08);
+        border: 1px solid rgba(36, 41, 46, 0.18);
+    }
+    .credit-links .link-github:hover {
+        background: rgba(36, 41, 46, 0.16);
+        box-shadow: 0 3px 8px rgba(36, 41, 46, 0.22);
+    }
+    .credit-links .link-github svg { fill: #24292e; }
+
+    /* 外链 / 个人网站 */
+    .credit-links .link-external {
+        background: rgba(74, 144, 217, 0.10);
+        border: 1px solid rgba(74, 144, 217, 0.28);
+    }
+    .credit-links .link-external:hover {
+        background: rgba(74, 144, 217, 0.20);
+        box-shadow: 0 3px 8px rgba(74, 144, 217, 0.22);
+    }
+    .credit-links .link-external svg { fill: #4a90d9; }
+
+    /* Wiki / 文档（书本） */
+    .credit-links .link-wiki {
+        background: rgba(139, 69, 19, 0.10);
+        border: 1px solid rgba(139, 69, 19, 0.28);
+    }
+    .credit-links .link-wiki:hover {
+        background: rgba(139, 69, 19, 0.20);
+        box-shadow: 0 3px 8px rgba(139, 69, 19, 0.22);
+    }
+    .credit-links .link-wiki svg { fill: #8b4513; }
+    @media (max-width: 640px) {
+        .credits-cards { grid-template-columns: 1fr; gap: 10px; }
+    }
+    </style>
+</head>
+<body>
+    <div id="site-header"></div>
+    <div class="main-container">
+        <div id="site-sidebar"></div>
+
+        <main class="content">
+        <div class="content-inner">
+
+            <h1>友链</h1>
+
+            <div class="credits-section">
+
+                <div class="credits-col">
+                    <h3 class="credits-col-title">个人空间</h3>
+                    <div class="credits-cards">
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--lead" src="../pic/avatar/ocelot_creeper_cola.webp?v=20261004" alt="豹猫苦力怕可乐">
+                            <div class="credit-info">
+                                <div class="credit-name">豹猫苦力怕可乐<br><span style="font-size:12px;color:#888;font-weight:400">Ocelot Creeper Cola</span></div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/226720371" target="_blank" rel="noopener noreferrer" title="哔哩哔哩">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                    <a class="link-github" href="https://github.com/Creeper-Cola123" target="_blank" rel="noopener noreferrer" title="GitHub">
+                                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.595 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--guide" src="../pic/avatar/hualaohua.webp?v=20261004" alt="花老花">
+                            <div class="credit-info">
+                                <div class="credit-name">花老花<br><span style="font-size:12px;color:#888;font-weight:400">Hualaohua</span></div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/646146582" target="_blank" rel="noopener noreferrer" title="哔哩哔哩">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--test" src="../pic/avatar/xfunny.webp?v=20261004" alt="XFunny">
+                            <div class="credit-info">
+                                <div class="credit-name">XFunny</div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/34849566" target="_blank" rel="noopener noreferrer" title="哔哩哔哩">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                    <a class="link-github" href="https://github.com/X-Funny" target="_blank" rel="noopener noreferrer" title="GitHub">
+                                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.595 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--contrib" src="../pic/avatar/math_ultra.webp?v=20261004" alt="米可">
+                            <div class="credit-info">
+                                <div class="credit-name">米可-Math_Ultra<br><span style="font-size:12px;color:#888;font-weight:400">Math_Ultra</span></div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/2102127805" target="_blank" rel="noopener noreferrer" title="哔哩哔哩">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--contrib" src="../pic/avatar/solid_block.webp?v=20261004" alt="Solid-Block">
+                            <div class="credit-info">
+                                <div class="credit-name">Solid-Block</div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/87328531" target="_blank" rel="noopener noreferrer" title="哔哩哔哩">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                    <a class="link-github" href="https://github.com/SolidBlock-cn" target="_blank" rel="noopener noreferrer" title="GitHub">
+                                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.595 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--contrib" src="../pic/avatar/beigu.webp?v=20261004" alt="北咕" onerror="this.outerHTML='<div class=\'credit-avatar credit-avatar--contrib\' style=\'background:#ddd;display:flex;align-items:center;justify-content:center;color:#999;font-size:20px;\'>?</div>'">
+                            <div class="credit-info">
+                                <div class="credit-name">北咕<br><span style="font-size:12px;color:#888;font-weight:400">Beigu</span></div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/3493084226652280" target="_blank" rel="noopener noreferrer" title="哔哩哔哩">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                    <a class="link-github" href="https://github.com/BGSDT" target="_blank" rel="noopener noreferrer" title="GitHub">
+                                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.595 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="credits-col">
+                    <h3 class="credits-col-title">模组</h3>
+                    <div class="credits-cards">
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--contrib" src="../pic/avatar/ocelotsignmod.webp?v=20261004" alt="豹猫指示牌模组（官方版本）">
+                            <div class="credit-info">
+                                <div class="credit-name">豹猫指示牌模组（官方版本）</div>
+                                <div class="credit-tags">
+                                    <span class="credit-tag credit-tag--official">官方版本</span>
+                                    <span class="credit-tag credit-tag--mishang">迷上城建版本</span>
+                                </div>
+                                <div class="credit-subtitle">Ocelot Sign Mod</div>
+                                <div class="credit-links">
+                                    <a class="link-wiki" href="https://creeper-cola123.github.io/OcelotSignMod_Docs/" target="_blank" rel="noopener noreferrer" title="WIKI">
+                                        <svg viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"></path></svg>
+                                    </a>
+                                    <a class="link-external" href="https://www.mcmod.cn/class/28882.html" target="_blank" rel="noopener noreferrer" title="MC百科">
+                                        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--contrib" src="../pic/avatar/mishanguc.webp?v=20261004" alt="迷上城建">
+                            <div class="credit-info">
+                                <div class="credit-name">迷上城建<br><span style="font-size:12px;color:#888;font-weight:400">Mishang Urban Construction</span></div>
+                                <div class="credit-links">
+                                    <a class="link-wiki" href="https://github.com/SolidBlock-cn/mishanguc/wiki" target="_blank" rel="noopener noreferrer" title="WIKI">
+                                        <svg viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>
+                                    </a>
+                                    <a class="link-external" href="https://www.mcmod.cn/class/5743.html" target="_blank" rel="noopener noreferrer" title="MC百科">
+                                        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--contrib" src="../pic/avatar/yte.webp?v=20261004" alt="[YTE] 云竹交通拓展">
+                            <div class="credit-info">
+                                <div class="credit-name">[YTE] 云竹交通拓展<br><span style="font-size:12px;color:#888;font-weight:400">Yunzhu Transportation Extension</span></div>
+                                <div class="credit-links">
+                                    <a class="link-wiki" href="https://ytedocs.yunzhu.host/" target="_blank" rel="noopener noreferrer" title="WIKI">
+                                        <svg viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>
+                                    </a>
+                                    <a class="link-external" href="https://www.mcmod.cn/class/19647.html" target="_blank" rel="noopener noreferrer" title="MC百科">
+                                        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--contrib" src="../pic/avatar/yunbeiuc.webp?v=20261004" alt="云北城建">
+                            <div class="credit-info">
+                                <div class="credit-name">云北城建<br><span style="font-size:12px;color:#888;font-weight:400">Yunbei Urban Construction</span></div>
+                                <div class="credit-links">
+                                    <a class="link-wiki" href="https://bgsdt.github.io/" target="_blank" rel="noopener noreferrer" title="WIKI">
+                                        <svg viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>
+                                    </a>
+                                    <a class="link-external" href="https://www.mcmod.cn/class/26158.html" target="_blank" rel="noopener noreferrer" title="MC百科">
+                                        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--contrib" src="../pic/avatar/ocelotyunbei.webp?v=20261004" alt="豹猫指示牌模组（非官方分支）">
+                            <div class="credit-info">
+                                <div class="credit-name">云北城建：豹猫指示牌模组（非官方分支）</div>
+                                <div class="credit-tags">
+                                    <span class="credit-tag credit-tag--unofficial">非官方分支</span>
+                                    <span class="credit-tag credit-tag--yunbei">云北城建版本</span>
+                                </div>
+                                <div class="credit-subtitle">YunbeiUC: Ocelot Sign Mod</div>
+                                <div class="credit-links">
+                                    <a class="link-wiki" href="https://bgsdt.github.io/" target="_blank" rel="noopener noreferrer" title="WIKI">
+                                        <svg viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>
+                                    </a>
+                                    <a class="link-external" href="https://www.mcmod.cn/class/29535.html" target="_blank" rel="noopener noreferrer" title="MC百科">
+                                        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+    </div>
+
+    <!-- 右侧目录：自动从正文 H1-H4 生成。 -->
+    <aside class="page-toc" id="pageToc" aria-label="本页导航">
+        <div class="page-toc-title">本页导航</div>
+        <nav class="page-toc-nav" id="pageTocNav"></nav>
+    </aside>
+
+    <!-- 回到顶部按钮 -->
+    <div class="back-to-top" id="backToTop" title="返回顶部">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">顶部</span>
+    </div>
+
+    <script src="../js/components.js?v=20261004"></script>
+    <script>
+    (function () {
+        var nav = document.getElementById('pageTocNav');
+        var content = document.querySelector('.content-inner') || document.querySelector('.content');
+        if (!nav || !content) return;
+
+        var headings = content.querySelectorAll('h1, h2, h3');
+        if (!headings.length) return;
+
+        // 为没有 id 的标题分配稳定 id。
+        var slugify = function (s) {
+            return s.toLowerCase()
+                .replace(/[^\p{L}\p{N}\s-]/gu, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .slice(0, 60) || 'section';
+        };
+        var usedIds = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            if (!h.id) {
+                var base = slugify(h.textContent);
+                var id = base;
+                var i = 2;
+                while (usedIds[id] || document.getElementById(id)) {
+                    id = base + '-' + i++;
+                }
+                h.id = id;
+            }
+            usedIds[h.id] = true;
+        });
+
+        // 构建嵌套列表。栈底是根 <ul>；每次 push 都会
+        // 给新的 <li> 追加一个子 <ul>，让更深的标题能嵌入其中。
+        var root = document.createElement('ul');
+        var stack = [{ level: 0, list: root }];
+
+        Array.prototype.forEach.call(headings, function (h) {
+            var level = parseInt(h.tagName.charAt(1), 10);
+            while (stack[stack.length - 1].level >= level) {
+                stack.pop();
+            }
+            var parentList = stack[stack.length - 1].list;
+            var li = document.createElement('li');
+            li.className = 'toc-h' + level;
+            var a = document.createElement('a');
+            a.href = '#' + h.id;
+            a.textContent = h.textContent;
+            a.dataset.targetId = h.id;
+            li.appendChild(a);
+            parentList.appendChild(li);
+            var childList = document.createElement('ul');
+            li.appendChild(childList);
+            stack.push({ level: level, list: childList });
+        });
+
+        nav.appendChild(root);
+
+        var links = nav.querySelectorAll('a');
+        var linkByHeading = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            var link = nav.querySelector('a[data-target-id="' + h.id + '"]');
+            if (link) linkByHeading[h.id] = { link: link, heading: h };
+        });
+
+        var setActive = function (id) {
+            Array.prototype.forEach.call(links, function (a) { a.classList.remove('is-active'); });
+            if (id && linkByHeading[id]) linkByHeading[id].link.classList.add('is-active');
+        };
+
+        // 点击处理器 —— 平滑滚动，然后更新 URL 但不发生跳转。
+        Array.prototype.forEach.call(links, function (a) {
+            a.addEventListener('click', function (e) {
+                var target = document.getElementById(a.dataset.targetId);
+                if (!target) return;
+                e.preventDefault();
+                var headerOffset = 80;
+                var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+                setActive(a.dataset.targetId);
+                history.replaceState(null, '', '#' + a.dataset.targetId);
+            });
+        });
+
+        // Highlight the heading nearest the top of the viewport.
+        var visibleHeadings = [];
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                var id = entry.target.id;
+                var idx = visibleHeadings.findIndex(function (v) { return v.id === id; });
+                if (entry.isIntersecting) {
+                    if (idx === -1) visibleHeadings.push({ id: id, top: entry.boundingClientRect.top });
+                    else visibleHeadings[idx].top = entry.boundingClientRect.top;
+                } else if (idx !== -1) {
+                    visibleHeadings.splice(idx, 1);
+                }
+            });
+            if (!visibleHeadings.length) return;
+            visibleHeadings.sort(function (a, b) { return a.top - b.top; });
+            var pick = null;
+            for (var i = 0; i < visibleHeadings.length; i++) {
+                if (visibleHeadings[i].top >= 80) { pick = visibleHeadings[i]; break; }
+            }
+            if (!pick) pick = visibleHeadings[0];
+            setActive(pick.id);
+        }, {
+            rootMargin: '-80px 0px -55% 0px',
+            threshold: 0
+        });
+
+        Array.prototype.forEach.call(headings, function (h) { observer.observe(h); });
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rare Traffic Signs Explained | Ocelot Sign Mod</title>
+    <link rel="stylesheet" href="../../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../../css/layout.css?v=20261004">
+    <link rel="stylesheet" href="../../css/content.css?v=20261004">
+</head>
+<body>
+    <div id="site-header"></div>
+    <div class="main-container">
+        <div id="site-sidebar"></div>
+
+        <main class="content">
+        <div class="content-inner">
+            <h1>Rare Traffic Signs Explained</h1>
+
+<h2>1. Advance Directional Arrows</h2>
+
+<p>Information about advance directional arrows on the entire internet is extremely scarce (almost nonexistent). If you try asking an AI what an advance directional arrow is, it will most likely give you an inaccurate answer — use this page as the authoritative reference.</p>
+
+<p>Advance directional arrows are a type of traffic sign used in only a very small number of cities in Chinese Mainland. For example, DBJ61/T 72.2-2012 J12253-2013 · Part 2, the standard on traffic signs and markings, specifies that one or two sets of advance directional arrows may be installed at the exit of certain intersections. They have the same dimensions as regular directional arrows, but unlike regular arrows, <strong>advance directional arrows are dashed arrows</strong>. Their main purpose is to inform drivers in advance of the lane allocation at the upcoming junction. They are typically placed at the start of high-traffic road sections, telling drivers the intended direction of each lane at the next intersection, encouraging drivers to choose their lane early so that they have enough time to adjust their driving route, effectively reducing the traffic congestion and accident risks caused by last-minute lane changes.</p>
+
+<div class="image-gallery">
+    <figure>
+        <img src="../../pic/yg1.webp?v=20261004" alt="Advance Directional Arrow Example 1">
+        <figcaption>Advance Directional Arrow — Style 1</figcaption>
+    </figure>
+    <figure>
+        <img src="../../pic/yg2.webp?v=20261004" alt="Advance Directional Arrow Example 2">
+        <figcaption>Advance Directional Arrow — Style 2</figcaption>
+    </figure>
+    <figure>
+        <img src="../../pic/yg3.webp?v=20261004" alt="Advance Directional Arrow Example 3">
+        <figcaption>Advance Directional Arrow — Style 3</figcaption>
+    </figure>
+</div>
+
+<h3>Example of Advance Directional Arrow Installation</h3>
+
+<p>In recent years, in order to further improve road efficiency and reduce traffic accidents, some regions have begun attempting to add overhead lane-direction signs to strengthen guidance for drivers. However, in actual practice it was found that large cantilevered signs not only occupy a lot of urban public space, but may also have a certain negative impact on the visual aesthetics of the surrounding environment. Therefore, as one of the improvement measures, <strong>advance directional arrows</strong>, being a more compact option that does not damage the urban landscape, have gradually been adopted by more regions. Even so, this new signage system still has a relatively penetration rate nationwide.</p>
+
+<hr>
+
+<h2>2. Snow-Plow Shoulder Markers</h2>
+
+<p>Snow-plow shoulder markers, also known as shoulder indicators, are warning-type traffic signs installed along road segments prone to heavy snow and wind. They take the form of road markers with downward-pointing arrows, and they also serve as visual guidance facilities for roads during snowstorms. They are commonly seen in winter regions with deep snow and frequent severe snowstorms and whiteout conditions, such as Xinjiang, Heilongjiang, and Tibet in China, as well as Hokkaido in Japan.</p>
+
+<p>These markers are mainly deployed along snowy, windy road sections. Their core function is to clearly indicate the location of the road shoulders via the arrows when snow covers the road and wind-driven snow reduces visibility to a near-zero level, allowing drivers to no longer see the road edges. This reminds drivers to drive cautiously, slow down, and avoid running off the road, ensuring driving safety during severe winter weather.</p>
+
+<div class="image-gallery">
+    <figure>
+        <img src="../../pic/fx1.webp?v=20261004" alt="Snow-Plow Shoulder Marker Example 1">
+        <figcaption>Snow-Plow Shoulder Marker — Style 1</figcaption>
+    </figure>
+    <figure>
+        <img src="../../pic/fx2.webp?v=20261004" alt="Snow-Plow Shoulder Marker Example 2">
+        <figcaption>Snow-Plow Shoulder Marker — Style 2</figcaption>
+    </figure>
+</div>
+
+        </div>
+    </main>
+    </div>
+
+    <!-- Right-side page TOC: auto-built from H1-H4 in the article body. -->
+    <aside class="page-toc" id="pageToc" aria-label="On this page">
+        <div class="page-toc-title">On this page</div>
+        <nav class="page-toc-nav" id="pageTocNav"></nav>
+    </aside>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" title="Back to Top">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">Top</span>
+    </div>
+
+    <script src="../../js/components.js?v=20261004"></script>
+    <script>
+    (function () {
+        var nav = document.getElementById('pageTocNav');
+        var content = document.querySelector('.content-inner') || document.querySelector('.content');
+        if (!nav || !content) return;
+
+        var headings = content.querySelectorAll('h1, h2, h3');
+        if (!headings.length) return;
+
+        // Assign stable ids to headings that don't have one yet.
+        var slugify = function (s) {
+            return s.toLowerCase()
+                .replace(/[^\p{L}\p{N}\s-]/gu, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .slice(0, 60) || 'section';
+        };
+        var usedIds = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            if (!h.id) {
+                var base = slugify(h.textContent);
+                var id = base;
+                var i = 2;
+                while (usedIds[id] || document.getElementById(id)) {
+                    id = base + '-' + i++;
+                }
+                h.id = id;
+            }
+            usedIds[h.id] = true;
+        });
+
+        // Build the nested list. The stack's bottom frame is always the
+        // root <ul>; every push appends a fresh child <ul> to the new
+        // <li> so deeper headings nest inside it.
+        var root = document.createElement('ul');
+        var stack = [{ level: 0, list: root }];
+
+        Array.prototype.forEach.call(headings, function (h) {
+            var level = parseInt(h.tagName.charAt(1), 10);
+            // Pop frames whose level is >= the current heading's level so
+            // we return to the right ancestor. Stack bottom (level 0) is
+            // never popped because 0 < any heading level.
+            while (stack[stack.length - 1].level >= level) {
+                stack.pop();
+            }
+            var parentList = stack[stack.length - 1].list;
+            var li = document.createElement('li');
+            li.className = 'toc-h' + level;
+            var a = document.createElement('a');
+            a.href = '#' + h.id;
+            a.textContent = h.textContent;
+            a.dataset.targetId = h.id;
+            li.appendChild(a);
+            parentList.appendChild(li);
+            // Each li gets its own child list for nested headings.
+            var childList = document.createElement('ul');
+            li.appendChild(childList);
+            stack.push({ level: level, list: childList });
+        });
+
+        nav.appendChild(root);
+
+        var links = nav.querySelectorAll('a');
+        var linkByHeading = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            var link = nav.querySelector('a[data-target-id="' + h.id + '"]');
+            if (link) linkByHeading[h.id] = { link: link, heading: h };
+        });
+
+        var setActive = function (id) {
+            Array.prototype.forEach.call(links, function (a) { a.classList.remove('is-active'); });
+            if (id && linkByHeading[id]) linkByHeading[id].link.classList.add('is-active');
+        };
+
+        // Click handler — smooth-scroll, then update URL without jumping.
+        Array.prototype.forEach.call(links, function (a) {
+            a.addEventListener('click', function (e) {
+                var target = document.getElementById(a.dataset.targetId);
+                if (!target) return;
+                e.preventDefault();
+                var headerOffset = 80;
+                var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+                setActive(a.dataset.targetId);
+                history.replaceState(null, '', '#' + a.dataset.targetId);
+            });
+        });
+
+        // Highlight the heading nearest the top of the viewport.
+        var visibleHeadings = [];
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                var id = entry.target.id;
+                var idx = visibleHeadings.findIndex(function (v) { return v.id === id; });
+                if (entry.isIntersecting) {
+                    if (idx === -1) visibleHeadings.push({ id: id, top: entry.boundingClientRect.top });
+                    else visibleHeadings[idx].top = entry.boundingClientRect.top;
+                } else if (idx !== -1) {
+                    visibleHeadings.splice(idx, 1);
+                }
+            });
+            if (!visibleHeadings.length) return;
+            visibleHeadings.sort(function (a, b) { return a.top - b.top; });
+            // Prefer the topmost one that's still below the header line.
+            var pick = null;
+            for (var i = 0; i < visibleHeadings.length; i++) {
+                if (visibleHeadings[i].top >= 80) { pick = visibleHeadings[i]; break; }
+            }
+            if (!pick) pick = visibleHeadings[0];
+            setActive(pick.id);
+        }, {
+            rootMargin: '-80px 0px -55% 0px',
+            threshold: 0
+        });
+
+        Array.prototype.forEach.call(headings, function (h) { observer.observe(h); });
+    })();
+    </script>
+</body>
+</html>

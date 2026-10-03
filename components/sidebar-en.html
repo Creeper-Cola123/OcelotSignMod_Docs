@@ -1,0 +1,25 @@
+<!--
+  Shared site sidebar (English, light variant).
+  Loaded by js/components.js for /en/* pages when the page has <div id="site-sidebar">.
+
+  All hrefs are written as depth-2-relative paths (prefixed with `../../`),
+  which are also valid for depth-1 pages. rewriteComponentLinks() normalises them.
+-->
+<button type="button" class="menu-toggle" id="menuToggle" aria-label="Open menu">
+  <span></span>
+</button>
+<div class="overlay" id="overlay"></div>
+
+<nav class="site-sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-title">Documentation</div>
+    <a data-key="sign-usage"         href="../../en/guide/sign-usage.html"         class="sidebar-item">Basic Usage of Signs</a>
+    <a data-key="resource-pack"        href="../../en/guide/resource-pack.html"        class="sidebar-item">Custom Font & Texture Resource Pack</a>
+    <a data-key="rare-traffic-signs" href="../../en/guide/rare-traffic-signs.html" class="sidebar-item">Rare Traffic Signs Explained</a>
+    <a data-key="credits-license"   href="../../en/guide/credits-license.html"   class="sidebar-item">Credits, Notices & License</a>
+    <a data-key="disclaimer-faq"    href="../../en/guide/disclaimer-faq.html"      class="sidebar-item">Disclaimer & FAQ</a>
+    <hr class="sidebar-divider">
+    <a href="https://github.com/SolidBlock-cn/mishanguc/wiki" class="sidebar-item external-link" target="_blank" rel="noopener noreferrer">Visit MishangUC Wiki</a>
+    <a data-key="friends-links" href="../../en/guide/friends-links.html" class="sidebar-item">Friendly Links</a>
+</div>
+</nav>

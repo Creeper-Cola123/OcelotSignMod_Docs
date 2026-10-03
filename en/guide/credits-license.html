@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credits, Notices & License | Ocelot Sign Mod</title>
+    <link rel="stylesheet" href="../../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../../css/layout.css?v=20261004">
+    <link rel="stylesheet" href="../../css/content.css?v=20261004">
+    <style>
+    /* ========== Credits section ========== */
+    /* Outer: one column, role groups stack vertically */
+    .credits-section {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        margin-bottom: 32px;
+    }
+    /* Inner: cards inside each role group split into two columns */
+    .credits-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    .credits-col-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #d4c9a8;
+    }
+    @media (max-width: 640px) {
+        .credits-cards { grid-template-columns: 1fr; gap: 10px; }
+    }
+    .credit-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 16px;
+        background: rgba(255,255,255,0.55);
+        border: 1px solid rgba(0,0,0,0.08);
+        border-radius: 10px;
+        transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .credit-card:hover {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        transform: translateY(-1px);
+    }
+    .credit-avatar {
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: 0;
+        overflow: hidden;
+        background: #f0f0f0;
+        object-fit: cover;
+    }
+    .credit-avatar--lead  { box-shadow: 0 0 0 2px #e89b3c, 0 0 0 4px rgba(232,155,60,0.22); }
+    .credit-avatar--guide { box-shadow: 0 0 0 2px #6ab04c, 0 0 0 4px rgba(106,176,76,0.22); }
+    .credit-avatar--test  { box-shadow: 0 0 0 2px #74b9ff, 0 0 0 4px rgba(116,185,255,0.22); }
+    .credit-avatar--contrib { box-shadow: 0 0 0 2px #a29bfe, 0 0 0 4px rgba(162,155,254,0.22); }
+    .credit-avatar--solid { box-shadow: 0 0 0 2px #fd79a8, 0 0 0 4px rgba(253,121,168,0.22); }
+    .credit-info { min-width: 0; }
+    .credit-name {
+        font-weight: 600;
+        font-size: 15px;
+        color: #222;
+        margin-bottom: 3px;
+    }
+    .credit-role {
+        font-size: 13px;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    /* ========== Social link icons in credit cards ========== */
+    .credit-links {
+        display: flex;
+        gap: 6px;
+        margin-top: 7px;
+        flex-wrap: wrap;
+    }
+    .credit-links a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 6px;
+        text-decoration: none !important;
+        transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .credit-links a:hover { transform: translateY(-2px); }
+    .credit-links a:focus-visible { outline: 2px solid #4a90d9; outline-offset: 2px; }
+    .credit-links a svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* Bilibili */
+    .credit-links .link-bilibili {
+        background: rgba(0, 175, 240, 0.10);
+        border: 1px solid rgba(0, 175, 240, 0.28);
+    }
+    .credit-links .link-bilibili:hover {
+        background: rgba(0, 175, 240, 0.22);
+        box-shadow: 0 3px 8px rgba(0, 175, 240, 0.26);
+    }
+    .credit-links .link-bilibili svg { fill: #00aff0; }
+
+    /* GitHub */
+    .credit-links .link-github {
+        background: rgba(36, 41, 46, 0.08);
+        border: 1px solid rgba(36, 41, 46, 0.18);
+    }
+    .credit-links .link-github:hover {
+        background: rgba(36, 41, 46, 0.16);
+        box-shadow: 0 3px 8px rgba(36, 41, 46, 0.22);
+    }
+    .credit-links .link-github svg { fill: #24292e; }
+
+    /* External / personal site */
+    .credit-links .link-external {
+        background: rgba(74, 144, 217, 0.10);
+        border: 1px solid rgba(74, 144, 217, 0.28);
+    }
+    .credit-links .link-external:hover {
+        background: rgba(74, 144, 217, 0.20);
+        box-shadow: 0 3px 8px rgba(74, 144, 217, 0.22);
+    }
+    .credit-links .link-external svg { fill: #4a90d9; }
+
+    /* ========== Warning box (red-line rules) ========== */
+    .warning-box {
+        background: linear-gradient(135deg, #fff5f5, #ffe9e9);
+        border-left: 4px solid #e74c3c;
+        border-radius: 6px;
+        padding: 16px 20px 16px 36px;
+        margin: 16px 0 24px;
+        box-shadow: 0 2px 8px rgba(231, 76, 60, 0.08);
+    }
+    .warning-box ol {
+        margin: 0;
+        padding-left: 20px;
+        color: #555;
+        line-height: 1.85;
+    }
+    .warning-box ol li::marker {
+        color: #e74c3c;
+        font-weight: 700;
+    }
+
+    /* ========== External link button (inside .info-list) ========== */
+    .info-list a[target="_blank"] {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: 4px;
+        padding: 3px 12px;
+        background: linear-gradient(135deg, rgba(74,144,217,0.10), rgba(74,144,217,0.20));
+        color: #2a6cb0;
+        border: 1px solid rgba(74,144,217,0.32);
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background 0.18s, border-color 0.18s,
+                    box-shadow 0.18s, transform 0.18s, color 0.18s;
+    }
+    .info-list a[target="_blank"]:hover {
+        background: linear-gradient(135deg, rgba(74,144,217,0.22), rgba(74,144,217,0.34));
+        border-color: rgba(74,144,217,0.55);
+        color: #1d5494;
+        box-shadow: 0 2px 6px rgba(74,144,217,0.22);
+        transform: translateY(-1px);
+        text-decoration: none;
+    }
+    .info-list a[target="_blank"]::after {
+        content: "↗";
+        font-size: 12px;
+        line-height: 1;
+        opacity: 0.7;
+        transition: transform 0.18s, opacity 0.18s;
+    }
+    .info-list a[target="_blank"]:hover::after {
+        transform: translate(2px, -2px);
+        opacity: 1;
+    }
+    .info-list a[target="_blank"]:focus-visible {
+        outline: 2px solid #4a90d9;
+        outline-offset: 2px;
+    }
+    </style>
+</head>
+<body>
+    <div id="site-header"></div>
+    <div class="main-container">
+        <div id="site-sidebar"></div>
+
+        <main class="content">
+        <div class="content-inner">
+
+            <h1>Credits, Notices & License</h1>
+
+            <h2 id="credits">Credits</h2>
+            <p>The successful development of this mod would not have been possible without the selfless contributions of outstanding creators from the sandbox gaming community. We extend our most sincere gratitude to the following teams and individuals:</p>
+
+            <div class="credits-section">
+
+                <div class="credits-col">
+                    <h3 class="credits-col-title">Ocelot Sign Mod Developers</h3>
+                    <div class="credits-cards">
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--lead" src="../../pic/avatar/ocelot_creeper_cola.webp?v=20261004" alt="Ocelot Creeper Cola">
+                            <div class="credit-info">
+                                <div class="credit-name">豹猫苦力怕可乐 <span style="font-size:12px;color:#888;font-weight:400">Ocelot Creeper Cola</span></div>
+                                <div class="credit-role">Project Lead / Code / Models / Art</div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/226720371" target="_blank" rel="noopener noreferrer" title="Bilibili">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                    <a class="link-github" href="https://github.com/Creeper-Cola123" target="_blank" rel="noopener noreferrer" title="GitHub">
+                                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.595 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--guide" src="../../pic/avatar/hualaohua.webp?v=20261004" alt="Hualaohua">
+                            <div class="credit-info">
+                                <div class="credit-name">花老花 <span style="font-size:12px;color:#888;font-weight:400">Hualaohua</span></div>
+                                <div class="credit-role">Traffic Sign Guidance</div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/646146582" target="_blank" rel="noopener noreferrer" title="Bilibili">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--test" src="../../pic/avatar/xfunny.webp?v=20261004" alt="XFunny">
+                            <div class="credit-info">
+                                <div class="credit-name">XFunny</div>
+                                <div class="credit-role">Game Testing</div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/34849566" target="_blank" rel="noopener noreferrer" title="Bilibili">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                    <a class="link-github" href="https://github.com/X-Funny" target="_blank" rel="noopener noreferrer" title="GitHub">
+                                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.595 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="credits-col">
+                    <h3 class="credits-col-title">MishangUC Mod Team Developers</h3>
+                    <div class="credits-cards">
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--solid" src="../../pic/avatar/solid_block.webp?v=20261004" alt="Solid-Block">
+                            <div class="credit-info">
+                                <div class="credit-name">Solid-Block</div>
+                                <div class="credit-role">MishangUC (MISHANGUC)<br>Mod Developer</div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/87328531" target="_blank" rel="noopener noreferrer" title="Bilibili">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                    <a class="link-github" href="https://github.com/SolidBlock-cn" target="_blank" rel="noopener noreferrer" title="GitHub">
+                                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.595 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="credits-col">
+                    <h3 class="credits-col-title">Pull Request Contributors</h3>
+                    <div class="credits-cards">
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--contrib" src="../../pic/avatar/beigu.webp?v=20261004" alt="Beigu">
+                            <div class="credit-info">
+                                <div class="credit-name">北咕 <span style="font-size:12px;color:#888;font-weight:400">Beigu</span></div>
+                                <div class="credit-role">1.19.2 Porter</div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/3493084226652280" target="_blank" rel="noopener noreferrer" title="Bilibili">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                    <a class="link-github" href="https://github.com/BGSDT" target="_blank" rel="noopener noreferrer" title="GitHub">
+                                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.595 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--contrib" src="../../pic/avatar/pigeon0v0.webp?v=20261004" alt="Pigeon0v0">
+                            <div class="credit-info">
+                                <div class="credit-name">鸽秋 <span style="font-size:12px;color:#888;font-weight:400">Pigeon0v0</span></div>
+                                <div class="credit-role">26.1.2 Porter</div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/354878609" target="_blank" rel="noopener noreferrer" title="Bilibili">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                    <a class="link-github" href="https://github.com/Pigeon0v0" target="_blank" rel="noopener noreferrer" title="GitHub">
+                                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.595 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr>
+
+            <h2 id="self-license">1. This Mod's Open Source License</h2>
+            <p>This mod is released as open source under the LGPL 3.0 (GNU Lesser General Public License v3.0) license. In accordance with the terms of this license, you are free to use, copy, modify, and redistribute this mod provided that you comply with its terms.</p>
+
+            <h3 id="self-license-fork">1.1 Secondary Development &amp; Distribution Guidelines</h3>
+            <p>You are fully permitted to develop or redistribute derivative works based on the "Ocelot Sign Mod", provided that you strictly observe the following rules:</p>
+            <ol class="info-list">
+                <li>Any modified core code must remain open source.</li>
+                <li>When publishing your modified version, you must clearly credit the original author and the source code repository in all prominent locations — including but not limited to the mod's internal notices, release pages, project documentation, and README.</li>
+                <li>You may <strong>not</strong> claim the entire mod as the exclusive work of yourself or your team. You are required to display a visible notice on every distribution channel stating: "This mod is a modified version of the Ocelot Sign Mod."</li>
+                <li>If you intend to perform extensive secondary development, you are encouraged to contact the original author beforehand to discuss potential collaboration.</li>
+                <li>Your modified work must not cause confusion with the official version of the Ocelot Sign Mod, or contain any elements that could lead players to mistakenly believe it is an official release.</li>
+            </ol>
+
+            <h3 id="self-license-prohibited">1.2 Prohibited Conduct (Red Lines)</h3>
+            <p>The following actions are deemed violations of the open source license and community standards, and are <strong>strictly prohibited</strong>:</p>
+            <ol class="info-list">
+                <li>Using the code without complying with the LGPL 3.0 license.</li>
+                <li>Using the open source code to inject any malicious, destructive, or user-data-exfiltrating code into the mod.</li>
+                <li>Impersonating the original author of the "Ocelot Sign Mod" or claiming that your modified version is an official release.</li>
+                <li>Uploading the "Ocelot Sign Mod" to commercial e-commerce platforms (such as Taobao or Xianyu) for paid sale.</li>
+                <li>Reposting this mod or its derivative versions on the NetEase Minecraft Mod Center as paid downloads.</li>
+            </ol>
+
+            <hr>
+
+            <h2 id="mishanguc">2. Dependency Mod Notice (MISHANGUC)</h2>
+
+            <ul class="info-list">
+                <li><strong>Dependency Mod Name:</strong> MISHANGUC (迷上城建)</li>
+                <li><strong>Open Source License:</strong> LGPL 3.0 (GNU Lesser General Public License v3.0)
+                    → <a href="https://www.gnu.org/licenses/lgpl-3.0.html" target="_blank" rel="noopener noreferrer">View GNU LGPL v3.0 License</a>
+                </li>
+                <li><strong>Repository:</strong> SolidBlock-cn/mishanguc GitHub Official Repository
+                    → <a href="https://github.com/SolidBlock-cn/mishanguc" target="_blank" rel="noopener noreferrer">Open GitHub Repository</a>
+                </li>
+                <li><strong>Compliance Note:</strong> This derivative mod uses MISHANGUC in the form of dynamic linking or library attachment within the scope permitted by LGPL 3.0, with all original copyright notices fully preserved.</li>
+            </ul>
+
+            <hr>
+
+            <h2 id="fonts">3. Font Usage Notices</h2>
+            <p>This mod incorporates the following font assets in its user interface (UI) design, all embedded in compliance with the respective licensors' official licenses:</p>
+
+            <h3 id="font-misans">1. MiSans</h3>
+            <ul class="info-list">
+                <li><strong>Copyright Holder:</strong> Xiaomi Inc.</li>
+                <li><strong>License:</strong> MiSans Free Commercial Use &amp; Embedding License Agreement</li>
+                <li><strong>Official Resource:</strong> Xiaomi HyperOS Font Official Page
+                    → <a href="https://hyperos.mi.com/font/zh/" target="_blank" rel="noopener noreferrer">Visit Xiaomi Website</a>
+                </li>
+                <li><strong>License &amp; FAQ:</strong>
+                    → <a href="https://hyperos.mi.com/font/zh/faq/" target="_blank" rel="noopener noreferrer">License Agreement &amp; FAQ</a>
+                </li>
+            </ul>
+
+            <h3 id="font-roadgeek">2. Roadgeek 2014</h3>
+            <ul class="info-list">
+                <li><strong>Author:</strong> Sammi Ta (designed based on FHWA standards)</li>
+                <li><strong>License:</strong> Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)</li>
+                <li><strong>Font Repository:</strong> sammdot/roadgeek-fonts GitHub Official Repository
+                    → <a href="https://github.com/sammdot/roadgeek-fonts" target="_blank" rel="noopener noreferrer">Open GitHub Repository</a>
+                </li>
+            </ul>
+
+            <h3 id="font-source-han-sans">3. Source Han Sans (思源黑体)</h3>
+            <ul class="info-list">
+                <li><strong>License:</strong> SIL Open Font License 1.1 (OFL)</li>
+                <li><strong>Font Repository:</strong> adobe-fonts/source-han-sans GitHub Official Repository
+                    → <a href="https://github.com/adobe-fonts/source-han-sans" target="_blank" rel="noopener noreferrer">Open GitHub Repository</a>
+                </li>
+            </ul>
+
+            <h3 id="font-source-han-serif">4. Source Han Serif (思源宋体)</h3>
+            <ul class="info-list">
+                <li><strong>License:</strong> SIL Open Font License 1.1 (OFL)</li>
+                <li><strong>Font Repository:</strong> adobe-fonts/source-han-serif GitHub Official Repository
+                    → <a href="https://github.com/adobe-fonts/source-han-serif" target="_blank" rel="noopener noreferrer">Open GitHub Repository</a>
+                </li>
+            </ul>
+
+            <hr>
+
+            <h2 id="website-statement">Website Agreement</h2>
+            <p>This website is published as open source; however, unlike the mod's source code, the website portion is reserved by the author with all rights retained (including but not limited to the Web Resource Pack Maker). Redistribution, modification, or secondary use of the website code and resources in any form is strictly prohibited. Violators will be subject to legal liability for infringement.</p>
+            <p><strong>Note:</strong> This statement does not include the "Creative Plaza" section. Web content within "Creative Plaza" still adheres to the above regulations, however ZIP files uploaded by users within "Creative Plaza" may be governed by other applicable open-source or licensing agreements at the discretion of the uploading user.</p>
+
+        </div>
+    </main>
+    </div>
+
+    <!-- Right-side page TOC: auto-built from H1-H4 in the article body. -->
+    <aside class="page-toc" id="pageToc" aria-label="On this page">
+        <div class="page-toc-title">On this page</div>
+        <nav class="page-toc-nav" id="pageTocNav"></nav>
+    </aside>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" title="Back to top">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">Top</span>
+    </div>
+
+    <script src="../../js/components.js?v=20261004"></script>
+    <script>
+    (function () {
+        var nav = document.getElementById('pageTocNav');
+        var content = document.querySelector('.content-inner') || document.querySelector('.content');
+        if (!nav || !content) return;
+
+        var headings = content.querySelectorAll('h1, h2, h3');
+        if (!headings.length) return;
+
+        // Assign stable ids to headings that don't have one yet.
+        var slugify = function (s) {
+            return s.toLowerCase()
+                .replace(/[^\p{L}\p{N}\s-]/gu, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .slice(0, 60) || 'section';
+        };
+        var usedIds = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            if (!h.id) {
+                var base = slugify(h.textContent);
+                var id = base;
+                var i = 2;
+                while (usedIds[id] || document.getElementById(id)) {
+                    id = base + '-' + i++;
+                }
+                h.id = id;
+            }
+            usedIds[h.id] = true;
+        });
+
+        // Build the nested list. The stack's bottom frame is always the
+        // root <ul>; every push appends a fresh child <ul> to the new
+        // <li> so deeper headings nest inside it.
+        var root = document.createElement('ul');
+        var stack = [{ level: 0, list: root }];
+
+        Array.prototype.forEach.call(headings, function (h) {
+            var level = parseInt(h.tagName.charAt(1), 10);
+            // Pop frames whose level is >= the current heading's level so
+            // we return to the right ancestor. Stack bottom (level 0) is
+            // never popped because 0 < any heading level.
+            while (stack[stack.length - 1].level >= level) {
+                stack.pop();
+            }
+            var parentList = stack[stack.length - 1].list;
+            var li = document.createElement('li');
+            li.className = 'toc-h' + level;
+            var a = document.createElement('a');
+            a.href = '#' + h.id;
+            a.textContent = h.textContent;
+            a.dataset.targetId = h.id;
+            li.appendChild(a);
+            parentList.appendChild(li);
+            // Each li gets its own child list for nested headings.
+            var childList = document.createElement('ul');
+            li.appendChild(childList);
+            stack.push({ level: level, list: childList });
+        });
+
+        nav.appendChild(root);
+
+        var links = nav.querySelectorAll('a');
+        var linkByHeading = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            var link = nav.querySelector('a[data-target-id="' + h.id + '"]');
+            if (link) linkByHeading[h.id] = { link: link, heading: h };
+        });
+
+        var setActive = function (id) {
+            Array.prototype.forEach.call(links, function (a) { a.classList.remove('is-active'); });
+            if (id && linkByHeading[id]) linkByHeading[id].link.classList.add('is-active');
+        };
+
+        // Click handler — smooth-scroll, then update URL without jumping.
+        Array.prototype.forEach.call(links, function (a) {
+            a.addEventListener('click', function (e) {
+                var target = document.getElementById(a.dataset.targetId);
+                if (!target) return;
+                e.preventDefault();
+                var headerOffset = 80;
+                var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+                setActive(a.dataset.targetId);
+                history.replaceState(null, '', '#' + a.dataset.targetId);
+            });
+        });
+
+        // Highlight the heading nearest the top of the viewport.
+        var visibleHeadings = [];
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                var id = entry.target.id;
+                var idx = visibleHeadings.findIndex(function (v) { return v.id === id; });
+                if (entry.isIntersecting) {
+                    if (idx === -1) visibleHeadings.push({ id: id, top: entry.boundingClientRect.top });
+                    else visibleHeadings[idx].top = entry.boundingClientRect.top;
+                } else if (idx !== -1) {
+                    visibleHeadings.splice(idx, 1);
+                }
+            });
+            if (!visibleHeadings.length) return;
+            visibleHeadings.sort(function (a, b) { return a.top - b.top; });
+            // Prefer the topmost one that's still below the header line.
+            var pick = null;
+            for (var i = 0; i < visibleHeadings.length; i++) {
+                if (visibleHeadings[i].top >= 80) { pick = visibleHeadings[i]; break; }
+            }
+            if (!pick) pick = visibleHeadings[0];
+            setActive(pick.id);
+        }, {
+            rootMargin: '-80px 0px -55% 0px',
+            threshold: 0
+        });
+
+        Array.prototype.forEach.call(headings, function (h) { observer.observe(h); });
+    })();
+    </script>
+</body>
+</html>

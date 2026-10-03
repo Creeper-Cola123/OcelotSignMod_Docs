@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>告示牌基本使用方法 | 豹猫指示牌模组</title>
+    <link rel="stylesheet" href="../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../css/layout.css?v=20261004">
+    <link rel="stylesheet" href="../css/content.css?v=20261004">
+</head>
+<body>
+    <div id="site-header"></div>
+    <div class="main-container">
+        <div id="site-sidebar"></div>
+
+        <main class="content">
+        <div class="content-inner">
+            <h1>告示牌基本使用方法 | 迷上城建</h1>
+
+<p>本模组添加了多种纹理的告示牌方块。</p>
+
+<hr>
+
+<h2>一、告示牌分类</h2>
+
+<p>《迷上城建》模组中的告示牌主要分为以下三种类型：</p>
+
+<h3>1. 悬挂的告示牌</h3>
+
+<ol>
+<li>此类告示牌应悬挂在方块下方，两侧均可输入文字。如果上方连接固体方块或告示牌杆方块，则会显示告示牌杆。</li>
+<li>告示牌的文字与放置方向绑定，暂不支持直接旋转。如果你需要放置带有 NBT 的方块，则需确保放置方向与获取方向一致，否则相应侧面将不显示文字。例如，如果你获取了朝南/北的告示牌，若放置为朝东/西，原有的南北侧文字将无法显示。</li>
+</ol>
+
+<h3>2. 墙上的告示牌</h3>
+
+<ol>
+<li>此类告示牌可放置在任何方块的任意表面（侧面、顶面、底面），只有一面可输入文字。</li>
+<li>墙上告示牌有两个特殊变种：<strong>隐形告示牌</strong>与<strong>隐形发光告示牌</strong>。这两种告示牌的模型不可见，只有文字可见。当玩家手持任一类型时，已放置的隐形告示牌会显示轮廓，便于识别。</li>
+</ol>
+
+<h3>3. 立式告示牌</h3>
+
+<ol>
+<li>放置于地面或悬浮在空中，支持原版的 16 个方向。与悬挂告示牌一样，两侧均可输入文字。</li>
+<li>当方块放置在下方时，会显示告示牌杆。空手时，按住 <code>Shift</code> 并点击告示牌可手动切换杆的可见性。</li>
+</ol>
+
+<hr>
+
+<h2>二、基础文字编辑</h2>
+
+<p>玩家右键点击告示牌时，会打开编辑界面（悬挂/立式告示牌需点击对应侧面）。告示牌支持多行文字，每行可独立配置以下属性：</p>
+
+<h3>1. 基础样式</h3>
+
+<p>粗体、斜体、下划线、删除线、随机字符等。</p>
+
+<h3>2. 文字大小</h3>
+
+<p>默认值：<code>6</code>。全尺寸告示牌（包括两种隐形变种）默认值为 <code>8</code>。</p>
+
+<h3>3. 偏移（X/Y/Z）</h3>
+
+<p>沿三个轴调整文字偏移。</p>
+
+<blockquote>
+<p>⚠️ 请谨慎调整 Z 轴，否则可能导致文字漂浮于平面之外或被告示牌遮挡而不可见。</p>
+</blockquote>
+
+<h3>4. 缩放（X/Y）</h3>
+
+<p>与文字大小叠加。将缩放设置为 <code>0</code> 将隐藏文字。</p>
+
+<blockquote>
+<p>无 Z 轴缩放，因为在二维平面上没有意义。</p>
+</blockquote>
+
+<h3>5. 旋转</h3>
+
+<p>支持围绕 X、Y、Z 轴旋转。</p>
+
+<h3>6. 对齐</h3>
+
+<p>支持水平对齐与垂直对齐。</p>
+
+<h3>7. 颜色与描边</h3>
+
+<ul>
+<li><strong>文字颜色</strong>：内置 16 色 / 自定义颜色。</li>
+<li><strong>描边颜色</strong>：禁用、自动匹配文字颜色（原版发光行为）、内置颜色、内置颜色的发光变体 / 自定义颜色。</li>
+</ul>
+
+<h3>8. 阴影</h3>
+
+<blockquote>
+<p>⚠️ 不推荐开启。多方向文字开启阴影可能导致渲染顺序问题。</p>
+</blockquote>
+
+<h3>9. 绝对模式</h3>
+
+<p>启用后，该行将在"重新排列"功能中被忽略。</p>
+
+<hr>
+
+<h2>三、高级排版与编辑功能</h2>
+
+<h3>1. 按钮与数值调节</h3>
+
+<h4>基础操作</h4>
+
+<ul>
+<li><strong>左键单击</strong>：调节</li>
+<li><strong>右键 / Shift + 左键</strong>：反向调节</li>
+<li><strong>鼠标中键 / Alt + Shift + 左键</strong>：重置为默认值</li>
+</ul>
+
+<p>也可直接使用鼠标滚轮滚动调节。</p>
+
+<h4>速度倍率</h4>
+
+<ul>
+<li>按住 <code>Ctrl</code> 为 <strong>×8 倍速</strong></li>
+<li>按住 <code>Alt</code> 为 <strong>1/8 倍速</strong></li>
+</ul>
+
+<h4>自定义数值输入</h4>
+
+<p>点击"设置自定义值"后点击目标按钮，或按 <code>Tab</code> 聚焦后按 <code>Ctrl+E</code> 输入数值。</p>
+
+<blockquote>
+<p>颜色支持：颜色名称（如 <code>red</code>）或十六进制（<code>#rgb</code>、<code>#rgba</code>、<code>#rrggbb</code>、<code>#rrggbbaa</code>）。描边可输入 <code>none</code>（禁用）或 <code>auto</code>（自动）。</p>
+</blockquote>
+
+<h3>2. 文字布局与多选</h3>
+
+<h4>自动布局</h4>
+
+<p>点击"调整位置"按钮，可根据文字大小自上而下排列各行（行间距 1/8，绝对模式的行除外）。不同的垂直对齐方式独立计算。</p>
+
+<h4>多选</h4>
+
+<p>按住 <code>Ctrl</code> 或 <code>Shift</code> 可选择多行进行批量设置或输入。按钮的增量会相对应用；自定义值或默认值会统一应用到所有选中行。</p>
+
+<h4>跨方块溢出</h4>
+
+<p>文字在告示牌区域之外仍然可见。若要在两个单方块告示牌之间居中显示文字，请在左侧告示牌上输入文字，设置为居中对齐，并向右偏移 8 个单位。</p>
+
+<h3>3. 背面复制与翻转</h3>
+
+<h4>从背面复制</h4>
+
+<p>悬挂/立式告示牌可直接从对面复制文字。复制过程中，X 偏移、水平对齐与文字内箭头（如 <code>→</code>）会自动反向，适合制作双面告示牌。</p>
+
+<h4>翻转</h4>
+
+<p>选择单行后点击"翻转"按钮，可反转其 X 偏移、对齐与箭头。按住 <code>Ctrl</code> 并点击"翻转"可应用到所有行。</p>
+
+<h3>4. 渲染说明</h3>
+
+<h4>Z-Fighting</h4>
+
+<p>半透明文字 + 粗体 / 半透明描边时容易出现。</p>
+
+<h4>不透明度行为</h4>
+
+<p>当描边颜色设置为"自动"时，其不透明度跟随文字变化。若选择特定颜色，则不受文字不透明度影响。</p>
+
+<h4>透明遮挡</h4>
+
+<p>半透明文字可能遮挡其后方的半透明内容（彩色玻璃、水、云）的渲染。</p>
+
+<hr>
+
+<h2>四、键盘快捷键（1.19.4+）</h2>
+
+<h3>1. 焦点导航</h3>
+
+<p><code>Tab</code> 在文字区域与按钮区域之间切换；方向键在按钮/文字行之间导航。</p>
+
+<blockquote>
+<p>示例：按 <code>Tab</code> 选中"粗体"，按 <code>Enter</code> 切换；按 <code>→</code> 选中"斜体"，再按 <code>Enter</code> 切换。</p>
+</blockquote>
+
+<h3>2. 快速样式</h3>
+
+<table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl + I</code></td>
+<td>斜体</td>
+</tr>
+<tr>
+<td><code>Ctrl + S</code></td>
+<td>删除线</td>
+</tr>
+<tr>
+<td><code>Ctrl + U</code></td>
+<td>下划线</td>
+</tr>
+<tr>
+<td><code>Ctrl + O</code></td>
+<td>随机字符</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+<p>注意：<code>Ctrl+B</code> 与屏幕阅读器快捷键冲突，因此不用于切换粗体。</p>
+</blockquote>
+
+<h3>3. 行操作</h3>
+
+<table>
+<thead>
+<tr>
+<th>动作</th>
+<th>快捷键</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新建一行</td>
+<td><code>Ctrl + Shift + =</code> 或 <code>Ctrl + Numpad+</code></td>
+</tr>
+<tr>
+<td>删除一行</td>
+<td><code>Ctrl + -</code> 或 <code>Ctrl + Numpad-</code></td>
+</tr>
+<tr>
+<td>移动行</td>
+<td><code>Ctrl + Shift + ↑/↓</code></td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2>五、特殊格式指令</h2>
+
+<p>在文字行中输入以下特殊指令以插入自定义内容：</p>
+
+<h3>1. 数据组件与图形</h3>
+
+<ul>
+<li><code>-json &lt;代码&gt;</code>：自定义 JSON 文本（宽松模式，键与值的引号可省略）。
+<ul>
+<li>示例：<code>-json {text:Some Text, color:red, bold:true}</code></li>
+</ul>
+</li>
+<li><code>-nbt &lt;组件&gt;</code>：使用 NBT 设置文本（仅 1.21.5+）。</li>
+<li><code>-rect &lt;宽度&gt; &lt;高度&gt;</code>：绘制指定大小的矩形（受文字大小与缩放影响）。</li>
+<li><code>-texture &lt;路径&gt;</code>：显示一张贴图（依赖资源包，不支持在线图片）。建议使用 <code>-nbt {sprite: 'block/lava_still'}</code> 以获得更好的稳定性与动画贴图支持。</li>
+</ul>
+
+<h3>2. 内置图案（-pattern）</h3>
+
+<p>使用内置图案名称可避免字体或 Unicode 带来的对齐/大小不一致问题。</p>
+
+<h4>基础箭头与方向</h4>
+
+<table>
+<thead>
+<tr>
+<th>图案</th>
+<th>用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>（空）</td>
+<td><code>-pattern empty</code></td>
+</tr>
+<tr>
+<td>←</td>
+<td><code>-pattern arrow-left</code> 或 <code>-pattern al</code></td>
+</tr>
+<tr>
+<td>→</td>
+<td><code>-pattern arrow-right</code> 或 <code>-pattern ar</code></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><code>-pattern arrow-up</code> 或 <code>-pattern arrow-top</code> 或 <code>-pattern au</code> 或 <code>-pattern at</code></td>
+</tr>
+<tr>
+<td>↓</td>
+<td><code>-pattern arrow-down</code> 或 <code>-pattern arrow-bottom</code> 或 <code>-pattern ad</code> 或 <code>-pattern ab</code></td>
+</tr>
+<tr>
+<td>←（细）</td>
+<td><code>-pattern arrow-left-thin</code></td>
+</tr>
+<tr>
+<td>→（细）</td>
+<td><code>-pattern arrow-right-thin</code></td>
+</tr>
+<tr>
+<td>↑（细）</td>
+<td><code>-pattern arrow-up-thin</code></td>
+</tr>
+<tr>
+<td>↓（细）</td>
+<td><code>-pattern arrow-down-thin</code></td>
+</tr>
+</tbody>
+</table>
+
+<h4>斜向箭头</h4>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-pattern arrow-left-up</code> / <code>-pattern arrow-left-top</code> / <code>-pattern alu</code> / <code>-pattern alt</code></td>
+</tr>
+<tr>
+<td><code>-pattern arrow-right-up</code> / <code>-pattern arrow-right-top</code> / <code>-pattern aru</code> / <code>-pattern art</code></td>
+</tr>
+<tr>
+<td><code>-pattern arrow-left-down</code> / <code>-pattern arrow-left-bottom</code> / <code>-pattern ald</code> / <code>-pattern alb</code></td>
+</tr>
+<tr>
+<td><code>-pattern arrow-right-down</code> / <code>-pattern arrow-right-bottom</code> / <code>-pattern ard</code> / <code>-pattern arb</code></td>
+</tr>
+</tbody>
+</table>
+
+<h4>转向箭头</h4>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-pattern arrow-left-turn-up</code> / <code>-pattern altu</code></td>
+</tr>
+<tr>
+<td><code>-pattern arrow-right-turn-up</code> / <code>-pattern artu</code></td>
+</tr>
+<tr>
+<td><code>-pattern arrow-left-turn-down</code> / <code>-pattern altd</code></td>
+</tr>
+<tr>
+<td><code>-pattern arrow-right-turn-down</code> / <code>-pattern artd</code></td>
+</tr>
+</tbody>
+</table>
+
+<h4>双向箭头与圆形</h4>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-pattern arrow-left-right</code> / <code>-pattern alr</code></td>
+</tr>
+<tr>
+<td><code>-pattern arrow-up-down</code> / <code>-pattern aud</code></td>
+</tr>
+<tr>
+<td><code>-pattern circle-small</code> / <code>-pattern small-circle</code></td>
+</tr>
+<tr>
+<td><code>-pattern circle-medium</code> / <code>-pattern medium-circle</code> / <code>-pattern circle</code> / <code>-pattern O</code></td>
+</tr>
+</tbody>
+</table>
+
+<h4>禁止与掉头</h4>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-pattern ban</code></td>
+</tr>
+<tr>
+<td><code>-pattern u-turn-left-down</code> / <code>-pattern u-turn-left-bottom</code> / <code>-pattern uld</code> / <code>-pattern ulb</code></td>
+</tr>
+<tr>
+<td><code>-pattern u-turn-right-down</code> / <code>-pattern u-turn-right-bottom</code> / <code>-pattern urd</code> / <code>-pattern urb</code></td>
+</tr>
+<tr>
+<td><code>-pattern u-turn-left-up</code> / <code>-pattern u-turn-right-top</code> / <code>-pattern ulu</code> / <code>-pattern ult</code></td>
+</tr>
+<tr>
+<td><code>-pattern u-turn-right-up</code> / <code>-pattern u-turn-right-top</code> / <code>-pattern uru</code> / <code>-pattern urt</code></td>
+</tr>
+</tbody>
+</table>
+
+<h4>十字与方块</h4>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-pattern cross-small</code> / <code>-pattern small-scross</code></td>
+</tr>
+<tr>
+<td><code>-pattern cross-medium</code> / <code>-pattern medium-cross</code> / <code>-pattern cross</code> / <code>-pattern X</code></td>
+</tr>
+<tr>
+<td><code>-pattern cross-large</code> / <code>-pattern large-cross</code></td>
+</tr>
+<tr>
+<td><code>-pattern square-small</code> / <code>-pattern small-square</code></td>
+</tr>
+<tr>
+<td><code>-pattern square-medium</code> / <code>-pattern medium-square</code> / <code>-pattern square</code></td>
+</tr>
+<tr>
+<td><code>-pattern square-large</code> / <code>-pattern large-square</code></td>
+</tr>
+<tr>
+<td><code>-pattern square-slant-small</code> / <code>-pattern small-slant-square</code></td>
+</tr>
+<tr>
+<td><code>-pattern square-slant-medium</code> / <code>-pattern medium-slant-square</code></td>
+</tr>
+<tr>
+<td><code>-pattern square-slant-large</code> / <code>-pattern large-slant-square</code></td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+<p>⚠️ 注意：图案不支持自定义样式。如需复杂样式，请使用 <code>-texture</code> 或原版 sprite 组件（例如 <code>-nbt {sprite: xxx}</code>）。</p>
+</blockquote>
+
+<hr>
+
+<h2>六、物品交互功能</h2>
+
+<h3>1. 上蜡与去蜡（蜜脾）</h3>
+
+<p>对告示牌使用蜜脾可上蜡，锁定编辑与发光状态。</p>
+
+<p>在创造模式下可使用蜜脾去蜡（生存模式不可）。</p>
+
+<h3>2. 发光效果（发光墨囊 / 墨囊）</h3>
+
+<ul>
+<li><strong>发光墨囊</strong>：让文字发光（在黑暗中亮度最高，对描边或方块亮度无影响）。</li>
+<li><strong>墨囊</strong>：移除文字发光效果。</li>
+</ul>
+
+<blockquote>
+<p>对于悬挂和立式告示牌，上蜡与发光操作在两侧独立应用。在非创造模式下，每次成功上蜡/发光都会消耗对应物品。</p>
+</blockquote>
+
+        </div>
+    </main>
+    </div>
+
+    <!-- Right-side page TOC: auto-built from H1-H4 in the article body. -->
+    <aside class="page-toc" id="pageToc" aria-label="本页导航">
+        <div class="page-toc-title">本页导航</div>
+        <nav class="page-toc-nav" id="pageTocNav"></nav>
+    </aside>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" title="返回顶部">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">顶部</span>
+    </div>
+
+    <script src="../js/components.js?v=20261004"></script>
+    <script>
+    (function () {
+        // Wrap each table in .content-inner with a `.table-scroll`
+        // container so wide tables can scroll horizontally on narrow
+        // screens instead of stretching the whole page. Idempotent — it
+        // skips any table that is already inside such a wrapper.
+        var tables = document.querySelectorAll('.content-inner > table');
+        Array.prototype.forEach.call(tables, function (table) {
+            var parent = table.parentNode;
+            if (parent && parent.classList && parent.classList.contains('table-scroll')) return;
+            var wrapper = document.createElement('div');
+            wrapper.className = 'table-scroll';
+            parent.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        });
+
+        var nav = document.getElementById('pageTocNav');
+        var content = document.querySelector('.content-inner') || document.querySelector('.content');
+        if (!nav || !content) return;
+
+        var headings = content.querySelectorAll('h1, h2, h3');
+        if (!headings.length) return;
+
+        // Assign stable ids to headings that don't have one yet.
+        var slugify = function (s) {
+            return s.toLowerCase()
+                .replace(/[^\p{L}\p{N}\s-]/gu, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .slice(0, 60) || 'section';
+        };
+        var usedIds = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            if (!h.id) {
+                var base = slugify(h.textContent);
+                var id = base;
+                var i = 2;
+                while (usedIds[id] || document.getElementById(id)) {
+                    id = base + '-' + i++;
+                }
+                h.id = id;
+            }
+            usedIds[h.id] = true;
+        });
+
+        // Build the nested list. The stack's bottom frame is always the
+        // root <ul>; every push appends a fresh child <ul> to the new
+        // <li> so deeper headings nest inside it.
+        var root = document.createElement('ul');
+        var stack = [{ level: 0, list: root }];
+
+        Array.prototype.forEach.call(headings, function (h) {
+            var level = parseInt(h.tagName.charAt(1), 10);
+            // Pop frames whose level is >= the current heading's level so
+            // we return to the right ancestor. Stack bottom (level 0) is
+            // never popped because 0 < any heading level.
+            while (stack[stack.length - 1].level >= level) {
+                stack.pop();
+            }
+            var parentList = stack[stack.length - 1].list;
+            var li = document.createElement('li');
+            li.className = 'toc-h' + level;
+            var a = document.createElement('a');
+            a.href = '#' + h.id;
+            a.textContent = h.textContent;
+            a.dataset.targetId = h.id;
+            li.appendChild(a);
+            parentList.appendChild(li);
+            // Each li gets its own child list for nested headings.
+            var childList = document.createElement('ul');
+            li.appendChild(childList);
+            stack.push({ level: level, list: childList });
+        });
+
+        nav.appendChild(root);
+
+        var links = nav.querySelectorAll('a');
+        var linkByHeading = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            var link = nav.querySelector('a[data-target-id="' + h.id + '"]');
+            if (link) linkByHeading[h.id] = { link: link, heading: h };
+        });
+
+        var setActive = function (id) {
+            Array.prototype.forEach.call(links, function (a) { a.classList.remove('is-active'); });
+            if (id && linkByHeading[id]) linkByHeading[id].link.classList.add('is-active');
+        };
+
+        // Click handler — smooth-scroll, then update URL without jumping.
+        Array.prototype.forEach.call(links, function (a) {
+            a.addEventListener('click', function (e) {
+                var target = document.getElementById(a.dataset.targetId);
+                if (!target) return;
+                e.preventDefault();
+                var headerOffset = 80;
+                var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+                setActive(a.dataset.targetId);
+                history.replaceState(null, '', '#' + a.dataset.targetId);
+            });
+        });
+
+        // Highlight the heading nearest the top of the viewport.
+        var visibleHeadings = [];
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                var id = entry.target.id;
+                var idx = visibleHeadings.findIndex(function (v) { return v.id === id; });
+                if (entry.isIntersecting) {
+                    if (idx === -1) visibleHeadings.push({ id: id, top: entry.boundingClientRect.top });
+                    else visibleHeadings[idx].top = entry.boundingClientRect.top;
+                } else if (idx !== -1) {
+                    visibleHeadings.splice(idx, 1);
+                }
+            });
+            if (!visibleHeadings.length) return;
+            visibleHeadings.sort(function (a, b) { return a.top - b.top; });
+            // Prefer the topmost one that's still below the header line.
+            var pick = null;
+            for (var i = 0; i < visibleHeadings.length; i++) {
+                if (visibleHeadings[i].top >= 80) { pick = visibleHeadings[i]; break; }
+            }
+            if (!pick) pick = visibleHeadings[0];
+            setActive(pick.id);
+        }, {
+            rootMargin: '-80px 0px -55% 0px',
+            threshold: 0
+        });
+
+        Array.prototype.forEach.call(headings, function (h) { observer.observe(h); });
+    })();
+    </script>
+</body>
+</html>

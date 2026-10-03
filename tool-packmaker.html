@@ -1,0 +1,851 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资源包在线制作器 | 豹猫指示牌模组 / Ocelot Sign Mod</title>
+    <link rel="stylesheet" href="css/common.css?v=20261004">
+    <link rel="stylesheet" href="css/content.css?v=20261004">
+    <link rel="stylesheet" href="css/tool-packmaker.css?v=20261004">
+    <link rel="stylesheet" href="css/pm-base.css?v=20261004">
+    <link rel="stylesheet" href="css/pm-animations.css?v=20261004">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="js/i18n-core.js?v=20261004"></script>
+    <script src="js/i18n-landing.js?v=20261004"></script>
+    <script src="js/i18n-packmaker.js?v=20261004"></script>
+    <script src="js/i18n-modals.js?v=20261004"></script>
+    <script src="js/i18n-plaza.js?v=20261004"></script>
+    <script src="js/i18n.js?v=20261004"></script>
+    <script src="js/components.js?v=20261004"></script>
+    <script src="js/pm-utils.js?v=20261004"></script>
+    <script src="js/pm-state.js?v=20261004"></script>
+    <script src="js/pm-zip.js?v=20261004"></script>
+    <script src="js/pm-tabs.js?v=20261004"></script>
+    <script src="js/pm-fonts.js?v=20261004"></script>
+    <script src="js/pm-explorer.js?v=20261004"></script>
+    <script src="js/pm-preview.js?v=20261004"></script>
+    <script src="js/pm-text-editor.js?v=20261004"></script>
+    <script src="js/pm-models.js?v=20261004"></script>
+    <script src="js/pm-pack-settings.js?v=20261004"></script>
+    <script src="js/pm-modals.js?v=20261004"></script>
+    <script src="js/pm-bootstrap.js?v=20261004"></script>
+</head>
+<body data-theme="dark">
+
+    <!-- Shared header (injected by js/components.js) -->
+    <div id="site-header"></div>
+
+    <!-- Warning Banner -->
+    <div class="warning-banner" id="warningBanner">
+        <span class="warning-icon">⚠️</span>
+        <span class="warning-text">严禁使用资源包制作器制作任何反动、色情、恐怖、暴力等违法违规内容，感谢您的配合与理解！</span>
+        <button class="warning-close" onclick="closeWarningBanner()" title="关闭">×</button>
+    </div>
+
+    <!-- Top Bar -->
+    <div class="maker-bar">
+        <div class="maker-bar-title">🎨 资源包在线制作器</div>
+        <span class="pack-badge" id="packBadge">
+            <span class="dot"></span>
+            <span id="packBadgeText">未加载资源包</span>
+        </span>
+        <div style="flex:1"></div>
+        <div class="bar-actions">
+            <button class="btn btn-secondary btn-sm" onclick="document.getElementById('zipInput').click()">📂 上传资源包</button>
+            <button class="btn btn-secondary btn-sm" onclick="createNewPack()">✨ 新建空白</button>
+            <button class="btn btn-primary btn-sm" onclick="generateAndDownload()">⬇ 生成并下载</button>
+        </div>
+        <input type="file" id="zipInput" accept=".zip" style="display:none" onchange="handleZipUpload(event)">
+    </div>
+
+    <!-- H1 Tabs -->
+    <div class="h1-tabs" id="h1Tabs">
+        <div class="h1-tab active" data-tab="patterns" onclick="switchH1Tab('patterns', this)">
+            <span class="tab-icon">🖼</span>
+            <span>图案列表</span>
+        </div>
+        <div class="h1-tab" data-tab="fonts" onclick="switchH1Tab('fonts', this)">
+            <span class="tab-icon">🔤</span>
+            <span>字体列表</span>
+        </div>
+        <div class="h1-tab" data-tab="models" onclick="switchH1Tab('models', this)">
+            <span class="tab-icon">🎲</span>
+            <span>自定义模型</span>
+        </div>
+        <div class="h1-tab" data-tab="explorer" onclick="switchH1Tab('explorer', this)">
+            <span class="tab-icon">📁</span>
+            <span>文件夹浏览</span>
+        </div>
+        <div class="h1-tab" data-tab="pack-settings" onclick="switchH1Tab('pack-settings', this)">
+            <span class="tab-icon">📦</span>
+            <span>资源包设置</span>
+        </div>
+    </div>
+
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-container">
+            <div class="welcome-icon">🎨</div>
+            <h1 class="welcome-title">资源包在线制作器</h1>
+            <p class="welcome-subtitle">
+                可视化编辑“豹猫指示牌模组”资源包，自动生成 <code>ui_definitions</code> 与 <code>custom_fonts</code> 配置文件
+            </p>
+
+            <div class="welcome-actions">
+                <button class="welcome-btn" onclick="document.getElementById('zipInput').click()">
+                    <div class="welcome-btn-icon">📂</div>
+                    <div class="welcome-btn-label">上传资源包</div>
+                    <div class="welcome-btn-desc">从已有的 .zip 文件开始</div>
+                </button>
+                <button class="welcome-btn primary" onclick="createNewPack()">
+                    <div class="welcome-btn-icon">✨</div>
+                    <div class="welcome-btn-label">新建空白资源包</div>
+                    <div class="welcome-btn-desc">从零开始创建</div>
+                </button>
+            </div>
+
+            <div class="welcome-dropzone" id="welcomeDropzone"
+                 onclick="document.getElementById('zipInput').click()">
+                <p>📦 或将 <strong>.zip</strong> 资源包文件拖拽到此区域</p>
+            </div>
+
+            <div class="welcome-features">
+                <div class="welcome-feature">
+                    <div class="welcome-feature-icon">🖼</div>
+                    <div class="welcome-feature-title">图案分类管理</div>
+                    <div class="welcome-feature-desc">按分类管理路牌、UI 图标等</div>
+                </div>
+                <div class="welcome-feature">
+                    <div class="welcome-feature-icon">🔤</div>
+                    <div class="welcome-feature-title">字体定义编辑</div>
+                    <div class="welcome-feature-desc">支持 .ttf/.otf/.woff 字体导入</div>
+                </div>
+                <div class="welcome-feature">
+                    <div class="welcome-feature-icon">📁</div>
+                    <div class="welcome-feature-title">文件浏览器</div>
+                    <div class="welcome-feature-desc">完整查看和操作资源包文件</div>
+                </div>
+                <div class="welcome-feature">
+                    <div class="welcome-feature-icon">⬇</div>
+                    <div class="welcome-feature-title">一键导出</div>
+                    <div class="welcome-feature-desc">生成标准格式资源包 .zip</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Body -->
+    <div class="maker-body">
+        <div class="overlay-editor" id="overlayEditor">
+            <!-- H2 Sidebar -->
+            <div class="h2-sidebar">
+                <div class="h2-sidebar-header">
+                    <span class="h2-sidebar-title" id="h2SidebarTitle">图案分类</span>
+                </div>
+                <div class="h2-list" id="h2List"></div>
+                <div class="h2-add-btn" onclick="addH2()">
+                    <span>+</span><span>新建分类</span>
+                </div>
+                <div class="h2-sidebar-footer">
+                    <button class="btn btn-secondary btn-sm" onclick="saveAllToZip()" style="width:100%">
+                        💾 保存到资源包
+                    </button>
+                </div>
+            </div>
+
+            <!-- H3 Main Area -->
+            <div class="h3-main">
+                <div class="no-category" id="noPackOverlay" style="display:none">
+                    <div class="no-category-icon">📦</div>
+                    <p>请先上传资源包或新建空白资源包<br><br>
+                    <button class="btn btn-secondary btn-sm" onclick="createNewPack()">✨ 新建空白资源包</button>
+                    <button class="btn btn-secondary btn-sm" onclick="document.getElementById('zipInput').click()">📂 上传 ZIP</button>
+                    </p>
+                </div>
+
+                <!-- File Explorer -->
+                <div class="explorer-view" id="explorerView" style="display:none">
+                    <div class="explorer-toolbar">
+                        <button class="exp-btn" onclick="explorerGoBack()" title="后退">◀</button>
+                        <button class="exp-btn" onclick="explorerGoForward()" title="前进">▶</button>
+                        <button class="exp-btn" onclick="explorerGoUp()" title="上一级">⬆</button>
+                        <button class="exp-btn" onclick="explorerReload()" title="刷新">🔄</button>
+                        <div class="exp-address">
+                            <span class="exp-address-icon">📍</span>
+                            <span class="exp-address-path" id="expAddressPath">📦 资源包</span>
+                        </div>
+                        <div style="flex:1"></div>
+                        <div class="exp-view-toggle">
+                            <button class="exp-btn active" id="expViewList" onclick="setExplorerView('list')" title="列表">☰</button>
+                            <button class="exp-btn" id="expViewGrid" onclick="setExplorerView('grid')" title="平铺">▦</button>
+                        </div>
+                    </div>
+                    <div class="explorer-ops-toolbar">
+                        <button class="exp-op-btn" id="expBtnCut" onclick="explorerCut()" title="剪切 (Ctrl+X)" disabled>✂ 剪切</button>
+                        <button class="exp-op-btn" id="expBtnCopy" onclick="explorerCopy()" title="复制 (Ctrl+C)" disabled>📋 复制</button>
+                        <button class="exp-op-btn" id="expBtnPaste" onclick="explorerPaste()" title="粘贴 (Ctrl+V)" disabled>📥 粘贴</button>
+                        <button class="exp-op-btn" id="expBtnDelete" onclick="explorerDelete()" title="删除 (Del)" disabled>🗑 删除</button>
+                        <button class="exp-op-btn" id="expBtnRename" onclick="explorerRename()" title="重命名 (F2)" disabled>✏ 重命名</button>
+                        <button class="exp-op-btn" id="expBtnDownload" onclick="explorerDownload()" title="下载" disabled>⬇ 下载</button>
+                        <button class="exp-op-btn" onclick="explorerNewFile()" title="新建文件">📄 新建文件</button>
+                        <button class="exp-op-btn" onclick="explorerNewFolder()" title="新建文件夹">📁 新建文件夹</button>
+                        <button class="exp-op-btn" onclick="document.getElementById('expUploadInput').click()" title="上传文件到当前目录">⬆ 上传</button>
+                        <input type="file" id="expUploadInput" multiple style="display:none" onchange="handleExplorerUpload(event)">
+                    </div>
+                    <div class="explorer-content" id="explorerContent"></div>
+                    <div class="explorer-statusbar" id="explorerStatus">就绪</div>
+                    <!-- Bug 2A：右键上下文菜单容器（JS 动态填充） -->
+                    <div id="explorerContextMenu" class="explorer-ctx-menu" style="display:none"></div>
+                </div>
+
+                <!-- Custom Models View -->
+                <div class="models-view" id="modelsView" style="display:none">
+                    <div class="models-header-bar">
+                        <div class="models-header-info">
+                            <span class="models-header-title">🎲 自定义模型</span>
+                            <span class="models-header-desc">模型文件存放于 <code>assets/&lt;命名空间&gt;/models/custom_models/</code>；注册信息写入 <code>assets/ocelotsignmod/model_definitions/</code></span>
+                        </div>
+                        <div class="models-header-actions">
+                            <button class="btn btn-primary btn-sm" onclick="openNewModelDialog()">➕ 新建模型</button>
+                            <button class="btn btn-secondary btn-sm" onclick="refreshModelsList()">🔄 刷新</button>
+                            <button class="btn btn-secondary btn-sm" onclick="navigateToModelsFolder()">📂 打开文件夹</button>
+                        </div>
+                    </div>
+                    <!-- New Model Dialog -->
+                    <div class="new-model-dialog" id="newModelDialog">
+                        <div class="nm-header">
+                            <span style="font-size:18px">🎲</span>
+                            <span class="nm-header-title">新建自定义模型</span>
+                            <div style="flex:1"></div>
+                            <button class="btn btn-secondary btn-sm" onclick="closeNewModelDialog()">✕ 取消</button>
+                        </div>
+                        <div class="nm-steps" id="nmSteps">
+                            <div class="nm-step active" id="nmStep1">
+                                <div class="nm-step-num">1</div>
+                                <span>上传模型文件</span>
+                            </div>
+                            <div class="nm-step-sep"></div>
+                            <div class="nm-step" id="nmStep2">
+                                <div class="nm-step-num">2</div>
+                                <span>上传贴图</span>
+                            </div>
+                            <div class="nm-step-sep"></div>
+                            <div class="nm-step" id="nmStep3">
+                                <div class="nm-step-num">3</div>
+                                <span>填写信息</span>
+                            </div>
+                        </div>
+                        <div class="nm-body" id="nmBody1">
+                            <div class="nm-upload-zone" id="nmJsonZone"
+                             onclick="document.getElementById('nmJsonInput').click()"
+                             ondragover="handleDropZoneDragOver(event)"
+                             ondragleave="handleDropZoneDragLeave(event)"
+                             ondrop="handleNmJsonDrop(event)">
+                                <div class="nm-upload-icon">📄</div>
+                                <div class="nm-upload-hint"><strong>点击上传</strong> 或拖拽文件到这里</div>
+                                <div class="nm-upload-sub">仅支持 .json 文件（BlockBench 导出）</div>
+                                <input type="file" id="nmJsonInput" accept=".json" onchange="handleNmJsonUpload(this)">
+                            </div>
+                            <div id="nmJsonInfo" style="display:none">
+                                <div class="nm-json-name" id="nmJsonName"></div>
+                                <div class="nm-json-preview" id="nmJsonPreview"></div>
+                                <div class="nm-json-error" id="nmJsonError" style="display:none"></div>
+                            </div>
+                        </div>
+                        <div class="nm-body" id="nmBody2" style="display:none">
+                            <div id="nmTexHeader" style="font-size:12px;color:#8b949e;margin-bottom:10px">
+                                填写每张贴图的<b style="color:#79c0ff">命名空间</b>和<b style="color:#79c0ff">路径</b>（相对于 <code>textures/</code>），然后上传 PNG 文件。
+                            </div>
+                            <div id="nmTexList" class="nm-tex-list"></div>
+                            <div style="margin-top:12px;text-align:right">
+                                <button class="btn btn-secondary btn-sm" onclick="nmAddExtraTex()">➕ 添加额外贴图</button>
+                            </div>
+                        </div>
+                        <div class="nm-body" id="nmBody3" style="display:none">
+                            <div class="nm-form-group">
+                                <label class="nm-form-label">模型标识符 <code>model_id</code></label>
+                                <input class="nm-form-input" id="nmModelId" type="text" placeholder="自动从文件名推断" disabled>
+                                <div class="nm-form-hint">用于游戏内注册，必须唯一，建议使用英文和下划线</div>
+                            </div>
+                            <div class="nm-form-group">
+                                <label class="nm-form-label">显示名称 <code>localized_name</code></label>
+                                <input class="nm-form-input" id="nmLocalizedName" type="text" placeholder="例如: 我的模型">
+                                <div class="nm-form-hint">游戏中显示的名称，留空则使用 model_id</div>
+                            </div>
+                            <div class="nm-form-group">
+                                <label class="nm-form-label">命名空间 <code>namespace</code></label>
+                                <input class="nm-form-input" id="nmNamespace" type="text" placeholder="minecraft" value="minecraft">
+                                <div class="nm-form-hint">模型 JSON 文件存放的命名空间</div>
+                            </div>
+                        </div>
+                        <div class="nm-footer" id="nmFooter">
+                            <button class="btn btn-secondary btn-sm" id="nmBackBtn" onclick="nmGoBack()" style="display:none">← 上一步</button>
+                            <div class="nm-footer-hint" id="nmHint">请先上传模型 JSON 文件</div>
+                            <button class="btn btn-primary btn-sm" id="nmNextBtn" onclick="nmGoNext()" disabled>下一步 →</button>
+                        </div>
+                    </div>
+                    <!-- Edit Model Dialog -->
+                    <div class="new-model-dialog" id="editModelDialog">
+                        <div class="nm-header">
+                            <span style="font-size:18px">✏️</span>
+                            <span class="nm-header-title">编辑模型</span>
+                            <div style="flex:1"></div>
+                            <button class="btn btn-secondary btn-sm" onclick="closeEditModelDialog()">✕ 取消</button>
+                        </div>
+                        <div class="nm-body" id="emBody">
+                            <div class="nm-form-group">
+                                <label class="nm-form-label">模型标识符 <code>model_id</code></label>
+                                <input class="nm-form-input" id="emModelId" type="text" disabled>
+                                <div class="nm-form-hint">model_id 为文件名，无法修改</div>
+                            </div>
+                            <div class="nm-form-group">
+                                <label class="nm-form-label">命名空间 <code>namespace</code></label>
+                                <input class="nm-form-input" id="emNamespace" type="text" disabled>
+                                <div class="nm-form-hint">命名空间与文件路径绑定，无法修改</div>
+                            </div>
+                            <div class="nm-form-group">
+                                <label class="nm-form-label">显示名称 <code>localized_name</code></label>
+                                <input class="nm-form-input" id="emLocalizedName" type="text" placeholder="例如: 我的模型">
+                                <div class="nm-form-hint">游戏中显示的名称</div>
+                            </div>
+                        </div>
+                        <div class="nm-footer">
+                            <div class="nm-footer-hint">修改显示名称后保存生效</div>
+                            <button class="btn btn-primary btn-sm" onclick="saveEditModel()">💾 保存</button>
+                        </div>
+                    </div>
+                    <div class="models-list-area" id="modelsListArea"></div>
+                </div>
+
+                <div class="no-category" id="noCategoryOverlay" style="display:none">
+                    <div class="no-category-icon">🗂</div>
+                    <p>从左侧选择一个分类来编辑其内容区块</p>
+                </div>
+
+                <div class="h3-main-header" id="h3MainHeader" style="display:none">
+                    <div style="flex:1;min-width:0">
+                        <div class="h3-main-title" id="h3MainTitle">—</div>
+                        <div class="h3-main-subtitle" id="h3MainSubtitle"></div>
+                        <div class="h3-main-hint" id="h3MainHint">
+                            <div class="h3-main-hint-row">
+                                <button id="h3HintToggle" type="button" class="h3-main-hint-toggle expanded"
+                                    onclick="toggleH3Hint()" title="点击切换是否启用提示信息">
+                                    <span class="h3-main-hint-toggle-text">提示信息</span>
+                                    <span class="h3-main-hint-switch">
+                                        <span class="h3-main-hint-switch-knob"></span>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="h3-main-hint-body">
+                                <input id="h3HintInput" type="text" class="h3-main-hint-input"
+                                    placeholder="例如：点击图案可插入到告示牌"
+                                    oninput="updateH3Hint(this.value)">
+                                <div class="h3-main-hint-meta">游戏内此分类上方显示的文字</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" onclick="addH3()">+ 新区块</button>
+                </div>
+
+                <div class="h3-sections-area" id="h3SectionsArea">
+                    <div class="h3-empty" id="h3Empty" style="display:none">
+                        <div class="h3-empty-icon">📋</div>
+                        <h3>暂无内容区块</h3>
+                        <p>点击右上角「+ 新区块」为此分类添加一个内容区块，将自动生成对应的 JSON 配置</p>
+                        <button class="btn btn-secondary btn-sm" onclick="addH3()">+ 添加第一个区块</button>
+                    </div>
+                    <div id="h3CardsList"></div>
+                </div>
+
+                <!-- Pack Settings View -->
+                <div class="pack-settings-view" id="packSettingsView" style="display:none">
+                    <div class="ps-header">
+                        <div class="ps-header-icon">📦</div>
+                        <div>
+                            <div class="ps-header-title">资源包设置</div>
+                            <div class="ps-header-desc">管理 pack.mcmeta 元数据与封面图片</div>
+                        </div>
+                    </div>
+                    <div class="ps-body">
+                        <div class="ps-section">
+                            <div class="ps-section-title">📋 pack.mcmeta 元数据</div>
+                            <div class="ps-form-row">
+                                <label class="ps-label">资源包格式版本（pack_format）</label>
+                                <input class="ps-input" id="psFormat" type="number" min="1" step="1" placeholder="例如 34">
+                                <div class="ps-hint">对应 Minecraft Java 版本的 pack_format 数字。常见参考：1.21.3+ → 34、1.20.2~1.21 → 26、1.19.4 → 22、1.19~1.19.3 → 18、1.17~1.18.2 → 15、1.16 → 9、1.15 → 8。完整列表见 <a href="https://minecraft.wiki/w/Resource_pack#Format_version" target="_blank" style="color:#388bfd">Minecraft Wiki</a></div>
+                            </div>
+                            <div class="ps-form-row">
+                                <label class="ps-label">资源包描述</label>
+                                <input class="ps-input" id="psDesc" type="text" placeholder="在资源包选择界面显示的文字，支持颜色代码（§）">
+                                <div class="ps-hint">游戏中显示在资源包名称下方的描述文字</div>
+                            </div>
+                            <div class="ps-form-row">
+                                <label class="ps-label">下载的 ZIP 文件名</label>
+                                <div class="ps-filename-row">
+                                    <input class="ps-input" id="psFileName" type="text" placeholder="留空则使用资源包描述作为文件名">
+                                    <span class="ps-filename-suffix">.zip</span>
+                                </div>
+                                <div class="ps-hint">导出资源包时使用的 ZIP 文件名（不含扩展名）</div>
+                            </div>
+                            <div class="ps-actions-row">
+                                <button class="btn btn-primary btn-sm" onclick="savePackMetaFromSettings()">💾 保存元数据</button>
+                            </div>
+                        </div>
+                        <div class="ps-section">
+                            <div class="ps-section-title">🖼 资源包封面图片</div>
+                            <div class="ps-form-row">
+                                <label class="ps-label">封面图片</label>
+                                <div class="ps-img-area" id="psImgArea"></div>
+                            </div>
+                            <div class="ps-pack-png-info">
+                                <div class="ps-info-row">
+                                    <span class="ps-info-key">文件名</span>
+                                    <code class="ps-info-val">pack.png</code>
+                                </div>
+                                <div class="ps-info-row">
+                                    <span class="ps-info-key">位置</span>
+                                    <code class="ps-info-val">资源包根目录（ZIP 根目录，非 assets/ 下）</code>
+                                </div>
+                                <div class="ps-info-row">
+                                    <span class="ps-info-key">推荐尺寸</span>
+                                    <span class="ps-info-val">128 × 128 像素（允许其他正方形尺寸，会自动缩放）</span>
+                                </div>
+                                <div class="ps-info-row">
+                                    <span class="ps-info-key">格式</span>
+                                    <span class="ps-info-val">PNG（不支持透明背景混合叠加，Minecraft 会将图片叠加在灰色背景上）</span>
+                                </div>
+                            </div>
+                            <div class="ps-actions-row">
+                                <label class="btn btn-secondary btn-sm" style="cursor:pointer" for="psImgInput">📤 上传封面</label>
+                                <input type="file" id="psImgInput" accept="image/png" style="display:none" onchange="handlePackImageUpload(this)">
+                                <button class="btn btn-secondary btn-sm" onclick="removePackImage()">🗑 移除封面</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel -->
+            <div class="right-panel" id="rightPanel">
+                <div class="right-panel-header">
+                    <span class="right-panel-title">📁 文件浏览器</span>
+                    <button class="toggle-panel-btn" onclick="toggleRightPanel()" title="收起/展开">◀</button>
+                </div>
+                <div class="right-panel-body">
+                    <div class="pack-info-mini" id="packInfoMini" style="display:none">
+                        <div class="row"><span class="k">描述</span><span class="v" id="pmDesc">—</span></div>
+                        <div class="row"><span class="k">版本</span><span class="v" id="pmFormat">—</span></div>
+                        <div class="row"><span class="k">文件</span><span class="v" id="pmFiles">—</span></div>
+                    </div>
+                    <div id="fileBrowser">
+                        <div style="padding:12px;text-align:center;color:#484f58;font-size:12px">
+                            加载资源包后<br>显示文件列表
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Category Modal -->
+    <div class="modal-overlay" id="catModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title" id="catModalTitle">🗂 新建分类</span>
+                <button class="modal-close" onclick="closeCatModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">分类名称 *</label>
+                    <input type="text" class="form-input" id="catName" placeholder="我的自定义路牌">
+                    <div class="form-hint">显示在游戏界面左侧边栏的名称</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">分类 ID</label>
+                    <input type="text" class="form-input" id="catId" placeholder="自动从名称生成">
+                    <div class="form-hint">留空则自动从名称生成（仅小写字母、数字、下划线）</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">所属命名空间</label>
+                    <input type="text" class="form-input" id="catNs" placeholder="my_pack" value="my_pack">
+                    <div class="form-hint">资源路径的命名空间前缀</div>
+                </div>
+                <div class="form-group" id="catBasePathGroup">
+                    <label class="form-label">资源基础路径</label>
+                    <input type="text" class="form-input" id="catBasePath" placeholder="textures/signs" value="textures/signs">
+                    <div class="form-hint">相对于 assets/&lt;namespace&gt;/ 的扫描路径，结尾不带 /</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeCatModal()">取消</button>
+                <button class="btn btn-primary" id="catModalConfirmBtn" onclick="confirmCatModal()">创建分类</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Upload Modal -->
+    <div class="modal-overlay" id="imgUploadModal">
+        <div class="modal" style="width:560px">
+            <div class="modal-header">
+                <span class="modal-title">📤 上传图片到本区块</span>
+                <button class="modal-close" onclick="closeImgUploadModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">目标目录</label>
+                    <div class="img-upload-target" id="imgUploadTarget">—</div>
+                    <div class="form-hint">所有上传的文件都会保存到上面这个目录。</div>
+                </div>
+                <div class="form-group">
+                    <div class="upload-zone" id="imgUploadZone" style="position:relative"
+                         ondragover="handleDropZoneDragOver(event)"
+                         ondragleave="handleDropZoneDragLeave(event)">
+                        <input type="file" id="imgUploadInput" multiple
+                            accept="image/png,image/jpeg,image/jpg,image/gif,image/webp,.png,.jpg,.jpeg,.gif,.webp"
+                            style="position:absolute;inset:0;opacity:0;cursor:pointer;z-index:10">
+                        <div class="upload-zone-icon">📁</div>
+                        <p><strong>点击选择图片</strong> 或拖拽到此处</p>
+                        <p class="hint">支持 PNG / JPG / GIF / WebP，可一次性上传多个文件</p>
+                    </div>
+                </div>
+                <div class="form-group" id="imgUploadOptions" style="display:none">
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+                        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#c9d1d9;cursor:pointer">
+                            <input type="checkbox" id="imgUploadAutoRatio" checked>
+                            <span>检测长宽比（非 1:1 时显示警告）</span>
+                        </label>
+                        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#c9d1d9;cursor:pointer">
+                            <input type="checkbox" id="imgUploadSkipExisting" checked>
+                            <span>已存在的文件自动跳过（不覆盖）</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" id="imgUploadListGroup" style="display:none">
+                    <label class="form-label">文件处理结果</label>
+                    <div id="imgUploadList" style="display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto;padding:4px 2px"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="imgUploadSummary" style="flex:1;color:#8b949e;font-size:12px"></span>
+                <button id="imgUploadClearBtn" class="btn btn-ghost btn-sm" onclick="clearImgUploadResults()" style="display:none">🧹 清空结果</button>
+                <button id="imgUploadStartBtn" class="btn btn-primary" onclick="startImgUpload()" style="display:none">▶ 开始上传</button>
+                <button class="btn btn-secondary" onclick="closeImgUploadModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font Upload Modal -->
+    <div class="modal-overlay" id="fontUploadModal">
+        <div class="modal" style="width:580px">
+            <div class="modal-header">
+                <span class="modal-title">🔤 上传字体到本区块</span>
+                <button class="modal-close" onclick="closeFontUploadModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">目标目录</label>
+                    <div class="img-upload-target" id="fontUploadTarget">—</div>
+                    <div class="form-hint">上传的 .ttf / .otf 文件会存到上面这个目录，同时自动生成对应的 Minecraft 字体 JSON 配置。</div>
+                </div>
+                <div class="form-group">
+                    <div class="upload-zone" id="fontUploadZone" style="position:relative"
+                         ondragover="handleDropZoneDragOver(event)"
+                         ondragleave="handleDropZoneDragLeave(event)">
+                        <input type="file" id="fontUploadInput" multiple
+                            accept=".ttf,.otf,font/ttf,font/otf"
+                            style="position:absolute;inset:0;opacity:0;cursor:pointer;z-index:10">
+                        <div class="upload-zone-icon">🔤</div>
+                        <p><strong>点击选择字体文件</strong> 或拖拽到此处</p>
+                        <p class="hint">支持 .ttf / .otf，可一次性上传多个文件</p>
+                    </div>
+                </div>
+                <div class="form-group" id="fontUploadListGroup" style="display:none">
+                    <label class="form-label">待上传文件</label>
+                    <div id="fontUploadList" style="display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto;padding:4px 2px"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="fontUploadSummary" style="flex:1;color:#8b949e;font-size:12px"></span>
+                <button id="fontUploadClearBtn" class="btn btn-ghost btn-sm" onclick="clearFontUploadResults()" style="display:none">🧹 清空结果</button>
+                <button id="fontUploadStartBtn" class="btn btn-primary" onclick="startFontUpload()" style="display:none">▶ 开始上传</button>
+                <button class="btn btn-secondary" onclick="closeFontUploadModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font JSON Editor Modal -->
+    <div class="modal-overlay" id="fontJsonEditorModal" style="z-index:1100">
+        <div class="modal" style="width:760px;max-height:88vh">
+            <div class="modal-header">
+                <span class="modal-title" id="fontJsonEditorTitle">🎨 字体 JSON 编辑器</span>
+                <button class="modal-close" onclick="closeFontJsonEditor()">×</button>
+            </div>
+            <div class="modal-body" id="fontJsonEditorBody" style="overflow-y:auto;max-height:calc(88vh - 110px)"></div>
+            <div class="modal-footer">
+                <span id="fontJsonEditorSummary" style="flex:1;color:#8b949e;font-size:12px"></span>
+                <button class="btn btn-ghost btn-sm" onclick="addFontJsonProvider()">+ 添加 provider</button>
+                <button class="btn btn-primary" onclick="saveFontJsonEditor()">💾 保存 JSON</button>
+                <button class="btn btn-secondary" onclick="closeFontJsonEditor()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Subfolder Modal -->
+    <div class="modal-overlay" id="addSFModal">
+        <div class="modal" style="width:520px">
+            <div class="modal-header">
+                <span class="modal-title" id="addSFModalTitle">📁 添加子文件夹标签</span>
+                <button class="modal-close" onclick="closeAddSFModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" id="addSFFoldersListGroup">
+                    <label class="form-label">从当前目录下的第一级子文件夹选择</label>
+                    <div id="addSFFoldersList" style="display:flex;flex-wrap:wrap;gap:6px;padding:4px 2px;max-height:140px;overflow-y:auto">
+                        <span style="color:#8b949e;font-size:12px">暂无未添加的子文件夹</span>
+                    </div>
+                    <div class="form-hint" id="addSFFoldersListHint">点击下方文件夹即可自动填入；显示名可单独修改。</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" id="addSFNewDirLabel">或输入新子文件夹名（不存在则自动新建）</label>
+                    <input type="text" class="form-input" id="addSFNewDir" placeholder="black">
+                    <div class="form-hint" id="addSFNewDirHint">只能使用小写字母、数字、下划线。</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">按钮显示名 *</label>
+                    <input type="text" class="form-input" id="addSFDisplayName" placeholder="黑色箭头">
+                    <div class="form-hint">玩家在游戏界面看到的按钮文字。留空则与文件夹名相同。</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddSFModal()">取消</button>
+                <button class="btn btn-primary" id="addSFConfirmBtn" onclick="confirmAddSFFromTab()">添加</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="pickPathModal">
+        <div class="modal" style="width:560px">
+            <div class="modal-header">
+                <span class="modal-title">📂 选择资源文件夹</span>
+                <button class="modal-close" onclick="closePickPathModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">面包屑</label>
+                    <div id="pickPathBreadcrumb" style="display:flex;flex-wrap:wrap;gap:4px;padding:4px 2px;font-size:12px"></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">当前文件夹</label>
+                    <div id="pickPathCurrent" style="font-family:monospace;font-size:12px;color:#79c0ff;padding:4px 2px;word-break:break-all">—</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">子文件夹</label>
+                    <div id="pickPathTree" class="pick-path-tree" style="max-height:260px;overflow-y:auto;border:1px solid #21262d;border-radius:5px;background:#0d1117;padding:4px 0">
+                        <div style="padding:16px;color:#8b949e;font-size:12px;text-align:center">加载中…</div>
+                    </div>
+                    <div class="form-hint">点击子文件夹可进入下一级；点击「选择此文件夹」把当前目录填入资源路径。</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span style="flex:1;color:#8b949e;font-size:12px" id="pickPathPreview">将填入：—</span>
+                <button class="btn btn-secondary" onclick="closePickPathModal()">取消</button>
+                <button class="btn btn-primary" id="pickPathConfirmBtn" onclick="confirmPickPath()">✓ 选择此文件夹</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Image Modal: shown after uploading one or more images so the
+         user can adjust the displayed file names (the thumbnail strip shows
+         each file's stem, i.e. its filename without the extension). -->
+    <div class="modal-overlay" id="imageRenameModal">
+        <div class="modal" style="width:560px">
+            <div class="modal-header">
+                <span class="modal-title">📝 重命名上传的图片</span>
+                <button class="modal-close" onclick="closeImageRenameModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">已上传的图片（点击名称可编辑）</label>
+                    <div id="imageRenameList" style="display:flex;flex-direction:column;gap:6px;max-height:320px;overflow-y:auto;padding:4px 2px"></div>
+                    <div class="form-hint">修改名称后会同时重命名资源包中的文件，使缩略图和文件名保持一致。留空则跳过该文件。</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeImageRenameModal()">跳过</button>
+                <button class="btn btn-primary" onclick="confirmImageRename()">✓ 保存命名</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Font Modal: lets the user edit display name + font ID, and
+         optionally rename the corresponding .ttf/.json files in the zip. -->
+    <div class="modal-overlay" id="renameFontModal">
+        <div class="modal" style="width:480px">
+            <div class="modal-header">
+                <span class="modal-title">✏️ 重命名字体</span>
+                <button class="modal-close" onclick="closeRenameFontModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">显示名 *</label>
+                    <input type="text" class="form-input" id="renameFontDisplayName" placeholder="OPPO Sans">
+                    <div class="form-hint">玩家在游戏内看到的字体按钮文字。</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Font ID *</label>
+                    <input type="text" class="form-input" id="renameFontId" placeholder="oppo_sans 或 minecraft:oppo_sans">
+                    <div class="form-hint">对应 <code>assets/&lt;命名空间&gt;/font/&lt;id&gt;.json</code> 文件名。可带或不带命名空间前缀；只能使用小写字母、数字、下划线、短横线。</div>
+                </div>
+                <div class="form-group" id="renameFontFileGroup">
+                    <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#c9d1d9;cursor:pointer">
+                        <input type="checkbox" id="renameFontRenameFile" checked>
+                        <span id="renameFontFileLabel">同时重命名对应的 .ttf / .json 文件</span>
+                    </label>
+                    <div class="form-hint">未勾选时仅修改字体配置，不动资源包内的文件。</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeRenameFontModal()">取消</button>
+                <button class="btn btn-primary" onclick="confirmRenameFont()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font Config Modal: shown right after a font is uploaded -->
+    <div class="modal-overlay" id="fontConfigModal">
+        <div class="modal" style="width:560px">
+            <div class="modal-header">
+                <span class="modal-title" id="fontConfigModalTitle">🔤 字体配置</span>
+                <button class="modal-close" onclick="closeFontConfigModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">字体显示名称 *</label>
+                    <input type="text" class="form-input" id="fcDisplayName" placeholder="OPPO Sans">
+                    <div class="form-hint">玩家在游戏内看到的字体按钮文字。</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">字体 ID *</label>
+                    <input type="text" class="form-input" id="fcFontId" placeholder="oppo_sans">
+                    <div class="form-hint">用于 <code>assets/&lt;命名空间&gt;/font/&lt;id&gt;.json</code> 文件名。只能使用小写字母、数字、下划线。</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">命名空间 *</label>
+                    <input type="text" class="form-input" id="fcNs" placeholder="minecraft">
+                    <div class="form-hint">对应 <code>assets/&lt;命名空间&gt;/</code>。</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">源字体文件</label>
+                    <input type="text" class="form-input" id="fcFontPath" readonly style="background:#0d1117;color:#79c0ff;font-family:monospace">
+                    <div class="form-hint">已上传到资源包的字体文件路径。</div>
+                </div>
+                <div class="form-group" id="fcAdvancedGroup">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="openFontConfigAdvancedEditor()" id="fcAdvancedBtn">✏ 图形化编辑 JSON providers</button>
+                    <div class="form-hint">点击打开完整的 providers 编辑器（含字符映射、字号、采样率等）。</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeFontConfigModal()">取消</button>
+                <button class="btn btn-primary" onclick="confirmFontConfigModal()">💾 保存并加入列表</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New File Modal -->
+    <div class="modal-overlay" id="newFileModal">
+        <div class="modal" style="width:480px">
+            <div class="modal-header">
+                <span class="modal-title">📄 新建文件</span>
+                <button class="modal-close" onclick="closeNewFileModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">文件名（不含扩展名）*</label>
+                    <input type="text" class="form-input" id="newFileName" placeholder="新文件" autocomplete="off" spellcheck="false">
+                    <div class="form-hint">避免使用 / \ : * ? " &lt; &gt; | 等非法字符</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">扩展名（不含点，可留空）</label>
+                    <input type="text" class="form-input" id="newFileExt" list="newFileExtList" placeholder="txt" autocomplete="off" spellcheck="false">
+                    <datalist id="newFileExtList">
+                        <option value="txt"><option value="json"><option value="mcmeta">
+                        <option value="md"><option value="html"><option value="css"><option value="js">
+                    </datalist>
+                    <div class="form-hint">留空将创建无扩展名的纯文本文件。</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeNewFileModal()">取消</button>
+                <button class="btn btn-primary" id="newFileCreateBtn" onclick="confirmNewFile()">📄 创建</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Preview Lightbox (gallery-style, matches index.html) -->
+    <div class="lightbox" id="imgPreviewOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+        <span class="lightbox-counter" id="imgPreviewCounter">1 / 1</span>
+        <button class="lightbox-nav lightbox-prev" id="imgPreviewPrev" type="button" onclick="previewPrevImage()" aria-label="上一张">‹</button>
+        <button class="lightbox-nav lightbox-next" id="imgPreviewNext" type="button" onclick="previewNextImage()" aria-label="下一张">›</button>
+        <button class="lightbox-close" id="imgPreviewClose" type="button" onclick="closeImagePreview()" aria-label="关闭 (Esc)">×</button>
+        <div class="lightbox-image-wrap">
+            <img class="lightbox-image" id="imgPreviewImg" alt="">
+        </div>
+        <button class="lightbox-zoom-display" id="imgPreviewZoomLevel" type="button" onclick="resetPreviewZoom()" title="重置缩放 (0)">100%</button>
+        <button class="lightbox-action zoom-out" id="imgPreviewZoomOut" type="button" onclick="zoomOutPreview()" title="缩小 (-)">−</button>
+        <button class="lightbox-action zoom-in"  id="imgPreviewZoomIn"  type="button" onclick="zoomInPreview()"  title="放大 (+)">+</button>
+        <div class="lightbox-loading" id="imgPreviewLoading" style="display:none"><div class="spinner"></div><span id="imgPreviewLoadingText">加载中…</span></div>
+        <div class="lightbox-error"   id="imgPreviewError"   style="display:none"><div class="lightbox-error-icon">❌</div><span id="imgPreviewErrorText">无法加载图片</span></div>
+    </div>
+
+    <!-- Text Editor Overlay -->
+    <div class="text-editor-overlay" id="textEditorOverlay">
+        <div class="text-editor-toolbar">
+            <button class="te-back" id="teBackBtn" onclick="closeTextEditor(true)" title="返回文件夹 (Esc)">
+                <span>◀</span><span>返回</span>
+            </button>
+            <span class="te-name" id="teFileName">file.json</span>
+            <span class="te-path" id="teFilePath">assets/foo/bar.json</span>
+            <span class="te-dirty" id="teDirtyBadge">● 未保存</span>
+            <button class="te-save" id="teSaveBtn" onclick="saveTextEditor()" title="保存 (Ctrl+S)">
+                <span>💾</span><span>保存</span>
+            </button>
+            <button class="te-close" onclick="closeTextEditor(true)" title="关闭 (Esc)">×</button>
+        </div>
+        <div class="text-editor-body" id="teBody"></div>
+        <div class="text-editor-footer">
+            <span class="te-status" id="teStatus">加载中...</span>
+            <span class="te-meta" id="teMeta"></span>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <span id="toastMsg">操作成功</span>
+    </div>
+</body>
+</html>

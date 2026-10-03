@@ -1,0 +1,54 @@
+<!--
+  Shared site header (English, light variant).
+  Loaded by js/components.js for /en/* pages when data-theme is not "dark".
+
+  All hrefs below are written as depth-2-relative paths (prefixed with `../../`),
+  which are also valid for depth-1 pages (the extra `../` resolves to project root
+  and the path is still correct). rewriteComponentLinks() further corrects them.
+-->
+<header class="site-header">
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+  <a href="../../en/index.html" class="logo">Ocelot Sign Mod<span class="logo-badge">Official Version</span><span class="logo-badge">MishangUC Version</span></a>
+  <nav class="site-nav">
+    <a data-key="home"   href="../../en/index.html">Home</a>
+    <a data-key="docs"   href="../../en/guide/sign-usage.html">Docs</a>
+    <a data-key="plaza"  href="../../en/guide/plaza/creative-plaza.html">Creative Plaza</a>
+    <a data-key="tool"   href="../../en/tool-packmaker.html">Resource Pack Maker</a>
+
+    <a data-key="download" href="../../en/index.html#downloads">Download &amp; Feedback</a>
+
+    <div class="lang-switcher">
+      <!-- Inline hrefs are placeholders; initLangSwitcher() rewrites them via PAGE_CATALOGUE. -->
+      <a href="../../index.html" class="lang" data-lang="zh">中文</a>
+      <span class="lang-divider">/</span>
+      <a href="../../en/index.html" class="lang active" data-lang="en">EN</a>
+    </div>
+  </nav>
+  <button type="button" class="nav-toggle" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</header>

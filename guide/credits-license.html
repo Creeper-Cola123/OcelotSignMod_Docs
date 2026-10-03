@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鸣谢、模组声明与协议 | 豹猫指示牌模组</title>
+    <link rel="stylesheet" href="../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../css/layout.css?v=20261004">
+    <link rel="stylesheet" href="../css/content.css?v=20261004">
+    <style>
+    /* ========== Credits section ========== */
+    /* Outer: one column, role groups stack vertically */
+    .credits-section {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        margin-bottom: 32px;
+    }
+    /* Inner: cards inside each role group split into two columns */
+    .credits-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    .credits-col-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #d4c9a8;
+    }
+    @media (max-width: 640px) {
+        .credits-cards { grid-template-columns: 1fr; gap: 10px; }
+    }
+    .credit-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 16px;
+        background: rgba(255,255,255,0.55);
+        border: 1px solid rgba(0,0,0,0.08);
+        border-radius: 10px;
+        transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .credit-card:hover {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        transform: translateY(-1px);
+    }
+    .credit-avatar {
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: 0;
+        overflow: hidden;
+        background: #f0f0f0;
+        object-fit: cover;
+    }
+    .credit-avatar--lead  { box-shadow: 0 0 0 2px #e89b3c, 0 0 0 4px rgba(232,155,60,0.22); }
+    .credit-avatar--guide { box-shadow: 0 0 0 2px #6ab04c, 0 0 0 4px rgba(106,176,76,0.22); }
+    .credit-avatar--test  { box-shadow: 0 0 0 2px #74b9ff, 0 0 0 4px rgba(116,185,255,0.22); }
+    .credit-avatar--contrib { box-shadow: 0 0 0 2px #a29bfe, 0 0 0 4px rgba(162,155,254,0.22); }
+    .credit-avatar--solid { box-shadow: 0 0 0 2px #fd79a8, 0 0 0 4px rgba(253,121,168,0.22); }
+    .credit-info { min-width: 0; }
+    .credit-name {
+        font-weight: 600;
+        font-size: 15px;
+        color: #222;
+        margin-bottom: 3px;
+    }
+    .credit-role {
+        font-size: 13px;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    /* ========== Social link icons in credit cards ========== */
+    .credit-links {
+        display: flex;
+        gap: 6px;
+        margin-top: 7px;
+        flex-wrap: wrap;
+    }
+    .credit-links a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 6px;
+        text-decoration: none !important;
+        transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .credit-links a:hover { transform: translateY(-2px); }
+    .credit-links a:focus-visible { outline: 2px solid #4a90d9; outline-offset: 2px; }
+    .credit-links a svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* Bilibili */
+    .credit-links .link-bilibili {
+        background: rgba(0, 175, 240, 0.10);
+        border: 1px solid rgba(0, 175, 240, 0.28);
+    }
+    .credit-links .link-bilibili:hover {
+        background: rgba(0, 175, 240, 0.22);
+        box-shadow: 0 3px 8px rgba(0, 175, 240, 0.26);
+    }
+    .credit-links .link-bilibili svg { fill: #00aff0; }
+
+    /* GitHub */
+    .credit-links .link-github {
+        background: rgba(36, 41, 46, 0.08);
+        border: 1px solid rgba(36, 41, 46, 0.18);
+    }
+    .credit-links .link-github:hover {
+        background: rgba(36, 41, 46, 0.16);
+        box-shadow: 0 3px 8px rgba(36, 41, 46, 0.22);
+    }
+    .credit-links .link-github svg { fill: #24292e; }
+
+    /* External / personal site */
+    .credit-links .link-external {
+        background: rgba(74, 144, 217, 0.10);
+        border: 1px solid rgba(74, 144, 217, 0.28);
+    }
+    .credit-links .link-external:hover {
+        background: rgba(74, 144, 217, 0.20);
+        box-shadow: 0 3px 8px rgba(74, 144, 217, 0.22);
+    }
+    .credit-links .link-external svg { fill: #4a90d9; }
+
+    /* ========== Warning box (red-line rules) ========== */
+    .warning-box {
+        background: linear-gradient(135deg, #fff5f5, #ffe9e9);
+        border-left: 4px solid #e74c3c;
+        border-radius: 6px;
+        padding: 16px 20px 16px 36px;
+        margin: 16px 0 24px;
+        box-shadow: 0 2px 8px rgba(231, 76, 60, 0.08);
+    }
+    .warning-box ol {
+        margin: 0;
+        padding-left: 20px;
+        color: #555;
+        line-height: 1.85;
+    }
+    .warning-box ol li::marker {
+        color: #e74c3c;
+        font-weight: 700;
+    }
+
+    /* ========== External link button (inside .info-list) ========== */
+    .info-list a[target="_blank"] {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: 4px;
+        padding: 3px 12px;
+        background: linear-gradient(135deg, rgba(74,144,217,0.10), rgba(74,144,217,0.20));
+        color: #2a6cb0;
+        border: 1px solid rgba(74,144,217,0.32);
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background 0.18s, border-color 0.18s,
+                    box-shadow 0.18s, transform 0.18s, color 0.18s;
+    }
+    .info-list a[target="_blank"]:hover {
+        background: linear-gradient(135deg, rgba(74,144,217,0.22), rgba(74,144,217,0.34));
+        border-color: rgba(74,144,217,0.55);
+        color: #1d5494;
+        box-shadow: 0 2px 6px rgba(74,144,217,0.22);
+        transform: translateY(-1px);
+        text-decoration: none;
+    }
+    .info-list a[target="_blank"]::after {
+        content: "↗";
+        font-size: 12px;
+        line-height: 1;
+        opacity: 0.7;
+        transition: transform 0.18s, opacity 0.18s;
+    }
+    .info-list a[target="_blank"]:hover::after {
+        transform: translate(2px, -2px);
+        opacity: 1;
+    }
+    .info-list a[target="_blank"]:focus-visible {
+        outline: 2px solid #4a90d9;
+        outline-offset: 2px;
+    }
+
+    /* ========== Notice box (soft-yellow, for friendly disclaimers) ========== */
+    /* Removed — now plain paragraphs */
+    </style>
+</head>
+<body>
+    <div id="site-header"></div>
+    <div class="main-container">
+        <div id="site-sidebar"></div>
+
+        <main class="content">
+        <div class="content-inner">
+
+            <h1>鸣谢、模组声明与协议</h1>
+
+            <p>本模组的成功开发离不开沙盒游戏社区中众多优秀创作者的无私付出。谨向以下团队和个人致以最诚挚的感谢！</p>
+
+            <h2 id="credits">鸣谢</h2>
+
+            <div class="credits-section">
+
+                <div class="credits-col">
+                    <h3 class="credits-col-title">豹猫指示牌模组开发者</h3>
+                    <div class="credits-cards">
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--lead" src="../pic/avatar/ocelot_creeper_cola.webp?v=20261004" alt="豹猫苦力怕可乐">
+                            <div class="credit-info">
+                                <div class="credit-name">豹猫苦力怕可乐 <span style="font-size:12px;color:#888;font-weight:400">Ocelot Creeper Cola</span></div>
+                                <div class="credit-role">项目组长 / 代码 / 模型 / 绘图</div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/226720371" target="_blank" rel="noopener noreferrer" title="哔哩哔哩">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                    <a class="link-github" href="https://github.com/Creeper-Cola123" target="_blank" rel="noopener noreferrer" title="GitHub">
+                                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.595 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--guide" src="../pic/avatar/hualaohua.webp?v=20261004" alt="花老花">
+                            <div class="credit-info">
+                                <div class="credit-name">花老花 <span style="font-size:12px;color:#888;font-weight:400">Hualaohua</span></div>
+                                <div class="credit-role">交通标志指导</div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/646146582" target="_blank" rel="noopener noreferrer" title="哔哩哔哩">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--test" src="../pic/avatar/xfunny.webp?v=20261004" alt="XFunny">
+                            <div class="credit-info">
+                                <div class="credit-name">XFunny</div>
+                                <div class="credit-role">游戏测试</div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/34849566" target="_blank" rel="noopener noreferrer" title="哔哩哔哩">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                    <a class="link-github" href="https://github.com/X-Funny" target="_blank" rel="noopener noreferrer" title="GitHub">
+                                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.595 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="credits-col">
+                    <h3 class="credits-col-title">迷上城建模组开发者</h3>
+                    <div class="credits-cards">
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--solid" src="../pic/avatar/solid_block.webp?v=20261004" alt="Solid-Block">
+                            <div class="credit-info">
+                                <div class="credit-name">Solid-Block <span style="font-size:12px;color:#888;font-weight:400">Solid-Block</span></div>
+                                <div class="credit-role">迷上城建（MISHANGUC）<br>模组开发者</div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/87328531" target="_blank" rel="noopener noreferrer" title="哔哩哔哩">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                    <a class="link-github" href="https://github.com/SolidBlock-cn" target="_blank" rel="noopener noreferrer" title="GitHub">
+                                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.595 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="credits-col">
+                    <h3 class="credits-col-title">Pull Request 贡献者</h3>
+                    <div class="credits-cards">
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--contrib" src="../pic/avatar/beigu.webp?v=20261004" alt="北咕">
+                            <div class="credit-info">
+                                <div class="credit-name">北咕 <span style="font-size:12px;color:#888;font-weight:400">Beigu</span></div>
+                                <div class="credit-role">1.19.2 移植者</div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/3493084226652280" target="_blank" rel="noopener noreferrer" title="哔哩哔哩">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                    <a class="link-github" href="https://github.com/BGSDT" target="_blank" rel="noopener noreferrer" title="GitHub">
+                                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.595 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credit-card">
+                            <img class="credit-avatar credit-avatar--contrib" src="../pic/avatar/pigeon0v0.webp?v=20261004" alt="鸽秋">
+                            <div class="credit-info">
+                                <div class="credit-name">鸽秋 <span style="font-size:12px;color:#888;font-weight:400">Pigeon0v0</span></div>
+                                <div class="credit-role">26.1.2 移植者</div>
+                                <div class="credit-links">
+                                    <a class="link-bilibili" href="https://space.bilibili.com/354878609" target="_blank" rel="noopener noreferrer" title="哔哩哔哩">
+                                        <svg viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.94.94 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4l.027.027c.249.248.373.551.373.907 0 .355-.124.657-.373.906L17.813 4.653zM9.12 14.987l3.52 2.053 3.52-2.053v-2.973L12.64 9.96l-3.52 2.053v2.973zM9.574 7.667l3.146 1.84-3.146 1.84-3.146-1.84 3.146-1.84zm9.773 2.227l-3.146-1.84 3.146-1.84 3.146 1.84-3.146 1.84z"/></svg>
+                                    </a>
+                                    <a class="link-github" href="https://github.com/Pigeon0v0" target="_blank" rel="noopener noreferrer" title="GitHub">
+                                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.595 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr>
+
+            <h2 id="self-license">一、本模组开源协议说明</h2>
+            <p>本模组采用 LGPL 3.0 (GNU Lesser General Public License v3.0) 协议进行开源。根据该协议的规定，您可以在遵循协议条款的前提下，自由地使用、复制、修改和分发本模组。</p>
+
+            <h3 id="self-license-fork">1. 二次开发与分发规范</h3>
+            <p>您完全可以基于《豹猫指示牌模组》进行二次开发或二次分发，但必须严格遵守以下规定：</p>
+            <ol class="info-list">
+                <li>您修改后的核心代码必须同样保持开源。</li>
+                <li>在您发布修改版时，必须在模组内部、发布页面、项目文档、README 等所有显著位置，明确标注原作者及源代码来源。</li>
+                <li>严禁声明整个模组为您个人或团队单独独立制作。您须在各个发布渠道明显标注："本模组基于《豹猫指示牌模组》二次修改而成"。</li>
+                <li>如需对本模组进行深度二次开发，建议提前与原作者取得联系，就相关合作事宜进行沟通。</li>
+                <li>修改后的作品不得与官方版《豹猫指示牌模组》造成混淆，或任何可能使玩家误以为该作品为官方发布的要素。</li>
+            </ol>
+
+            <h3 id="self-license-prohibited">2. 禁止行为（红线规则）</h3>
+            <p>以下行为被视为违反开源协议及社区规范，是<strong>严格禁止</strong>的：</p>
+            <ol class="info-list">
+                <li>在使用代码时不遵守 LGPL 3.0 协议。</li>
+                <li>利用开源代码向模组内添加任何恶意、破坏性或窃取用户隐私的代码。</li>
+                <li>冒充《豹猫指示牌模组》的原作者，或声称您修改后的版本为官方发布版本。</li>
+                <li>将《豹猫指示牌模组》上传至淘宝、闲鱼等电商平台进行商业售卖。</li>
+                <li>将本模组或其修改版搬运至《网易我的世界》组件中心并设置为付费下载。</li>
+            </ol>
+
+            <h3 id="self-license-unaffiliated">3. 关于非官方分支的说明</h3>
+            <p>本页所呈现之内容，包括但不限于代码、模型、文档及官方资源，均由原作者及其开发团队负责开发与维护。请知悉：原作者仅对《豹猫指示牌模组》官方版本中明确标注的内容承担相应责任。</p>
+            <p>对于基于本模组二次开发而成的非官方分支，其在代码实现、资源整合、版本兼容等方面均由该分支的发布者与维护者独立负责。如您在使用相关分支时遇到任何问题，建议优先通过对应分支的官方渠道联系其作者，以获取更直接、更高效的支持与解答。</p>
+            <p>原作者团队始终欢迎并感谢每一位为模组生态添砖加瓦的贡献者，也会在能力范围内为社区提供力所能及的协助。因精力与维护范围所限，对非官方分支的具体表现不作额外承诺，恳请理解与支持。</p>
+
+            <hr>
+
+            <h2 id="mishanguc">二、前置模组声明（MISHANGUC）</h2>
+
+            <ul class="info-list">
+                <li><strong>前置模组名称：</strong>MISHANGUC（迷上城建）</li>
+                <li><strong>开源许可协议：</strong>LGPL 3.0（GNU Lesser General Public License v3.0）
+                    → <a href="https://www.gnu.org/licenses/lgpl-3.0.html" target="_blank" rel="noopener noreferrer">查看 GNU LGPL v3.0 协议原文</a>
+                </li>
+                <li><strong>开源仓库链接：</strong>SolidBlock-cn/mishanguc GitHub 官方仓库
+                    → <a href="https://github.com/SolidBlock-cn/mishanguc" target="_blank" rel="noopener noreferrer">打开 GitHub 仓库</a>
+                </li>
+                <li><strong>合规性说明：</strong>本衍生模组在 LGPL 3.0 协议允许的范围内以动态链接或附库的形式进行，完整保留原作者版权声明。</li>
+            </ul>
+
+            <hr>
+
+            <h2 id="fonts">三、字体使用声明</h2>
+            <p>本模组在用户交互界面（UI）设计中引入了以下多款字体资产，均已按照版权方官方许可合规内嵌：</p>
+
+            <h3 id="font-misans">1. MiSans</h3>
+            <ul class="info-list">
+                <li><strong>版权所有方：</strong>小米公司（Xiaomi）</li>
+                <li><strong>授权协议：</strong>《MiSans 字体免费商用及内嵌许可协议》</li>
+                <li><strong>官方资源链接：</strong>Xiaomi HyperOS 字体官网
+                    → <a href="https://hyperos.mi.com/font/zh/" target="_blank" rel="noopener noreferrer">访问 Xiaomi 官网</a>
+                </li>
+                <li><strong>授权协议链接：</strong>许可协议与 FAQ
+                    → <a href="https://hyperos.mi.com/font/zh/faq/" target="_blank" rel="noopener noreferrer">许可协议与 FAQ</a>
+                </li>
+            </ul>
+
+            <h3 id="font-roadgeek">2. Roadgeek 2014</h3>
+            <ul class="info-list">
+                <li><strong>作者：</strong>Sammi Ta（基于 FHWA 标准设计）</li>
+                <li><strong>授权协议：</strong>Creative Commons Attribution-ShareAlike 4.0 International（CC BY-SA 4.0）</li>
+                <li><strong>字体仓库链接：</strong>sammdot/roadgeek-fonts GitHub 官方仓库
+                    → <a href="https://github.com/sammdot/roadgeek-fonts" target="_blank" rel="noopener noreferrer">打开 GitHub 仓库</a>
+                </li>
+            </ul>
+
+            <h3 id="font-source-han-sans">3. 思源黑体（Source Han Sans）</h3>
+            <ul class="info-list">
+                <li><strong>授权协议：</strong>SIL Open Font License 1.1（OFL）</li>
+                <li><strong>字体仓库链接：</strong>adobe-fonts/source-han-sans GitHub 官方仓库
+                    → <a href="https://github.com/adobe-fonts/source-han-sans" target="_blank" rel="noopener noreferrer">打开 GitHub 仓库</a>
+                </li>
+            </ul>
+
+            <h3 id="font-source-han-serif">4. 思源宋体（Source Han Serif）</h3>
+            <ul class="info-list">
+                <li><strong>授权协议：</strong>SIL Open Font License 1.1（OFL）</li>
+                <li><strong>字体仓库链接：</strong>adobe-fonts/source-han-serif GitHub 官方仓库
+                    → <a href="https://github.com/adobe-fonts/source-han-serif" target="_blank" rel="noopener noreferrer">打开 GitHub 仓库</a>
+                </li>
+            </ul>
+
+            <hr>
+
+            <h2 id="website-statement">官网协议</h2>
+            <p>本网页虽已开源，但与模组源码不同，网页部分由作者保留所有权利（包括但不限于网页资源包创建器）。严禁任何人对网页代码及资源进行二次使用、修改或分发，违者将追究侵权责任。</p>
+            <p><strong>注：</strong>本协议不包含"创意广场"板块。"创意广场"的网页内容仍遵守上述规定，但"创意广场"内用户上传的 ZIP 文件可由上传的用户决定，采取其他适用的开源或授权协议。</p>
+
+        </div>
+    </main>
+    </div>
+
+    <!-- Right-side page TOC: auto-built from H1-H4 in the article body. -->
+    <aside class="page-toc" id="pageToc" aria-label="本页导航">
+        <div class="page-toc-title">本页导航</div>
+        <nav class="page-toc-nav" id="pageTocNav"></nav>
+    </aside>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" title="返回顶部">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">顶部</span>
+    </div>
+
+    <script src="../js/components.js?v=20261004"></script>
+    <script>
+    (function () {
+        var nav = document.getElementById('pageTocNav');
+        var content = document.querySelector('.content-inner') || document.querySelector('.content');
+        if (!nav || !content) return;
+
+        var headings = content.querySelectorAll('h1, h2, h3');
+        if (!headings.length) return;
+
+        // Assign stable ids to headings that don't have one yet.
+        var slugify = function (s) {
+            return s.toLowerCase()
+                .replace(/[^\p{L}\p{N}\s-]/gu, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .slice(0, 60) || 'section';
+        };
+        var usedIds = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            if (!h.id) {
+                var base = slugify(h.textContent);
+                var id = base;
+                var i = 2;
+                while (usedIds[id] || document.getElementById(id)) {
+                    id = base + '-' + i++;
+                }
+                h.id = id;
+            }
+            usedIds[h.id] = true;
+        });
+
+        // Build the nested list. Stack bottom is the root <ul>; every
+        // push appends a fresh child <ul> to the new <li> so deeper
+        // headings nest inside it.
+        var root = document.createElement('ul');
+        var stack = [{ level: 0, list: root }];
+
+        Array.prototype.forEach.call(headings, function (h) {
+            var level = parseInt(h.tagName.charAt(1), 10);
+            while (stack[stack.length - 1].level >= level) {
+                stack.pop();
+            }
+            var parentList = stack[stack.length - 1].list;
+            var li = document.createElement('li');
+            li.className = 'toc-h' + level;
+            var a = document.createElement('a');
+            a.href = '#' + h.id;
+            a.textContent = h.textContent;
+            a.dataset.targetId = h.id;
+            li.appendChild(a);
+            parentList.appendChild(li);
+            var childList = document.createElement('ul');
+            li.appendChild(childList);
+            stack.push({ level: level, list: childList });
+        });
+
+        nav.appendChild(root);
+
+        var links = nav.querySelectorAll('a');
+        var linkByHeading = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            var link = nav.querySelector('a[data-target-id="' + h.id + '"]');
+            if (link) linkByHeading[h.id] = { link: link, heading: h };
+        });
+
+        var setActive = function (id) {
+            Array.prototype.forEach.call(links, function (a) { a.classList.remove('is-active'); });
+            if (id && linkByHeading[id]) linkByHeading[id].link.classList.add('is-active');
+        };
+
+        // Click handler — smooth-scroll, then update URL without jumping.
+        Array.prototype.forEach.call(links, function (a) {
+            a.addEventListener('click', function (e) {
+                var target = document.getElementById(a.dataset.targetId);
+                if (!target) return;
+                e.preventDefault();
+                var headerOffset = 80;
+                var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+                setActive(a.dataset.targetId);
+                history.replaceState(null, '', '#' + a.dataset.targetId);
+            });
+        });
+
+        // Highlight the heading nearest the top of the viewport.
+        var visibleHeadings = [];
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                var id = entry.target.id;
+                var idx = visibleHeadings.findIndex(function (v) { return v.id === id; });
+                if (entry.isIntersecting) {
+                    if (idx === -1) visibleHeadings.push({ id: id, top: entry.boundingClientRect.top });
+                    else visibleHeadings[idx].top = entry.boundingClientRect.top;
+                } else if (idx !== -1) {
+                    visibleHeadings.splice(idx, 1);
+                }
+            });
+            if (!visibleHeadings.length) return;
+            visibleHeadings.sort(function (a, b) { return a.top - b.top; });
+            var pick = null;
+            for (var i = 0; i < visibleHeadings.length; i++) {
+                if (visibleHeadings[i].top >= 80) { pick = visibleHeadings[i]; break; }
+            }
+            if (!pick) pick = visibleHeadings[0];
+            setActive(pick.id);
+        }, {
+            rootMargin: '-80px 0px -55% 0px',
+            threshold: 0
+        });
+
+        Array.prototype.forEach.call(headings, function (h) { observer.observe(h); });
+    })();
+    </script>
+</body>
+</html>

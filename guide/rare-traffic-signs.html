@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>极其少见的交通标志解释 | 豹猫指示牌模组</title>
+    <link rel="stylesheet" href="../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../css/layout.css?v=20261004">
+    <link rel="stylesheet" href="../css/content.css?v=20261004">
+</head>
+<body>
+    <div id="site-header"></div>
+    <div class="main-container">
+        <div id="site-sidebar"></div>
+
+        <main class="content">
+        <div class="content-inner">
+            <h1>模组部分极其少见的交通标志解释</h1>
+
+<h2>1. 预告导向箭头</h2>
+
+<p>目前整个互联网有关预告导向箭头的资料是极其少的（几乎没有），如果你尝试询问 AI 什么是预告导向箭头，他也会给出不准确的答案，有关预告导向箭头的解释以下面为准：</p>
+
+<p>预告导向箭头是一种在中国大陆极其少数城市应用的交通标志。例如《DBJ61/T 72.2-2012 J12253-2013 · 第 2 部分》关于交通标志和标线的规定，在某些交叉口出口处会设置一至两组预告导向箭头，其尺寸与常规导向箭头相同，不过与常规导向箭头不同的是，预告导向箭头是虚线箭头。这些箭头的主要功能是提前告知驾驶员前方路口的车道分配情况，一般都出现在车流量较大路段的起点，提示驾驶人进入路段后的下一路口各车道导向方向，引导车辆提前择道，使得驾驶者能够有足够的时间调整自己的行车路线，从而有效减少了因临时变道而引发的交通拥堵及事故风险。</p>
+
+<div class="image-gallery">
+    <figure>
+        <img src="../pic/yg1.webp?v=20261004" alt="预告导向箭头示例 1">
+        <figcaption>预告导向箭头示例 一</figcaption>
+    </figure>
+    <figure>
+        <img src="../pic/yg2.webp?v=20261004" alt="预告导向箭头示例 2">
+        <figcaption>预告导向箭头示例 二</figcaption>
+    </figure>
+    <figure>
+        <img src="../pic/yg3.webp?v=20261004" alt="预告导向箭头示例 3">
+        <figcaption>预告导向箭头示例 三</figcaption>
+    </figure>
+</div>
+
+<h3>预告导向箭头设置示例</h3>
+
+<p>近年来，为了进一步提高道路通行效率并减少交通事故发生率，一些地方开始尝试通过增设分道指示牌来加强对于驾驶员的引导作用。然而，在实际操作过程中发现，大型悬臂式指示牌不仅占用较多的城市公共空间，还可能对周围环境美观度造成一定影响。因此，作为改善措施之一，预告导向箭头作为一种更为紧凑且不破坏城市景观的选择逐渐被更多地区采纳，尽管如此，这种新型标识系统在全国范围内的普及程度仍然相对较低。</p>
+
+<hr>
+
+<h2>2. 风雪路基标</h2>
+
+<p>风雪路基标也被称作路肩指示牌，是设置在风雪多发路段的警告标志类交通标识，外观为带有向下箭头的路标，也是风雪天气下的道路视线诱导设施。 常见于中国的新疆、黑龙江、西藏以及日本北海道等冬季积雪深厚、易发强风雪、白盲现象的地区。</p>
+
+<p>该标识主要布设在雪多风大的路段，核心作用是在积雪覆盖公路、风吹雪导致能见度极低，驾驶员无法看清道路边缘的情况下，通过箭头明确标示出道路两侧路基的位置，提醒驾驶员谨慎驾驶、减速慢行，避免车辆驶出路面，保障风雪天气下的行车安全。</p>
+
+<div class="image-gallery">
+    <figure>
+        <img src="../pic/fx1.webp?v=20261004" alt="风雪路基标示例 1">
+        <figcaption>风雪路基标示例 一</figcaption>
+    </figure>
+    <figure>
+        <img src="../pic/fx2.webp?v=20261004" alt="风雪路基标示例 2">
+        <figcaption>风雪路基标示例 二</figcaption>
+    </figure>
+</div>
+
+        </div>
+    </main>
+    </div>
+
+    <!-- Right-side page TOC: auto-built from H1-H4 in the article body. -->
+    <aside class="page-toc" id="pageToc" aria-label="本页导航">
+        <div class="page-toc-title">本页导航</div>
+        <nav class="page-toc-nav" id="pageTocNav"></nav>
+    </aside>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" title="回到顶部">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+    </div>
+
+    <script src="../js/components.js?v=20261004"></script>
+    <script>
+    (function () {
+        var nav = document.getElementById('pageTocNav');
+        var content = document.querySelector('.content-inner') || document.querySelector('.content');
+        if (!nav || !content) return;
+
+        var headings = content.querySelectorAll('h1, h2, h3');
+        if (!headings.length) return;
+
+        // Assign stable ids to headings that don't have one yet.
+        var slugify = function (s) {
+            return s.toLowerCase()
+                .replace(/[^\p{L}\p{N}\s-]/gu, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .slice(0, 60) || 'section';
+        };
+        var usedIds = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            if (!h.id) {
+                var base = slugify(h.textContent);
+                var id = base;
+                var i = 2;
+                while (usedIds[id] || document.getElementById(id)) {
+                    id = base + '-' + i++;
+                }
+                h.id = id;
+            }
+            usedIds[h.id] = true;
+        });
+
+        // Build the nested list. Stack bottom is the root <ul>; every
+        // push appends a fresh child <ul> to the new <li> so deeper
+        // headings nest inside it.
+        var root = document.createElement('ul');
+        var stack = [{ level: 0, list: root }];
+
+        Array.prototype.forEach.call(headings, function (h) {
+            var level = parseInt(h.tagName.charAt(1), 10);
+            while (stack[stack.length - 1].level >= level) {
+                stack.pop();
+            }
+            var parentList = stack[stack.length - 1].list;
+            var li = document.createElement('li');
+            li.className = 'toc-h' + level;
+            var a = document.createElement('a');
+            a.href = '#' + h.id;
+            a.textContent = h.textContent;
+            a.dataset.targetId = h.id;
+            li.appendChild(a);
+            parentList.appendChild(li);
+            var childList = document.createElement('ul');
+            li.appendChild(childList);
+            stack.push({ level: level, list: childList });
+        });
+
+        nav.appendChild(root);
+
+        var links = nav.querySelectorAll('a');
+        var linkByHeading = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            var link = nav.querySelector('a[data-target-id="' + h.id + '"]');
+            if (link) linkByHeading[h.id] = { link: link, heading: h };
+        });
+
+        var setActive = function (id) {
+            Array.prototype.forEach.call(links, function (a) { a.classList.remove('is-active'); });
+            if (id && linkByHeading[id]) linkByHeading[id].link.classList.add('is-active');
+        };
+
+        // Click handler — smooth-scroll, then update URL without jumping.
+        Array.prototype.forEach.call(links, function (a) {
+            a.addEventListener('click', function (e) {
+                var target = document.getElementById(a.dataset.targetId);
+                if (!target) return;
+                e.preventDefault();
+                var headerOffset = 80;
+                var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+                setActive(a.dataset.targetId);
+                history.replaceState(null, '', '#' + a.dataset.targetId);
+            });
+        });
+
+        // Highlight the heading nearest the top of the viewport.
+        var visibleHeadings = [];
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                var id = entry.target.id;
+                var idx = visibleHeadings.findIndex(function (v) { return v.id === id; });
+                if (entry.isIntersecting) {
+                    if (idx === -1) visibleHeadings.push({ id: id, top: entry.boundingClientRect.top });
+                    else visibleHeadings[idx].top = entry.boundingClientRect.top;
+                } else if (idx !== -1) {
+                    visibleHeadings.splice(idx, 1);
+                }
+            });
+            if (!visibleHeadings.length) return;
+            visibleHeadings.sort(function (a, b) { return a.top - b.top; });
+            var pick = null;
+            for (var i = 0; i < visibleHeadings.length; i++) {
+                if (visibleHeadings[i].top >= 80) { pick = visibleHeadings[i]; break; }
+            }
+            if (!pick) pick = visibleHeadings[0];
+            setActive(pick.id);
+        }, {
+            rootMargin: '-80px 0px -55% 0px',
+            threshold: 0
+        });
+
+        Array.prototype.forEach.call(headings, function (h) { observer.observe(h); });
+    })();
+    </script>
+</body>
+</html>

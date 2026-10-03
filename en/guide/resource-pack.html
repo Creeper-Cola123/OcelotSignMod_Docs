@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Font & Texture Resource Pack | Ocelot Sign Mod</title>
+    <link rel="stylesheet" href="../../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../../css/layout.css?v=20261004">
+    <link rel="stylesheet" href="../../css/content.css?v=20261004">
+</head>
+<body>
+    <div id="site-header"></div>
+    <div class="main-container">
+        <div id="site-sidebar"></div>
+
+        <main class="content">
+        <div class="content-inner">
+            <h1>Custom Font &amp; Texture Resource Pack | MishangUC &amp; Ocelot Sign Mod</h1>
+
+<p>To apply your favorite artistic fonts or custom images to in-game signs, you can achieve this by creating a resource pack tailored for the MishangUC mod.</p>
+
+<blockquote>
+<p>All texture and font files are stored inside the resource pack. When used on a multiplayer server, every player must install this identical resource pack; otherwise, other users will only see error codes instead of your customized signs.</p>
+</blockquote>
+
+<div class="info-box">
+  <p>💡 <strong>Tip</strong>: You can register textures and fonts by writing the JSON manually using the methods described in the sections below. If hand-writing feels too tedious, you can also use the Resource Pack Maker to generate a complete resource pack in one click — <a href="../tool-packmaker.html">Open the Resource Pack Maker →</a></p>
+</div>
+
+<hr>
+
+<h2>I. Build the Basic Resource Pack Structure</h2>
+
+<h3>1. Create the Root Folder</h3>
+
+<p>Create a blank new folder on your local computer and assign a name to it. For demonstration purposes, this guide uses the folder name <code>MyCustomPack</code>.</p>
+
+<h3>2. Write the pack.mcmeta Metadata File</h3>
+
+<p>Inside the <code>MyCustomPack</code> folder, create a new text document and rename it to <code>pack.mcmeta</code> (including the file extension). Open the file with Notepad or another code editor, paste the following content, then save changes:</p>
+
+<pre><code>{
+  "pack": {
+    "pack_format": 34,
+    "description": "Custom Font & Texture Resource Pack for Signs"
+  }
+}</code></pre>
+
+<blockquote>
+<p>📌 Note: <code>pack_format</code> indicates the compatible Minecraft game version. Common values: <code>15</code> for 1.20~1.20.1, <code>18</code> for 1.20.2, <code>22</code> for 1.19.4, <code>26</code> for 1.20.4, <code>34</code> for 1.21, <code>45</code> for 1.21.2, <code>61</code> for 1.21.4, etc. Modify this value according to your installed game version.</p>
+</blockquote>
+
+<h3>3. Set Up the Assets Folder and Namespace</h3>
+
+<p>Create a folder named <code>assets</code> within <code>MyCustomPack</code>. Open the <code>assets</code> folder and make another folder to serve as your custom <strong>Namespace</strong>. This example uses <code>my_pack</code> as the namespace folder name.</p>
+
+<blockquote>
+<p>Namespaces only support lowercase letters, digits and underscores; no other special characters are permitted. You will need to prefix all referenced in-game resources with <code>my_pack:</code> later on.</p>
+</blockquote>
+
+<h4>Directory Structure Preview</h4>
+
+<pre><code>MyCustomPack/
+ ├── pack.mcmeta
+ └── assets/
+     └── my_pack/  &lt;-- Your custom namespace</code></pre>
+
+<hr>
+
+<h2>II. Import &amp; Configure Custom Fonts (Native to MishangUC)</h2>
+
+<h3>1. Place Font Files</h3>
+
+<p>Inside <code>assets/my_pack/</code>, create a subfolder named <code>font</code>. Rename your prepared TrueType font (<code>.ttf</code>) file using only lowercase letters, digits and underscores (e.g., <code>custom_font.ttf</code>), then move the renamed font file into the <code>font</code> folder.</p>
+
+<h3>2. Create the Font JSON Configuration File</h3>
+
+<p>In the same <code>font</code> folder, create a new JSON text file (e.g., <code>title_style.json</code>; this filename becomes the font ID you call in-game). Insert the code below and save:</p>
+
+<pre><code>{
+    "providers": [
+        {
+            "type": "ttf",
+            "file": "my_pack:custom_font.ttf",
+            "size": 12.0,
+            "oversample": 8.0
+        },
+        {
+            "type": "legacy_unicode",
+            "sizes": "minecraft:font/glyph_sizes.bin",
+            "template": "minecraft:font/unicode_page_%s.png"
+        }
+    ]
+}</code></pre>
+
+<h4>Parameter Explanations</h4>
+<table>
+<thead>
+<tr><th>Parameter</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>"type": "ttf"</code></td><td>Declares that a custom TTF font is being used.</td></tr>
+<tr><td><code>"file": "my_pack:custom_font.ttf"</code></td><td>Defines the file path for the font, referencing your custom namespace folder <code>my_pack</code>.</td></tr>
+<tr><td><code>"size": 12.0</code></td><td>Base render size of the font in-game.</td></tr>
+<tr><td><code>"oversample": 8.0</code></td><td>Supersampling multiplier that improves font clarity and edge smoothness when zoomed in or rendered at high resolutions; higher values consume more video memory.</td></tr>
+<tr><td><code>legacy_unicode</code></td><td>If your custom TTF font lacks rare characters or special symbols, this segment fills missing glyphs with vanilla Minecraft characters to prevent garbled text or missing-block placeholders.</td></tr>
+</tbody>
+</table>
+
+<h3>3. Call the Custom Font In-Game</h3>
+
+<p>Within MishangUC, the syntax for text components on signs is: <code>-json &lt;code&gt;</code> (flexible JSON mode where quotation marks for keys and values are optional).</p>
+
+<p>After loading the resource pack, add a new line of text in the sign editor and input the following command:</p>
+
+<pre><code>-json {text:"Sample Text Display", color:gold, font:"my_pack:title_style"}</code></pre>
+
+<blockquote>
+<p>⚠️ Important Note: The font value follows the format <code>namespace:json_filename</code>, do <strong>NOT</strong> append the <code>.json</code> file extension!</p>
+</blockquote>
+
+<hr>
+
+<h2>III. Import &amp; Use Custom Textures (Native to MishangUC)</h2>
+
+<p>MishangUC comes with numerous built-in <code>-pattern</code> textures, but you need the <code>-texture</code> command to load external custom images onto signs.</p>
+
+<h3>1. Place Image Files</h3>
+
+<p>For example, if you create a <code>textures</code> subfolder under <code>assets/my_pack/</code>, and an additional <code>icon</code> folder inside it for organized file management.</p>
+
+<p>Then your image must be in <code>.png</code> format with a <strong>1:1</strong> aspect ratio. Rename the image using only lowercase letters, digits and underscores (e.g., <code>logo.png</code>), then move it to the <code>icon</code> folder.</p>
+
+<h3>2. Call the Custom Texture In-Game</h3>
+
+<p>Add a new text line to the sign and paste the following command directly:</p>
+
+<pre><code>-texture my_pack:icon/logo.png</code></pre>
+
+<p>The image will render directly on the sign. You may adjust its X/Y offset, scaling factor and other parameters via the in-game UI buttons, just like editing regular text.</p>
+
+<blockquote>
+<p>⚠️ Caution: External web links are unsupported; only local file paths within the resource pack work.</p>
+</blockquote>
+
+<hr>
+
+<h2>IV. Register Custom Textures &amp; Fonts to In-Game List (Exclusive for Ocelot Sign Mod)</h2>
+
+<p>The Ocelot Sign Mod supports registering custom textures and fonts to its native UI panel via JSON configuration files, enabling one-click insertion for players.</p>
+
+<blockquote>
+<p>⚠️ <strong>Critical Reminder</strong>: The registration JSON files <strong>must be placed under the <code>ocelotsignmod</code> namespace</strong> to append entries to the mod's built-in list. Your actual texture and font assets can remain stored under your personal namespace (e.g., <code>my_pack</code>).</p>
+</blockquote>
+
+<h3>1. Register Custom Textures</h3>
+
+<div class="warning-box">
+  <p>⚠️ <strong>Warning</strong>: This feature currently has a critical bug. The methods described in sections IV.1 and IV.2 are not recommended. Please scroll down to section IV.3 — Advanced Custom UI Definition — which is more stable. The IV.1 and IV.2 registration methods may be removed in the future, but the IV.3 Advanced Custom UI Definition method will remain supported, so using the method in IV.3 is strongly advised. If you have already registered assets using the IV.1 or IV.2 methods, you can import your resource pack into the Resource Pack Maker — it will automatically convert these legacy formats into the IV.3 registration.</p>
+</div>
+
+<p>Create the file <code>custom_patterns.json</code> under the path <code>assets/ocelotsignmod/patterns/</code>:</p>
+
+<h4>Directory Structure Preview</h4>
+
+<pre><code>MyCustomPack/
+ ├── pack.mcmeta
+ └── assets/
+     ├── my_pack/
+     │   └── textures/
+     │       └── icon/
+     │           └── logo.png
+     └── ocelotsignmod/        &lt;-- Mandatory fixed namespace
+         └── patterns/
+             └── custom_patterns.json</code></pre>
+
+<h4>JSON File Template</h4>
+
+<pre><code>[
+  {
+    "displayName": "Display Name of Texture",
+    "texture": "my_pack:icon/logo.png",
+    "insert": ""
+  },
+  {
+    "displayName": "Second Custom Texture",
+    "texture": "my_pack:textures/custom/arrow.png",
+    "insert": "-texture my_pack:textures/custom/arrow.png"
+  }
+]</code></pre>
+
+<h4>Field Descriptions</h4>
+<table>
+<thead>
+<tr><th>Field</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>"displayName"</code></td><td>Visible name shown in the mod's UI texture list.</td></tr>
+<tr><td><code>"texture"</code></td><td>Resource path pointing to your texture file; you can normally reference your own <code>my_pack:</code> namespace.</td></tr>
+<tr><td><code>"insert"</code></td><td>[Optional] Command automatically pasted into the sign editor when the Insert button is clicked. Leave this field blank (<code>""</code>) to auto-generate the <code>-texture &lt;texture_path&gt;</code> command.</td></tr>
+</tbody>
+</table>
+
+<h3>2. Register Custom Fonts</h3>
+
+<div class="warning-box">
+  <p>⚠️ <strong>Warning</strong>: This feature currently has a critical bug. The methods described in sections IV.1 and IV.2 are not recommended. Please scroll down to section IV.3 — Advanced Custom UI Definition — which is more stable. The IV.1 and IV.2 registration methods may be removed in the future, but the IV.3 Advanced Custom UI Definition method will remain supported, so using the method in IV.3 is strongly advised. If you have already registered assets using the IV.1 or IV.2 methods, you can import your resource pack into the Resource Pack Maker — it will automatically convert these legacy formats into the IV.3 registration.</p>
+</div>
+
+<p>Create the file <code>custom_fonts.json</code> under <code>assets/ocelotsignmod/fonts/</code>:</p>
+
+<pre><code>{
+  "tab": "fonts",
+  "isFontMode": true,
+  "fontList": [
+    {
+      "fontId": "my_pack:title_style",
+      "displayName": "Heading Font"
+    }
+  ]
+}</code></pre>
+
+<h4>Field Descriptions</h4>
+<table>
+<thead>
+<tr><th>Field</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>"tab"</code></td><td>Set to <code>"fonts"</code> to indicate this is a font list.</td></tr>
+<tr><td><code>"isFontMode"</code></td><td>Must be set to <code>true</code> to render the font list (not image grid).</td></tr>
+<tr><td><code>"fontList"</code></td><td>Array of fonts. Each entry corresponds to one row in the UI.</td></tr>
+<tr><td><code>"fontId"</code></td><td>Font ID following the format <strong>namespace:json_filename</strong> (do <em>not</em> append the <code>.json</code> extension).</td></tr>
+<tr><td><code>"displayName"</code></td><td>Friendly visible name shown in the mod's UI font list.</td></tr>
+</tbody>
+</table>
+
+<h3>3. Advanced Custom UI Definition (Advanced Feature)</h3>
+
+<div class="access-box">
+  <p>✅ <strong>Recommended</strong>: This method is currently the most stable and feature-complete way to register resources. It is strongly recommended to use this method for resource registration.</p>
+</div>
+
+<p>Beyond using the default "Custom Resource Pack" category, you can write JSON files to create an independent dedicated menu tab on the left sidebar of the in-game UI. Multi-level folder structures and texture whitelist filtering are fully supported.</p>
+
+<blockquote>
+<p>These JSON definition files can be stored under your personal namespace.</p>
+</blockquote>
+
+<h4>File Path &amp; Directory Layout</h4>
+
+<p>Create a JSON file with any filename (e.g., <code>road_signs_ui.json</code>) inside <code>assets/&lt;your_namespace&gt;/ui_definitions/</code>:</p>
+
+<pre><code>MyCustomPack/
+ └── assets/
+     └── my_pack/
+         └── ui_definitions/
+             └── road_signs_ui.json</code></pre>
+
+<h4>Full JSON Structure &amp; UI Mapping Explanation</h4>
+
+<p>The complete advanced UI configuration code with annotated comments is provided below for reference:</p>
+
+<pre><code>{
+  "tab": "patterns",
+  "category_name": "My Custom Road Signs",
+  "header_text": "Descriptive text displayed at the very top of the right-side panel.",
+  "sections": [
+    {
+      "title": "Arrow Markers (Section Header)",
+      "description": "Grey descriptive text below the section title.",
+      "basePath": "my_pack:textures/signs/",
+      "useSubfolders": true,
+      "subFolders": [
+        {"dirName": "black", "displayName": "Black Arrows"},
+        {"dirName": "white", "displayName": "White Arrows"}
+      ],
+      "filterMode": "NONE",
+      "filterList": []
+    },
+    {
+      "title": "Special Textures (Second Section)",
+      "description": "Example demonstrating whitelist filtering functionality.",
+      "basePath": "my_pack:textures/special/",
+      "useSubfolders": false,
+      "filterMode": "WHITELIST",
+      "filterList": ["logo.png", "banner.png"]
+    }
+  ]
+}</code></pre>
+
+<h4>Detailed Field Explanations &amp; UI Mapping</h4>
+
+<h5>Global Configuration (Left Sidebar)</h5>
+<table>
+<thead>
+<tr><th>Field</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>"tab"</code></td><td>Defines which top-level main tab the custom menu belongs to; valid options are <code>"patterns"</code> (texture list) and <code>"fonts"</code> (font list).</td></tr>
+<tr><td><code>"category_name"</code></td><td>Name of the collapsible menu entry shown on the left sidebar, listed alongside default entries like "Mishang Built-in Patterns" and "Road Signs".</td></tr>
+</tbody>
+</table>
+
+<h5>Right Main Panel</h5>
+<table>
+<thead>
+<tr><th>Field</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>"header_text"</code></td><td>Intro text displayed inside the light blue header box at the top of the right panel, shown after the left-sidebar <code>category_name</code> is clicked.</td></tr>
+<tr><td><code>"sections"</code></td><td>Scrollable content blocks formatted as an array; each array item represents one independently-configured section.</td></tr>
+</tbody>
+</table>
+
+<h5>Section Configuration (Sections)</h5>
+<table>
+<thead>
+<tr><th>Field</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>"title"</code></td><td>String</td><td>Section heading highlighted in orange text.</td></tr>
+<tr><td><code>"description"</code></td><td>String</td><td>Small grey explanatory text placed directly under the section title.</td></tr>
+<tr><td><code>"basePath"</code></td><td>String</td><td>Root resource scan path used by the mod, formatted as <strong>namespace:folder_path/</strong>.</td></tr>
+<tr><td><code>"useSubfolders"</code></td><td>Boolean</td><td>Toggles nested subfolder tab functionality. When <code>true</code>, clickable tab buttons appear under the section title to switch between textures from different subfolders.</td></tr>
+<tr><td><code>"subFolders"</code></td><td>Array</td><td>Defines tab labels when <code>useSubfolders</code> is enabled. Each entry has:<br>· <code>dirName</code>: Actual subfolder name the mod reads from under <code>basePath</code>.<br>· <code>displayName</code>: Visible button label shown to players in the UI.</td></tr>
+<tr><td><code>"filterMode"</code></td><td>String (Enum)</td><td>Texture filtering rule for automatic folder scanning:<br>· <code>NONE</code>: No filtering; display all textures inside the target folder.<br>· <code>WHITELIST</code>: Only show textures listed in <code>filterList</code>.<br>· <code>BLACKLIST</code>: Hide textures listed in <code>filterList</code>; display all remaining assets.</td></tr>
+<tr><td><code>"filterList"</code></td><td>Array&lt;String&gt;</td><td>Filename array paired with filtering modes, e.g. <code>["test.png", "error.png"]</code>.</td></tr>
+<tr><td><code>"isFontMode"</code></td><td>Boolean</td><td>Must be set to <code>true</code> if the top-level <code>tab</code> is <code>"fonts"</code>; switches the section to render a font list grid instead of texture previews.</td></tr>
+<tr><td><code>"fontList"</code></td><td>Array</td><td>Required when <code>isFontMode</code> is enabled; lists available fonts in the format <code>[{"fontId": "ns:font", "displayName": "..."}]</code>.</td></tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2>V. Import JSON Models Exported from BlockBench</h2>
+
+<p>The Ocelot Sign Mod supports JSON 3D models exported from BlockBench, letting players render arbitrary custom 3D assets in-game via the Custom Model Block item.</p>
+
+<h3>1. Place Core Model JSON File</h3>
+
+<p>The mod automatically scans and registers all model files inside the <code>custom_models</code> directory. Move your BlockBench exported model JSON file to <code>assets/&lt;your_namespace&gt;/models/custom_models/</code>.</p>
+
+<h4>Directory Structure Preview</h4>
+
+<pre><code>MyCustomPack/
+ └── assets/
+     └── my_pack/
+         └── models/
+             └── custom_models/
+                 └── my_sign.json</code></pre>
+
+<p>BlockBench exported models must comply with vanilla Minecraft block model standards, example below:</p>
+
+<pre><code>{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "my_pack:block/my_sign_texture"
+  }
+}</code></pre>
+
+<h3>2. Create Optional Model Definition File (Recommended)</h3>
+
+<p>Without a definition file, the model will use its raw filename as the display name in the selection menu. To assign a custom friendly name, create a matching JSON definition file at <code>assets/&lt;your_namespace&gt;/model_definitions/my_sign.json</code>:</p>
+
+<pre><code>{
+  "model_id": "my_sign",
+  "localized_name": "My Custom Road Sign"
+}</code></pre>
+
+<h3>3. Place Model Texture Files</h3>
+
+<p>Textures referenced in the model JSON must be placed at the assigned path, typically <code>assets/&lt;namespace&gt;/textures/block/</code>:</p>
+
+<pre><code>MyCustomPack/
+ └── assets/
+     └── my_pack/
+         └── textures/
+             └── block/
+                 └── my_sign_texture.png</code></pre>
+
+<h3>4. BlockBench Export Guidelines</h3>
+
+<p>Follow these rules when designing models in BlockBench:</p>
+
+<ol>
+<li><strong>Model Dimensions</strong>: Standard Minecraft block space is a <code>16×16×16</code> unit cube; restrict your model within the bounds of a single block.</li>
+<li><strong>Texture Resolution</strong>: Use square textures with standard resolutions (<code>16×16</code>, <code>32×32</code>, <code>64×64</code>, etc.) and a strict <strong>1:1</strong> aspect ratio.</li>
+<li><strong>Naming Rules</strong>: Model IDs and texture filenames can only use lowercase letters, digits and underscores.</li>
+<li><strong>Export Format</strong>: Select <strong>Export Block Model</strong> to export as native Minecraft block model JSON format.</li>
+<li><strong>Facing Direction</strong>: BlockBench models default to facing South (positive Z-axis). The mod auto-rotates the model according to block placement orientation, so no manual rotation adjustments are needed.</li>
+</ol>
+
+<h3>5. Use Custom Model Blocks In-Game</h3>
+
+<ol>
+<li>Obtain the Custom Model Block item via Creative inventory or game commands.</li>
+<li>Right-click the item to open the model selection panel.</li>
+<li>Select your registered custom model (e.g., "My Custom Road Sign") from the list.</li>
+<li>Confirm selection; the item tooltip will display <code>Model: xxx (+NBT)</code> to verify successful binding.</li>
+<li>Place the block in the world to view the rendered custom 3D model.</li>
+</ol>
+
+<h3>6. Multiplayer Server Usage Notes</h3>
+
+<p>All connected players on a multiplayer server must install the identical resource pack containing your custom models and textures. Otherwise, other players will only see the default rotating missing texture placeholder.</p>
+
+<hr>
+
+<h2>VI. Package &amp; Install the Resource Pack</h2>
+
+<p>Once all files are arranged correctly, compress the folder into a Minecraft-compatible <code>.zip</code> archive.</p>
+
+<ol>
+<li>Open the <code>MyCustomPack</code> root folder.</li>
+<li>Select the entire <code>assets</code> folder and the <code>pack.mcmeta</code> file simultaneously.</li>
+<li>Right-click the selected items and choose <strong>Send to → Compressed (zipped) folder</strong> (or equivalent archive tool options).</li>
+<li>Rename the generated <code>.zip</code> archive to your preferred name (e.g., <code>MyServerPack.zip</code>).</li>
+</ol>
+
+<p>Launch Minecraft, navigate to <strong>Options → Resource Packs → Open Resource Pack Folder</strong>. Move your <code>.zip</code> archive into this folder, then enable the resource pack inside the game to finish setup.</p>
+
+        </div>
+    </main>
+    </div>
+
+    <!-- Right-side page TOC: auto-built from H1-H4 in the article body. -->
+    <aside class="page-toc" id="pageToc" aria-label="On this page">
+        <div class="page-toc-title">On this page</div>
+        <nav class="page-toc-nav" id="pageTocNav"></nav>
+    </aside>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" title="Back to Top">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">Top</span>
+    </div>
+
+    <script src="../../js/components.js?v=20261004"></script>
+    <script>
+    (function () {
+        var nav = document.getElementById('pageTocNav');
+        var content = document.querySelector('.content-inner') || document.querySelector('.content');
+        if (!nav || !content) return;
+
+        var headings = content.querySelectorAll('h1, h2, h3');
+        if (!headings.length) return;
+
+        // Assign stable ids to headings that don't have one yet.
+        var slugify = function (s) {
+            return s.toLowerCase()
+                .replace(/[^\p{L}\p{N}\s-]/gu, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .slice(0, 60) || 'section';
+        };
+        var usedIds = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            if (!h.id) {
+                var base = slugify(h.textContent);
+                var id = base;
+                var i = 2;
+                while (usedIds[id] || document.getElementById(id)) {
+                    id = base + '-' + i++;
+                }
+                h.id = id;
+            }
+            usedIds[h.id] = true;
+        });
+
+        // Build the nested list. The stack's bottom frame is always the
+        // root <ul>; every push appends a fresh child <ul> to the new
+        // <li> so deeper headings nest inside it.
+        var root = document.createElement('ul');
+        var stack = [{ level: 0, list: root }];
+
+        Array.prototype.forEach.call(headings, function (h) {
+            var level = parseInt(h.tagName.charAt(1), 10);
+            // Pop frames whose level is >= the current heading's level so
+            // we return to the right ancestor. Stack bottom (level 0) is
+            // never popped because 0 < any heading level.
+            while (stack[stack.length - 1].level >= level) {
+                stack.pop();
+            }
+            var parentList = stack[stack.length - 1].list;
+            var li = document.createElement('li');
+            li.className = 'toc-h' + level;
+            var a = document.createElement('a');
+            a.href = '#' + h.id;
+            a.textContent = h.textContent;
+            a.dataset.targetId = h.id;
+            li.appendChild(a);
+            parentList.appendChild(li);
+            // Each li gets its own child list for nested headings.
+            var childList = document.createElement('ul');
+            li.appendChild(childList);
+            stack.push({ level: level, list: childList });
+        });
+
+        nav.appendChild(root);
+
+        var links = nav.querySelectorAll('a');
+        var linkByHeading = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            var link = nav.querySelector('a[data-target-id="' + h.id + '"]');
+            if (link) linkByHeading[h.id] = { link: link, heading: h };
+        });
+
+        var setActive = function (id) {
+            Array.prototype.forEach.call(links, function (a) { a.classList.remove('is-active'); });
+            if (id && linkByHeading[id]) linkByHeading[id].link.classList.add('is-active');
+        };
+
+        // Click handler — smooth-scroll, then update URL without jumping.
+        Array.prototype.forEach.call(links, function (a) {
+            a.addEventListener('click', function (e) {
+                var target = document.getElementById(a.dataset.targetId);
+                if (!target) return;
+                e.preventDefault();
+                var headerOffset = 80;
+                var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+                setActive(a.dataset.targetId);
+                history.replaceState(null, '', '#' + a.dataset.targetId);
+            });
+        });
+
+        // Highlight the heading nearest the top of the viewport.
+        var visibleHeadings = [];
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                var id = entry.target.id;
+                var idx = visibleHeadings.findIndex(function (v) { return v.id === id; });
+                if (entry.isIntersecting) {
+                    if (idx === -1) visibleHeadings.push({ id: id, top: entry.boundingClientRect.top });
+                    else visibleHeadings[idx].top = entry.boundingClientRect.top;
+                } else if (idx !== -1) {
+                    visibleHeadings.splice(idx, 1);
+                }
+            });
+            if (!visibleHeadings.length) return;
+            visibleHeadings.sort(function (a, b) { return a.top - b.top; });
+            // Prefer the topmost one that's still below the header line.
+            var pick = null;
+            for (var i = 0; i < visibleHeadings.length; i++) {
+                if (visibleHeadings[i].top >= 80) { pick = visibleHeadings[i]; break; }
+            }
+            if (!pick) pick = visibleHeadings[0];
+            setActive(pick.id);
+        }, {
+            rootMargin: '-80px 0px -55% 0px',
+            threshold: 0
+        });
+
+        Array.prototype.forEach.call(headings, function (h) { observer.observe(h); });
+    })();
+    </script>
+</body>
+</html>

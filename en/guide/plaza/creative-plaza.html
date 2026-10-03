@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Plaza | Ocelot Sign Mod</title>
+    <link rel="stylesheet" href="../../../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../../../css/layout.css?v=20261004">
+    <link rel="stylesheet" href="../../../css/content.css?v=20261004">
+    <link rel="stylesheet" href="../../../css/plaza.css?v=20261004">
+</head>
+<body class="plaza-page">
+    <div id="site-header"></div>
+
+    <!-- Plaza Hero -->
+    <section class="plaza-hero">
+        <h1><span class="emoji-float">🎨</span> Creative Plaza</h1>
+        <p>A curated space showcasing high-quality community resource packs — discover interesting patterns, fonts, and custom model inspiration.<br>All works come from community submissions and are reviewed by the mod development team before display.</p>
+        <a class="plaza-submit-btn" href="plaza-submit.html">✉ Submit a resource pack via email</a>
+    </section>
+
+    <!-- Plaza Body -->
+    <div class="plaza-body">
+        <div class="plaza-coming-soon">
+            <p>This is a curated space that showcases high-quality community resource packs. We will keep tracking community activity and select creative patterns to be featured in the Plaza. You are also welcome to develop traffic signs for other countries or regions using this mod.</p>
+            <p>To ensure that resource packs comply with Chinese Mainland laws and regulations, the Creative Plaza currently operates in a "curated submission" mode rather than open self-service upload. For high-quality resources reviewed and approved by the mod development team, we will promote them in the form of "original links from the authors". We apologize for the inconvenience and look forward to seeing more outstanding works!</p>
+        </div>
+
+        <!-- Tab navigation -->
+        <div class="plaza-tabs">
+            <button class="plaza-tab active" data-tab="road-signs">Roads (2)</button>
+            <button class="plaza-tab" data-tab="railway">Railway & Transit (0)</button>
+            <button class="plaza-tab" data-tab="shipping">Shipping (0)</button>
+            <button class="plaza-tab" data-tab="aviation">Aviation (0)</button>
+            <button class="plaza-tab" data-tab="public-signs">Public Signs (0)</button>
+            <button class="plaza-tab" data-tab="mod-optimization">Mod Optimization (1)</button>
+            <button class="plaza-tab" data-tab="crossover">Crossover (0)</button>
+            <button class="plaza-tab" data-tab="other">Other (0)</button>
+        </div>
+
+        <!-- Tab content panels -->
+        <div class="plaza-tab-content active" id="tab-road-signs">
+            <div class="plaza-card-grid">
+                <a href="road/1.html" class="plaza-card">
+                    <div class="plaza-card-thumb">
+                        <img class="plaza-card-thumb-image" src="../../../pic/plaza/road/1/cover.webp?v=20261004" alt="Hong Kong, China Traffic Signs Cover">
+                    </div>
+                    <div class="plaza-card-body">
+                        <h3 class="plaza-card-title">Hong Kong, China Traffic Signs</h3>
+                        <div class="plaza-card-meta">Author: OcelotCreeperCola</div>
+                    </div>
+                </a>
+                <a href="road/2.html" class="plaza-card">
+                    <div class="plaza-card-thumb">
+                        <img class="plaza-card-thumb-image" src="../../../pic/plaza/road/2/cover.webp?v=20261004" alt="Taiwan, a Province of China Traffic Signs Cover">
+                    </div>
+                    <div class="plaza-card-body">
+                        <h3 class="plaza-card-title">Taiwan, a Province of China Traffic Signs</h3>
+                        <div class="plaza-card-meta">Author: OcelotCreeperCola</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="plaza-tab-content" id="tab-railway">
+            <div class="plaza-empty">
+                <div class="plaza-empty-icon">🚆</div>
+                <p>Railway & transit resource packs coming soon.</p>
+            </div>
+        </div>
+        <div class="plaza-tab-content" id="tab-shipping">
+            <div class="plaza-empty">
+                <div class="plaza-empty-icon">🚢</div>
+                <p>Shipping resource packs coming soon.</p>
+            </div>
+        </div>
+        <div class="plaza-tab-content" id="tab-aviation">
+            <div class="plaza-empty">
+                <div class="plaza-empty-icon">✈️</div>
+                <p>Aviation resource packs coming soon.</p>
+            </div>
+        </div>
+        <div class="plaza-tab-content" id="tab-public-signs">
+            <div class="plaza-empty">
+                <div class="plaza-empty-icon">🏷️</div>
+                <p>Public sign resource packs coming soon.</p>
+            </div>
+        </div>
+        <div class="plaza-tab-content" id="tab-mod-optimization">
+            <div class="plaza-card-grid">
+                <a href="mod_optimization/1.html" class="plaza-card">
+                    <div class="plaza-card-thumb">
+                        <img class="plaza-card-thumb-image" src="../../../pic/plaza/mod_optimization/1/cover.webp?v=20261004" alt="Mishang Urban Construction Road Visual Optimization Cover">
+                    </div>
+                    <div class="plaza-card-body">
+                        <h3 class="plaza-card-title">Mishang Urban Construction Road Visual Optimization</h3>
+                        <div class="plaza-card-meta">Author: AkiyamaSakaki</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="plaza-tab-content" id="tab-crossover">
+            <div class="plaza-empty">
+                <div class="plaza-empty-icon">🔗</div>
+                <p>Crossover resource packs coming soon.</p>
+            </div>
+        </div>
+        <div class="plaza-tab-content" id="tab-other">
+            <div class="plaza-empty">
+                <div class="plaza-empty-icon">📦</div>
+                <p>Other resource packs coming soon.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" title="Back to Top">
+        <svg class="back-to-top-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">TOP</span>
+    </div>
+
+    <script src="../../../js/components.js?v=20261004"></script>
+    <script>
+    // Tab switching
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.plaza-tab');
+        const contents = document.querySelectorAll('.plaza-tab-content');
+
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                const targetId = 'tab-' + this.dataset.tab;
+
+                // Switch active tab
+                tabs.forEach(function(t) { t.classList.remove('active'); });
+                this.classList.add('active');
+
+                // Switch active content
+                contents.forEach(function(c) {
+                    c.classList.remove('active');
+                    if (c.id === targetId) {
+                        c.classList.add('active');
+                    }
+                });
+            });
+        });
+    });
+    </script>
+</body>
+</html>

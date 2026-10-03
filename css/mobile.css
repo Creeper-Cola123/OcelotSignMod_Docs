@@ -1,0 +1,82 @@
+/* ================================================================
+   css/mobile.css — 移动端专用覆盖样式
+   在每个页面的 common.css 之后加载，确保着陆页、下载页、
+   指南页和资源包制作器的响应式行为一致。断点与
+   其他样式表对齐。
+   ================================================================ */
+
+/* 在手机尺寸屏幕上全面加大点击热区 */
+@media (max-width: 768px) {
+  /* 触摸反馈：让每个链接 / 按钮在点击时都有响应感。 */
+  a:active,
+  button:active,
+  .sidebar-item:active,
+  .platform-row:active,
+  .download-card:active,
+  .feedback-card:active,
+  .project-card:active {
+    transform: scale(0.985);
+    transition: transform 0.08s ease;
+  }
+
+  /* 导航抽屉升级 */
+  .site-header,
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  /* 浮动操作按钮 —— 适配小屏幕的紧凑尺寸。
+     .menu-toggle 与 .back-to-top 使用相同的尺寸和边距偏移，
+     保证两个角视觉上保持平衡。（基础圆形 / 阴影 / 悬停样式在 common.css 中定义；
+     移动端仅缩小它们以提供拇指友好的点击热区。） */
+  .menu-toggle,
+  .back-to-top {
+    width: 48px;
+    height: 48px;
+    bottom: 18px;
+  }
+
+  /* 在移动端重新启用 menu-toggle —— common.css 在桌面端隐藏它，
+     因为它仅驱动侧边栏抽屉。 */
+  .menu-toggle {
+    display: flex !important;
+  }
+
+  /* 让指南页中的表格在移动端可以横向滚动 */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* 小屏手机微调 */
+@media (max-width: 480px) {
+  /* Hero 字体 */
+  .vp-hero-title {
+    font-size: 22px !important;
+  }
+  .vp-hero-description,
+  .hero p {
+    font-size: 14px !important;
+    line-height: 1.7;
+  }
+
+  /* 操作按钮在窄屏优雅换行 */
+  .vp-hero-actions {
+    flex-wrap: wrap;
+  }
+  .vp-hero-actions a {
+    flex: 1 1 100%;
+    margin-bottom: 8px;
+  }
+
+  /* 侧栏指示器间距 */
+  .sidebar-item {
+    font-size: 14px;
+    padding: 12px 20px;
+  }
+}

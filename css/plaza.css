@@ -1,0 +1,1348 @@
+/* ---- 广场页面基础 ----
+   双保险：裁剪移动端的横向溢出，避免游离的 grid/flex min-content 尺寸
+   变成页面级滚动条。layout.css 中的 flex body 会把子元素的 min-content
+   向上传递，所以在窄视图下即使是后代里的小溢出也会把 body 撑得超过视口宽度。 */
+body.plaza-page {
+    overflow-x: hidden;
+    background-color: #f5f0e6;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4c9a8' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* 共享内容宽度 —— .plaza-coming-soon 与 .plaza-tabs 都引用这个变量，
+   保证两者宽度相同且不超过页面宽度。标签与即将上线提示刻意对齐在同一列。 */
+:root {
+    --plaza-content-max-width: 880px;
+}
+
+/* 同时裁剪主页面容器的横向溢出，让单个溢出的子元素无法在触达
+   body 级保护之前就视觉上越过卡片边缘。 */
+.plaza-hero,
+.plaza-body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* ============================================================
+   § Hero（列表页）
+   ============================================================ */
+.plaza-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 72px 60px 60px;
+    text-align: center;
+    color: #fff;
+    /* 分层渐变：在倾斜的海军蓝底色上叠加两个柔和的径向辉光，
+       让原本扁平的 hero 拥有视觉焦点，无需在 HTML 中添加装饰图形。 */
+    background:
+        radial-gradient(circle at 18% 28%, rgba(74, 144, 217, 0.32), transparent 55%),
+        radial-gradient(circle at 82% 78%, rgba(240, 165, 0, 0.22), transparent 60%),
+        linear-gradient(135deg, #15152b 0%, #1f1f3d 55%, #15152b 100%);
+    isolation: isolate;
+}
+
+.plaza-hero::before {
+    /* 精细点阵纹理叠加层，增添精致质感 */
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 22px 22px;
+    background-position: 0 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.plaza-hero > * {
+    position: relative;
+    z-index: 1;
+}
+
+.plaza-hero h1 {
+    font-size: 40px;
+    color: #fff;
+    margin-bottom: 18px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    text-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+.plaza-hero p {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.78);
+    max-width: 640px;
+    margin: 0 auto 32px;
+    line-height: 1.85;
+}
+
+/* 提交按钮 —— 胶囊形状、暖色渐变、柔和阴影 */
+.plaza-submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #f0a500, #ffc233);
+    color: #1a1a2e;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 28px;
+    border-radius: 999px;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    font-family: inherit;
+    letter-spacing: 0.5px;
+    box-shadow: 0 8px 22px rgba(240, 165, 0, 0.35);
+    transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+                box-shadow 0.25s ease,
+                background 0.2s ease;
+}
+
+.plaza-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(240, 165, 0, 0.5);
+    background: linear-gradient(135deg, #ffb820, #ffd055);
+    text-decoration: none;
+}
+
+.plaza-submit-btn:active {
+    transform: translateY(0) scale(0.97);
+}
+
+/* ============================================================
+   § 广场主体（列表页）
+   ============================================================ */
+.plaza-body {
+    padding: 48px 60px 72px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* ---- 即将上线通知 ---- */
+.plaza-coming-soon {
+    position: relative;
+    background: linear-gradient(135deg, #fffaf0 0%, #fff5e0 100%);
+    border: 1px solid rgba(240, 165, 0, 0.18);
+    border-left: 4px solid #f0a500;
+    border-radius: 12px;
+    padding: 28px 36px;
+    max-width: var(--plaza-content-max-width);
+    width: 100%;
+    margin: 0 auto 36px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 16px rgba(240, 165, 0, 0.07);
+}
+
+.plaza-coming-soon::before {
+    /* 固定图标装饰在角落 */
+    content: "📌";
+    position: absolute;
+    top: 22px;
+    right: 28px;
+    font-size: 26px;
+    opacity: 0.4;
+}
+
+.plaza-coming-soon p {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.85;
+    margin-bottom: 14px;
+}
+
+.plaza-coming-soon p:last-of-type {
+    margin-bottom: 0;
+}
+
+/* ---- 空状态 ---- */
+.plaza-empty {
+    text-align: center;
+    padding: 64px 24px;
+    color: #888;
+    background: rgba(255, 255, 255, 0.6);
+    border: 2px dashed rgba(212, 201, 168, 0.6);
+    border-radius: 12px;
+}
+
+.plaza-empty-icon {
+    font-size: 56px;
+    opacity: 0.55;
+    margin-bottom: 14px;
+    animation: anim-bounce-soft 2.5s ease-in-out infinite;
+    display: inline-block;
+}
+
+.plaza-empty p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #888;
+}
+
+/* ============================================================
+   § 标签导航
+   ============================================================
+   固定 4 列 × 2 行网格（8 个标签，每行 4 个，2 行）。
+   每个格子恰好占 1fr，让标签始终均匀分布，
+   不受标签文字长度影响。移动端切换为可水平滚动的 flex 行，
+   让标签在窄屏上读作标签栏。
+
+   容器与 .plaza-coming-soon 共享 max-width，让标签和通知对齐在同一列；
+   `width: 100%` 加上 `box-sizing: border-box` 保证横条
+   在中等视口下也不会超出页面宽度。 */
+.plaza-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid rgba(26, 26, 46, 0.12);
+    max-width: var(--plaza-content-max-width);
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto 32px;
+}
+
+.plaza-tab {
+    position: relative;
+    padding: 12px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #888;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.25s ease;
+    font-family: inherit;
+    text-align: center;
+    line-height: 1.3;
+    /* 关闭 flex-era 的负外边距 —— 网格现在自己定位每个格子，
+       下划线锚定到格子自身的下边缘。 */
+    animation: anim-fade-up 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.plaza-tab::after {
+    /* 滑动下划线。从中央收起（left:50%; right:50% = 宽度为 0），
+       悬停 / 激活时展开到格子宽度。 */
+    content: "";
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    bottom: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #4a90d9, #f0a500);
+    border-radius: 2px 2px 0 0;
+    transition: left 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+                right 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* 标签交错入场动画 */
+.plaza-tab:nth-child(1) { animation-delay: 0.05s; }
+.plaza-tab:nth-child(2) { animation-delay: 0.10s; }
+.plaza-tab:nth-child(3) { animation-delay: 0.15s; }
+.plaza-tab:nth-child(4) { animation-delay: 0.20s; }
+.plaza-tab:nth-child(5) { animation-delay: 0.25s; }
+.plaza-tab:nth-child(n+6) { animation-delay: 0.30s; }
+
+.plaza-tab:hover {
+    color: #1a1a2e;
+}
+
+.plaza-tab:hover::after {
+    left: 12px;
+    right: 12px;
+}
+
+.plaza-tab.active {
+    color: #1a1a2e;
+    font-weight: 600;
+}
+
+.plaza-tab.active::after {
+    left: 12px;
+    right: 12px;
+}
+
+/* ---- 标签内容面板 ---- */
+.plaza-tab-content {
+    display: none;
+    animation: anim-fade-up 0.35s ease both;
+    max-width: 880px;
+    margin: 0 auto;
+}
+
+.plaza-tab-content.active {
+    display: block;
+}
+
+/* ============================================================
+   § 卡片网格（列表页）
+   ============================================================ */
+.plaza-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 22px;
+    /* 与前文相同的修复：折叠 grid 的固有 min-width，
+       防止宽封面图在窄视口上把 grid 列撑开。 */
+    min-width: 0;
+}
+
+.plaza-card {
+    position: relative;
+    border: 1px solid #e8e4dc;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+                box-shadow 0.3s ease,
+                border-color 0.3s ease;
+    min-width: 0;
+    animation: anim-fade-up 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.plaza-card:nth-child(1) { animation-delay: 0.15s; }
+.plaza-card:nth-child(2) { animation-delay: 0.22s; }
+.plaza-card:nth-child(3) { animation-delay: 0.29s; }
+.plaza-card:nth-child(n+4) { animation-delay: 0.36s; }
+
+.plaza-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
+    border-color: #d4c9a8;
+}
+
+.plaza-card-thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f5f0e5, #ede8dc);
+    min-width: 0;
+    flex-shrink: 0;
+}
+
+.plaza-card-thumb-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+    display: block;
+}
+
+.plaza-card:hover .plaza-card-thumb-image {
+    transform: scale(1.06);
+}
+
+.plaza-card-thumb::after {
+    /* 底部渐变，让（可选的）角落徽章与下方正文成为连贯整体。 */
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.32) 0%, transparent 45%);
+    pointer-events: none;
+}
+
+/* 状态徽章（"精选" / "Featured"）固定在封面左上角 */
+.plaza-card-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: linear-gradient(135deg, #FB7299, #e85f87);
+    color: #fff;
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(232, 95, 135, 0.4);
+    z-index: 2;
+}
+
+/* 封面右下角的圆形箭头。悬停时变为品牌黄色，
+       让卡片视觉上发出"可点击"的邀请。 */
+.plaza-card-arrow {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #1a1a2e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+                background 0.2s ease,
+                color 0.2s ease;
+    z-index: 2;
+}
+
+.plaza-card:hover .plaza-card-arrow {
+    transform: translateX(3px);
+    background: #f0a500;
+    color: #1a1a2e;
+}
+
+.plaza-card-arrow svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+.plaza-card-body {
+    padding: 16px 18px 18px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.plaza-card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin: 0;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.plaza-card-meta {
+    font-size: 12px;
+    color: #888;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.plaza-card-meta::before {
+    /* 作者名前的小橙色圆点 —— 视觉上链接品牌强调色，但不喧宾夺主。 */
+    content: "";
+    width: 4px;
+    height: 4px;
+    background: #f0a500;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   § 资源详情布局（子页面）
+   ============================================================ */
+
+/* 详情页把内容包裹在 .content-inner 中；重置内边距，
+   让返回栏 / 详情网格能在卡片内部边缘到边缘地绘制。 */
+.plaza-detail-page .content-inner {
+    padding: 0;
+    overflow: hidden;
+}
+
+/* `<main class="content">` 是该布局中 column-flex body 的直接子项
+   （与其他指南页不同，没有 .main-container 包装）。
+   body 的 `display: flex; flex-direction: column;` 配合默认 `align-items: stretch`
+   应该在交叉轴上填满高度，但某些浏览器中 `<main>` 配合
+   `flex: 1; flex-basis: 0` 最终会塌缩为其固有内容宽度 —— 让卡片紧贴左侧。
+
+   对列 flex 子项和内部卡片都强制填满宽度并明确居中，
+   让详情页与列表页对齐。 */
+.plaza-page .content {
+    width: 100%;
+    align-self: stretch;
+    box-sizing: border-box;
+}
+
+.plaza-page .content-inner {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 详情页顶部的返回链接栏 */
+.plaza-page-back-bar {
+    padding: 22px 36px 16px;
+    border-bottom: 1px solid #f0ebe0;
+    background: linear-gradient(135deg, #fafaf5, #fff);
+}
+
+.plaza-page-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #888;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.plaza-page-back-arrow {
+    width: 13px;
+    height: 13px;
+    fill: currentColor;
+    display: block;
+    flex-shrink: 0;
+}
+
+.plaza-page-back:hover {
+    color: #1a1a2e;
+    text-decoration: none;
+    transform: translateX(-3px);
+}
+
+/* 双列网格：名称行跨主栏与侧栏，主体在名称下方与（纵向较高的）侧栏并排。 */
+.resource-detail {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    grid-template-areas:
+        "name aside"
+        "main aside";
+    column-gap: 40px;
+    padding: 32px 36px 44px;
+    align-items: start;
+}
+
+.resource-detail-main {
+    grid-area: main;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.resource-detail-name {
+    grid-area: name;
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 12px;
+    letter-spacing: 0.5px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid #f0a500;
+    position: relative;
+}
+
+.resource-detail-name::after {
+    /* 下划线左侧的微妙装饰性圆点，让标题有清晰的"标签页"感，
+       无需额外 HTML。 */
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, #4a90d9, transparent);
+}
+
+/* ---- 区块标题 ---- */
+.resource-detail-section {
+    margin-top: 28px;
+}
+
+.resource-detail-section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.resource-detail-section-title::before {
+    /* 区块标题前的垂直强调条 */
+    content: "";
+    width: 4px;
+    height: 18px;
+    background: linear-gradient(180deg, #f0a500, #ffc233);
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+/* 区块内容卡片（介绍 / 画廊） */
+.resource-detail-intro {
+    background: linear-gradient(135deg, #fafaf5 0%, #fff 100%);
+    border: 1px solid rgba(212, 201, 168, 0.3);
+    border-radius: 10px;
+    padding: 18px 20px;
+    font-size: 14px;
+    color: #444;
+    line-height: 1.85;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.resource-detail-intro p {
+    margin: 0 0 10px;
+}
+
+.resource-detail-intro p:last-child {
+    margin-bottom: 0;
+}
+
+/* 画廊占位符 —— 同样是温暖的卡片外观，但使用虚线边框，
+       视觉上读作"此处为后续内容占位"。 */
+.resource-detail-gallery {
+    background: linear-gradient(135deg, #fafaf5 0%, #fff 100%);
+    border: 2px dashed rgba(212, 201, 168, 0.5);
+    border-radius: 10px;
+    padding: 56px 24px;
+    font-size: 13px;
+    color: #888;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+/* ---- 下载列表（flex 行，而非表格） ---- */
+.resource-download-list {
+    background: linear-gradient(135deg, #fff 0%, #fffaf0 100%);
+    border: 1px solid rgba(212, 201, 168, 0.4);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.resource-download-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(212, 201, 168, 0.3);
+    transition: background 0.2s ease;
+}
+
+.resource-download-item:last-child {
+    border-bottom: none;
+}
+
+.resource-download-item:hover {
+    background: rgba(255, 248, 230, 0.6);
+}
+
+.resource-download-version {
+    background: linear-gradient(135deg, #f0a500, #ffc233);
+    color: #1a1a2e;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(240, 165, 0, 0.25);
+    line-height: 1.4;
+}
+
+.resource-download-desc {
+    flex: 1;
+    font-size: 13.5px;
+    color: #444;
+    line-height: 1.6;
+    min-width: 0;
+}
+
+.resource-download-action {
+    flex-shrink: 0;
+}
+
+.resource-download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #1a1a2e, #2d2d54);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    box-shadow: 0 3px 10px rgba(26, 26, 46, 0.2);
+}
+
+.resource-download-btn:hover {
+    background: linear-gradient(135deg, #2d2d54, #3d3d70);
+    color: #fff;
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(26, 26, 46, 0.3);
+}
+
+.resource-download-btn:active {
+    transform: translateY(0) scale(0.97);
+}
+
+/* ---- 信息框（蓝色提示 / 备注用柔和提示框） ---- */
+.plaza-detail-page .info-box {
+    background-color: #e6f3ff;
+    border-left: 4px solid #4a90e2;
+    padding: 14px 20px;
+    margin-top: 18px;
+    margin-bottom: 18px;
+    color: #2a5a8a;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+    line-height: 1.75;
+    box-sizing: border-box;
+}
+
+.plaza-detail-page .info-box::before {
+    content: "ℹ️";
+    margin-right: 8px;
+    font-size: 16px;
+    vertical-align: 2px;
+}
+
+.plaza-detail-page .info-box p {
+    margin: 0;
+}
+
+/* ---- 侧栏（右列：封面 + 元信息卡片） ---- */
+.resource-detail-aside {
+    grid-area: aside;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+}
+
+.resource-cover {
+    position: relative;
+    width: 100%;
+    /* 不在这里固定宽高比：封面图决定容器高度，
+       让每页能以自然比例（方形、横向或纵向）展示封面图，
+       不会被强制 1:1 容器裁剪。 */
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ede8dc, #d4c9a8);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(212, 201, 168, 0.6);
+}
+
+.resource-cover-image {
+    width: 100%;
+    /* height: auto 让图片的固有尺寸决定封面高度；
+       不再用 object-fit 裁剪固定 1:1 容器。 */
+    height: auto;
+    display: block;
+}
+
+.resource-cover-info {
+    background: linear-gradient(135deg, #fffaf0 0%, #fff5e0 100%);
+    border: 1px solid rgba(240, 165, 0, 0.2);
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: 0 2px 10px rgba(240, 165, 0, 0.06);
+}
+
+/* 元数据行 —— 胶囊标签 + 值 */
+.resource-cover-meta {
+    font-size: 13px;
+    color: #333;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    line-height: 1.5;
+}
+
+.resource-cover-meta + .resource-cover-meta {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(212, 201, 168, 0.5);
+}
+
+.resource-cover-meta > span:first-child {
+    color: #fff;
+    background: linear-gradient(135deg, #4a90d9, #5aa0e9);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+    line-height: 1.4;
+    box-shadow: 0 2px 6px rgba(74, 144, 217, 0.25);
+}
+
+.resource-cover-meta-value {
+    color: #333;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+}
+
+/* 作者值末尾内联渲染的哔哩哔哩小标记（例如"AkiyamaSakaki [图标]"）。
+   替换之前宽大的"B站主页"按钮和独立行的角落标记。
+   该元素承载一个内联 SVG（见 friends-links / credits-license
+   中对应的 `.link-bilibili` 符号）—— 不依赖 Font Awesome，
+   因此无需任何外部 CDN。 */
+.resource-cover-bilibili-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-left: 6px;
+    line-height: 1;
+    color: #00aff0;
+    text-decoration: none;
+    border-radius: 4px;
+    vertical-align: -3px;
+    transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.resource-cover-bilibili-icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+}
+
+.resource-cover-bilibili-icon:hover {
+    color: #FB7299;
+    background-color: rgba(0, 175, 240, 0.12);
+    transform: scale(1.1);
+    text-decoration: none;
+}
+
+.resource-cover-bilibili-icon:focus-visible {
+    outline: 2px solid #00aff0;
+    outline-offset: 2px;
+}
+
+/* ============================================================
+   § 响应式设计
+   ============================================================ */
+
+/* 平板与小屏笔记本 */
+@media (max-width: 900px) {
+    .plaza-hero { padding: 56px 32px 48px; }
+    .plaza-hero h1 { font-size: 32px; letter-spacing: 2px; }
+    .plaza-body { padding: 36px 24px 56px; }
+    .plaza-card-grid { gap: 16px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+
+    /* 详情页：更紧凑的列间距和稍窄的侧栏 */
+    .resource-detail {
+        grid-template-columns: minmax(0, 1fr) 260px;
+        column-gap: 28px;
+        padding: 28px;
+    }
+}
+
+/* 手机 */
+@media (max-width: 600px) {
+    /* ---- Hero ---- */
+    .plaza-hero { padding: 44px 18px 36px; }
+    .plaza-hero h1 { font-size: 26px; margin-bottom: 14px; letter-spacing: 1.5px; }
+    .plaza-hero p { font-size: 13px; line-height: 1.75; margin-bottom: 24px; }
+    .plaza-submit-btn {
+        width: 100%;
+        padding: 12px;
+        box-sizing: border-box;
+        /* `inline-flex + width: 100%` is unusual; switch to block-level
+           flex on mobile so the button can't escape its parent through
+           inline-level width quirks. */
+        display: flex;
+    }
+
+    /* ---- Body ---- */
+    .plaza-body { padding: 28px 16px 48px; }
+
+    /* ---- Coming-soon ---- */
+    .plaza-coming-soon {
+        padding: 22px 20px;
+        margin-bottom: 24px;
+        border-radius: 10px;
+    }
+    .plaza-coming-soon::before { display: none; }
+    .plaza-coming-soon p { font-size: 13px; line-height: 1.75; }
+
+    /* ---- 标签：移动端同样使用 4×2 网格（不横向滚动） ----
+       保持与桌面端相同的 4 列网格，让所有 8 个标签始终以整洁的
+       2 行 × 4 列布局排列。收紧内边距和字号，让长标签
+       （"铁路与轨道交通"、"与其他模组联动"）仍在各自格子宽度内
+       适应而不会横向溢出。
+       如果某标签仍然太长而超出格子，它会换行到第二行 ——
+       同一行每个格子等高增长，网格因此保持视觉平衡。 */
+    .plaza-tabs {
+        gap: 0;
+        margin: 0 0 24px;
+        padding: 0;
+        border-bottom-color: rgba(26, 26, 46, 0.08);
+    }
+    .plaza-tab {
+        padding: 8px 4px;
+        font-size: 12px;
+        line-height: 1.25;
+    }
+    .plaza-tab::after {
+        /* 重置移动端特定的贴边行为：网格布局意味着下划线行为与桌面端相同。 */
+        left: 50%;
+        right: 50%;
+    }
+    .plaza-tab:hover::after,
+    .plaza-tab.active::after {
+        /* 更紧凑的内嵌以匹配较小的格子 —— 让下划线在手机屏幕上的宽度与标签宽度成比例。 */
+        left: 4px;
+        right: 4px;
+    }
+
+    /* ---- Cards: 2-column grid ---- */
+    .plaza-card-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    .plaza-card-body { padding: 12px 14px; }
+    .plaza-card-title { font-size: 13px; }
+    .plaza-card-meta { font-size: 11px; }
+    /* 移动端隐藏箭头 —— 节省空间，而且整张卡片本身就是可点击区域。 */
+    .plaza-card-arrow { display: none; }
+    .plaza-card-badge {
+        font-size: 10px;
+        padding: 3px 9px;
+        top: 8px;
+        left: 8px;
+    }
+
+    /* ---- 详情页：全部堆叠 ---- */
+    .plaza-page-back-bar { padding: 18px 20px 12px; }
+    .resource-detail {
+        padding: 20px;
+        column-gap: 0;
+        row-gap: 20px;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "name"
+            "aside"
+            "main";
+    }
+    .resource-detail-name {
+        font-size: 22px;
+    }
+    /* 侧栏折叠为横向行：左侧是小封面缩略图，
+       元信息卡片填满剩余宽度。 */
+    .resource-detail-aside {
+        flex-direction: row;
+        align-items: stretch;
+        gap: 14px;
+        padding-top: 12px;
+        border-top: 1px solid #ece8e0;
+    }
+    .resource-cover {
+        width: 96px;
+        flex-shrink: 0;
+        /* 这里也不设置 aspect-ratio：缩略图现在会垂直弹性以匹配封面图的自然比例，
+           让侧栏和卡片在手机上保持视觉对齐，而不会强制把封面裁剪成正方形。 */
+    }
+    .resource-cover-info {
+        flex: 1;
+        min-width: 0;
+        padding: 14px 16px;
+    }
+
+    /* 下载行：版本 + 按钮在描述上方 */
+    .resource-download-item {
+        flex-wrap: wrap;
+        gap: 10px 14px;
+        padding: 14px 16px;
+    }
+    .resource-download-desc {
+        flex: 1 0 100%;
+        order: 2;
+        font-size: 13px;
+    }
+    .resource-download-action {
+        margin-left: auto;
+    }
+
+    /* 画廊响应式 */
+    .gallery-nav {
+        width: 36px;
+        height: 36px;
+        font-size: 22px;
+    }
+    .gallery-prev { left: 8px; }
+    .gallery-next { right: 8px; }
+    .gallery-thumb {
+        width: 64px;
+        height: 40px;
+    }
+
+    /* 灯箱响应式 */
+    .lightbox {
+        padding: 60px 16px;
+    }
+    .lightbox-image {
+        max-width: min(95vw, calc(100vw - 32px));
+        max-height: min(75vh, calc(100vh - 140px));
+    }
+    .lightbox-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
+        top: auto;
+        bottom: 24px;
+        transform: none;
+        z-index: 2001;
+    }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+    .lightbox-prev:hover { transform: translateX(-3px); }
+    .lightbox-next:hover { transform: translateX(3px); }
+    .lightbox-close {
+        top: 12px;
+        right: 12px;
+        width: 38px;
+        height: 38px;
+        font-size: 22px;
+    }
+    .lightbox-counter {
+        top: 12px;
+        left: 12px;
+        right: auto;
+        font-size: 12px;
+    }
+}
+
+/* 超小屏手机（如 iPhone SE 第一代） */
+@media (max-width: 360px) {
+    .plaza-card-body { padding: 10px; }
+    .plaza-card-title { font-size: 12px; }
+}
+
+/* ============================================================
+   § 画廊（详情页）
+   ============================================================ */
+
+/* 带主图和导航按钮的画廊预览区 */
+.resource-detail-gallery {
+    background: linear-gradient(135deg, #fafaf5 0%, #fff 100%);
+    border: 1px solid rgba(212, 201, 168, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.gallery-preview {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5f0e5, #ede8dc);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.gallery-main-image-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 该包装层是预览 `width: 100%`，所以在某些浏览器中
+       即使绝对定位的导航按钮声明了更高的 z-index，它仍然
+       位于按钮之上 —— 按钮可见但包装层仍然捕获了点击。
+       这里让点击透传，只有下方的实际 `<img>` 保持 pointer-events: auto，
+       让包装层永远不会遮住上一 / 下一按钮。 */
+    cursor: zoom-in;
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.gallery-main-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    /* 只有 <img> 捕获点击 —— 包装层触发灯箱，
+       让预览区中除按钮 / 预览背景外的每个像素都点击透传。 */
+    pointer-events: auto;
+    cursor: zoom-in;
+}
+
+.gallery-main-image-wrap:hover .gallery-main-image {
+    transform: scale(1.02);
+}
+
+.gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: rgba(255, 255, 255, 0.88);
+    color: #1a1a2e;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 28px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    /* 坐在包装层之上（包装层是 `pointer-events: none`，
+       但按钮在重叠包装层时仍需赢得视觉层叠顺序）。 */
+    z-index: 5;
+    pointer-events: auto;
+}
+
+.gallery-nav:hover {
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.gallery-prev { left: 14px; }
+.gallery-prev:hover { transform: translateY(-50%) translateX(-2px); }
+
+.gallery-next { right: 14px; }
+.gallery-next:hover { transform: translateY(-50%) translateX(2px); }
+
+/* 缩略图条 */
+.gallery-thumbnails {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 16px;
+    padding: 12px 8px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(212, 201, 168, 0.6) transparent;
+}
+
+.gallery-thumbnails::-webkit-scrollbar {
+    height: 6px;
+}
+
+.gallery-thumbnails::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.gallery-thumbnails::-webkit-scrollbar-thumb {
+    background: rgba(212, 201, 168, 0.6);
+    border-radius: 3px;
+}
+
+.gallery-thumb {
+    flex-shrink: 0;
+    width: 80px;
+    height: 50px;
+    padding: 0;
+    border: 3px solid transparent;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #f5f0e5, #ede8dc);
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    font-size: 0;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.gallery-thumb:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.gallery-thumb.active {
+    border-color: #f0a500;
+    box-shadow: 0 4px 12px rgba(240, 165, 0, 0.25);
+}
+
+/* 详情页灯箱样式 */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.92);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 80px;
+    animation: lb-fade 0.22s ease;
+}
+
+.lightbox.is-open {
+    display: flex;
+}
+
+@keyframes lb-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.lightbox-image-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    animation: anim-pop-in 0.35s cubic-bezier(0.2, 0.7, 0.2, 1.2) both;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.lightbox-image {
+    max-width: min(90vw, calc(100vw - 160px));
+    max-height: min(80vh, calc(100vh - 160px));
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.lightbox-counter {
+    position: fixed;
+    top: 20px;
+    left: 24px;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.5px;
+    z-index: 2001;
+}
+
+.lightbox-close {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 26px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    z-index: 2001;
+}
+
+.lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: rotate(90deg) scale(1.06);
+    box-shadow: 0 6px 18px rgba(255, 255, 255, 0.2);
+}
+
+.lightbox-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 52px;
+    height: 52px;
+    border: none;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 28px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    z-index: 2001;
+}
+
+.lightbox-nav:hover {
+    background: rgba(255, 255, 255, 0.28);
+    box-shadow: 0 6px 18px rgba(255, 255, 255, 0.15);
+}
+
+.lightbox-prev:hover { transform: translateY(-50%) translateX(-3px); }
+.lightbox-next:hover { transform: translateY(-50%) translateX(3px); }
+
+.lightbox-prev { left: 20px; }
+.lightbox-next { right: 20px; }
+
+/* ============================================================
+   § 入场动画（共享）
+   ============================================================ */
+
+.plaza-hero h1 {
+    animation: anim-pop-in 0.7s cubic-bezier(0.2, 0.8, 0.3, 1.3) both;
+}
+
+.plaza-hero p {
+    animation: anim-fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s both;
+}
+
+.plaza-submit-btn {
+    animation: anim-fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.3s both;
+}
+
+.emoji-float {
+    display: inline-block;
+    transform-origin: center bottom;
+    animation: anim-bounce-soft 2.4s ease-in-out infinite;
+}
+
+.plaza-coming-soon {
+    animation: anim-fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both;
+}
+
+.plaza-coming-soon p:nth-of-type(1) {
+    animation: anim-fade-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) 0.4s both;
+}
+
+.plaza-coming-soon p:nth-of-type(2) {
+    animation: anim-fade-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) 0.55s both;
+}
+
+/* 详情页入场动画 —— 名称先出现，然后侧栏 + 主体 */
+.resource-detail-name {
+    animation: anim-fade-down 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s both;
+}
+
+.resource-detail-aside {
+    animation: anim-fade-left 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both;
+}
+
+.resource-detail-section {
+    animation: anim-fade-up 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.resource-detail-section:nth-of-type(1) { animation-delay: 0.30s; }
+.resource-detail-section:nth-of-type(2) { animation-delay: 0.40s; }
+.resource-detail-section:nth-of-type(3) { animation-delay: 0.50s; }
+
+@media (prefers-reduced-motion: reduce) {
+    .plaza-hero h1,
+    .plaza-hero p,
+    .plaza-submit-btn,
+    .plaza-coming-soon,
+    .plaza-coming-soon p,
+    .emoji-float,
+    .plaza-tab,
+    .plaza-tab-content,
+    .plaza-card,
+    .plaza-empty-icon,
+    .resource-detail-name,
+    .resource-detail-aside,
+    .resource-detail-section {
+        animation: none !important;
+    }
+}

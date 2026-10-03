@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创意广场 | 豹猫指示牌模组</title>
+    <link rel="stylesheet" href="../../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../../css/layout.css?v=20261004">
+    <link rel="stylesheet" href="../../css/content.css?v=20261004">
+    <link rel="stylesheet" href="../../css/plaza.css?v=20261004">
+</head>
+<body class="plaza-page">
+    <div id="site-header"></div>
+
+    <!-- Plaza Hero -->
+    <section class="plaza-hero">
+        <h1><span class="emoji-float">🎨</span> 创意广场</h1>
+        <p>展示社区优质资源包的精选空间，发现有趣的图案、字体与自定义模型灵感。<br>所有作品均来自社区作者投稿，经模组开发组审核后展示。</p>
+        <a class="plaza-submit-btn" href="plaza-submit.html">✉ 通过邮箱投稿资源包</a>
+    </section>
+
+    <!-- Plaza Body -->
+    <div class="plaza-body">
+        <div class="plaza-coming-soon">
+            <p>这是一个展示社区优质资源包的精选空间。我们会持续关注社区动态，筛选极具巧思的图案资源入驻广场。你也可以根据本模组开发其他国家或地区的交通标志。</p>
+            <p>为保证资源包符合中国大陆相关法律规范，创意广场现阶段采取"官方定向采编"模式，不开放自助上传。经模组开发组审核通过的优质资源，我们将以"作者原链接"的形式进行推介。抱歉带来的不便，期待看到更多优秀作品！</p>
+        </div>
+
+        <!-- Tab navigation -->
+        <div class="plaza-tabs">
+            <button class="plaza-tab active" data-tab="road-signs">道路（2）</button>
+            <button class="plaza-tab" data-tab="railway">铁路与轨道交通（0）</button>
+            <button class="plaza-tab" data-tab="shipping">航运（0）</button>
+            <button class="plaza-tab" data-tab="aviation">空运（0）</button>
+            <button class="plaza-tab" data-tab="public-signs">公共标识（0）</button>
+            <button class="plaza-tab" data-tab="mod-optimization">模组优化（1）</button>
+            <button class="plaza-tab" data-tab="crossover">与其他模组联动（0）</button>
+            <button class="plaza-tab" data-tab="other">其他（0）</button>
+        </div>
+
+        <!-- Tab content panels -->
+        <div class="plaza-tab-content active" id="tab-road-signs">
+            <div class="plaza-card-grid">
+                <a href="road/1.html" class="plaza-card">
+                    <div class="plaza-card-thumb">
+                        <img class="plaza-card-thumb-image" src="../../pic/plaza/road/1/cover.webp?v=20261004" alt="中国香港交通标志封面">
+                    </div>
+                    <div class="plaza-card-body">
+                        <h3 class="plaza-card-title">中国香港交通标志</h3>
+                        <div class="plaza-card-meta">作者：豹猫苦力怕可乐</div>
+                    </div>
+                </a>
+                <a href="road/2.html" class="plaza-card">
+                    <div class="plaza-card-thumb">
+                        <img class="plaza-card-thumb-image" src="../../pic/plaza/road/2/cover.webp?v=20261004" alt="中国台湾交通标志封面">
+                    </div>
+                    <div class="plaza-card-body">
+                        <h3 class="plaza-card-title">中国台湾交通标志</h3>
+                        <div class="plaza-card-meta">作者：豹猫苦力怕可乐</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="plaza-tab-content" id="tab-railway">
+            <div class="plaza-empty">
+                <div class="plaza-empty-icon">🚆</div>
+                <p>铁路与轨道交通类资源包正在征集中。</p>
+            </div>
+        </div>
+        <div class="plaza-tab-content" id="tab-shipping">
+            <div class="plaza-empty">
+                <div class="plaza-empty-icon">🚢</div>
+                <p>航运类资源包正在征集中。</p>
+            </div>
+        </div>
+        <div class="plaza-tab-content" id="tab-aviation">
+            <div class="plaza-empty">
+                <div class="plaza-empty-icon">✈️</div>
+                <p>空运类资源包正在征集中。</p>
+            </div>
+        </div>
+        <div class="plaza-tab-content" id="tab-public-signs">
+            <div class="plaza-empty">
+                <div class="plaza-empty-icon">🏷️</div>
+                <p>公共标识类资源包正在征集中。</p>
+            </div>
+        </div>
+        <div class="plaza-tab-content" id="tab-mod-optimization">
+            <div class="plaza-card-grid">
+                <a href="mod_optimization/1.html" class="plaza-card">
+                    <div class="plaza-card-thumb">
+                        <img class="plaza-card-thumb-image" src="../../pic/plaza/mod_optimization/1/cover.webp?v=20261004" alt="迷上城建道路视觉优化封面">
+                    </div>
+                    <div class="plaza-card-body">
+                        <h3 class="plaza-card-title">迷上城建道路视觉优化</h3>
+                        <div class="plaza-card-meta">作者：AkiyamaSakaki</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="plaza-tab-content" id="tab-crossover">
+            <div class="plaza-empty">
+                <div class="plaza-empty-icon">🔗</div>
+                <p>与其他模组联动的资源包正在征集中。</p>
+            </div>
+        </div>
+        <div class="plaza-tab-content" id="tab-other">
+            <div class="plaza-empty">
+                <div class="plaza-empty-icon">📦</div>
+                <p>其他类型资源包正在征集中。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" title="回到顶部">
+        <svg class="back-to-top-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">顶部</span>
+    </div>
+
+    <script src="../../js/components.js?v=20261004"></script>
+    <script>
+    // Tab switching
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.plaza-tab');
+        const contents = document.querySelectorAll('.plaza-tab-content');
+
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                const targetId = 'tab-' + this.dataset.tab;
+
+                // Switch active tab
+                tabs.forEach(function(t) { t.classList.remove('active'); });
+                this.classList.add('active');
+
+                // Switch active content
+                contents.forEach(function(c) {
+                    c.classList.remove('active');
+                    if (c.id === targetId) {
+                        c.classList.add('active');
+                    }
+                });
+            });
+        });
+    });
+    </script>
+</body>
+</html>

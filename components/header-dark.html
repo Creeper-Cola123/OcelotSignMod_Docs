@@ -1,0 +1,52 @@
+<!--
+  Shared site header (Chinese, dark variant).
+  Loaded by js/components.js when <body data-theme="dark"> is set.
+  Same structure as header.html.
+
+  All paths are root-relative (leading /), correct from any page depth.
+-->
+<header class="site-header">
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+  <a href="/index.html" class="logo">豹猫指示牌模组<span class="logo-badge">官方版本</span><span class="logo-badge">迷上城建版本</span></a>
+  <nav class="site-nav">
+    <a data-key="home"   href="/index.html">首页</a>
+    <a data-key="docs"   href="/guide/sign-usage.html">文档</a>
+    <a data-key="plaza"  href="/guide/plaza/creative-plaza.html">创意广场</a>
+    <a data-key="tool"   href="/tool-packmaker.html">资源包在线编辑器</a>
+
+    <a data-key="download" href="/index.html#downloads">下载与反馈</a>
+
+    <div class="lang-switcher">
+      <a href="/index.html" class="lang active" data-lang="zh">中文</a>
+      <span class="lang-divider">/</span>
+      <a href="/en/index.html" class="lang" data-lang="en">EN</a>
+    </div>
+  </nav>
+  <button type="button" class="nav-toggle" aria-label="菜单" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</header>

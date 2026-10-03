@@ -1,0 +1,672 @@
+/* 全局重置 */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 页面主体 */
+body {
+    font-family: "Microsoft YaHei", "PingFang SC", -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    padding-top: 62px;
+}
+
+/* ========== 页头 / 导航（共享 site-header） ========== */
+#site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.site-header {
+    background-color: #1a1a2e;
+    padding: 15px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+/* 旧式 .header 别名 —— 仍使用 <header class="header"> 的页面在迁移前获得相同样式。 */
+.header {
+    background-color: #1a1a2e;
+    padding: 15px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Logo 图标 */
+.logo {
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-decoration: none;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.logo:hover {
+    color: #f0a500;
+    transform: translateY(-1px);
+}
+
+.logo-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 2px 6px;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    opacity: 0.85;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+/* Hero 标题（42px h1）需要更大的徽章以保持比例 */
+.vp-hero-title .logo-badge {
+    font-size: 14px;
+    padding: 4px 12px;
+    border-width: 1.5px;
+    border-radius: 6px;
+    vertical-align: middle;
+    margin-left: 4px;
+}
+
+/* 导航 */
+.site-nav,
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.site-nav a,
+.nav a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.3s;
+    position: relative;
+    padding-bottom: 3px;
+}
+
+/* 悬停 / 激活时从中央向外生长的动画下划线。 */
+.site-nav a::after,
+.nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background-color: #4a90d9;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.site-nav a:hover,
+.nav a:hover {
+    color: #fff;
+}
+
+.site-nav a:hover::after,
+.nav a:hover::after {
+    transform: scaleX(1);
+}
+
+.site-nav a.active,
+.nav a.active {
+    color: #fff;
+    border-bottom: 2px solid #4a90d9;
+    padding-bottom: 3px;
+}
+
+.site-nav a.active::after,
+.nav a.active::after {
+    transform: scaleX(1);
+    background-color: #4a90d9;
+}
+
+.site-nav .tool-link,
+.nav .tool-link {
+    color: #f0a500;
+}
+
+/* ========== 下拉菜单分组（下载与反馈 等） ========== */
+.nav-group {
+    position: relative;
+}
+
+.nav-group-trigger {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    font-family: inherit;
+    font-size: 15px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+    transition: color 0.3s;
+}
+
+.nav-group-trigger:hover,
+.nav-group-trigger:focus {
+    color: #fff;
+    outline: none;
+}
+
+.nav-group-trigger .caret {
+    font-size: 10px;
+    transition: transform 0.2s;
+}
+
+.nav-group.open .nav-group-trigger .caret {
+    transform: rotate(180deg);
+}
+
+.nav-group-menu {
+    position: absolute;
+    top: calc(100% + 12px);
+    left: -12px;
+    min-width: 180px;
+    background-color: #1a1a2e;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 8px 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 0.18s, transform 0.18s, visibility 0.18s;
+    z-index: 1100;
+}
+
+.nav-group.open .nav-group-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nav-group-menu a {
+    display: block;
+    padding: 10px 18px;
+    font-size: 14px;
+    color: #ccc;
+    text-decoration: none;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.nav-group-menu a:hover,
+.nav-group-menu a:focus {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+/* 语言切换器 */
+.lang-switcher {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.lang-switcher a,
+.lang-switcher .lang {
+    color: #888;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.lang-switcher a:hover,
+.lang-switcher .lang:hover {
+    color: #fff;
+}
+
+.lang-switcher a.active,
+.lang-switcher .lang.active {
+    color: #fff;
+}
+
+.lang-switcher .lang-divider {
+    color: #444;
+    font-size: 14px;
+}
+
+/* ========== 汉堡菜单开关（仅移动端） ========== */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    gap: 5px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    border-radius: 8px;
+    transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.nav-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.nav-toggle:active {
+    transform: scale(0.92);
+}
+
+.nav-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: #fff;
+    transition: all 0.3s;
+}
+
+.nav-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ========== 浮动操作按钮（成对设计） ==========
+   .menu-toggle（指南页左下）与 .back-to-top（所有页面右下）共用同一套样式。
+   两者都是正圆，尺寸、阴影、悬停效果、层级一致 —— 让视口两角的按钮读作一对
+   协调的设计，而不是恰好出现在同一块屏幕上的两个无关按钮。
+
+   下方每个按钮的覆盖样式只处理真正不同的部分：位置（左 / 右）、
+   生命周期（始终可见 / 滚动触发）以及图标。 */
+.menu-toggle,
+.back-to-top {
+    position: fixed;
+    width: 52px;
+    height: 52px;
+    bottom: 24px;
+    padding: 0;
+    background-color: #4a90d9;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1003;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    transition: background-color 0.25s ease,
+                transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+                box-shadow 0.25s ease;
+    font-family: inherit;
+    user-select: none;
+}
+
+/* 每个按钮的位置 + 生命周期 */
+.menu-toggle {
+    left: 24px;
+    /* Pop in 动画：仅在侧栏抽屉挂载时播放一次（指南页）。 */
+    animation: anim-pop-in 0.5s cubic-bezier(0.2, 0.8, 0.3, 1.4) 0.4s both;
+}
+
+.back-to-top {
+    right: 24px;
+    /* 用户滚动超过 100px 前一直隐藏；JS 切换 .show 类。 */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s,
+                background-color 0.25s ease,
+                transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+                box-shadow 0.25s ease;
+}
+
+/* menu-toggle 仅在移动端作为抽屉触发器 —— 桌面端隐藏。
+   mobile.css 在 @media (max-width: 768px) 内重新启用它。 */
+.menu-toggle {
+    display: none;
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    /* 每次按钮重新出现时重播 pop-in 动画。 */
+    animation: anim-pop-in 0.5s cubic-bezier(0.2, 0.8, 0.3, 1.4) both;
+}
+
+.menu-toggle:hover,
+.back-to-top:hover {
+    background-color: #357abd;
+    transform: scale(1.08);
+    box-shadow: 0 8px 22px rgba(74, 144, 217, 0.5);
+}
+
+.menu-toggle:active,
+.back-to-top:active {
+    transform: scale(0.94);
+}
+
+/* 汉堡图标在 .menu-toggle 内。<span> 是中间一条；::before / ::after 绘制上下两条。 */
+.menu-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background-color: #fff;
+    position: relative;
+    transition: background-color 0.3s;
+}
+
+.menu-toggle span::before,
+.menu-toggle span::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+    transition: transform 0.3s;
+}
+
+.menu-toggle span::before { top: -7px; }
+.menu-toggle span::after  { bottom: -7px; }
+
+/* .back-to-top 内的向上箭头。粗细匹配 menu-toggle 的 22px 图标，
+   同样填充白色 —— 让两个按钮读作兄弟按钮，而非"圆形按钮 vs 胶囊按钮"。 */
+.back-to-top svg {
+    width: 22px;
+    height: 22px;
+    fill: #fff;
+    display: block;
+}
+
+/* "顶部" 文字标签被隐藏，让按钮保持与 menu-toggle 一样的简洁圆形。
+   向上箭头 SVG 已被普遍认知；标签仍保留在 DOM 中供屏幕阅读器读取
+   （display:none 仍然暴露文本节点）。 */
+.back-to-top-label {
+    display: none;
+}
+
+/* ========== 响应式（通用） ========== */
+
+/* 平板 */
+@media (max-width: 1024px) {
+    .site-header,
+    .header {
+        padding: 15px 30px;
+    }
+
+    .site-nav,
+    .nav {
+        gap: 18px;
+    }
+}
+
+/* 手机 */
+@media (max-width: 768px) {
+    body {
+        padding-top: 56px;
+    }
+
+    .site-header,
+    .header {
+        padding: 12px 18px;
+        position: relative;
+        flex-wrap: wrap;
+    }
+
+    .logo {
+        font-size: 17px;
+    }
+
+    .site-nav,
+    .nav {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        gap: 0;
+        background-color: #1a1a2e;
+        padding: 0 24px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease, padding 0.4s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+    .site-nav.open,
+    .nav.open {
+        padding: 12px 24px 20px;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .site-nav a,
+    .nav a {
+        padding: 12px 8px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        width: auto;
+        min-width: 0;
+    }
+
+    .site-nav a.active,
+    .nav a.active {
+        border-bottom: 1px solid #4a90d9;
+        border-bottom-width: 1px;
+    }
+
+    /* 下拉菜单 —— 在移动端抽屉里渲染为内联列表 */
+    .nav-group {
+        width: 100%;
+    }
+
+    .nav-group-trigger {
+        width: 100%;
+        padding: 12px 8px;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-group-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        background-color: rgba(0, 0, 0, 0.25);
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 4px 0 8px 12px;
+        min-width: 0;
+        display: none;
+    }
+
+    .nav-group.open .nav-group-menu {
+        display: block;
+    }
+
+    .lang-switcher {
+        order: -1;
+        margin-left: 0;
+        margin-bottom: 8px;
+        padding: 8px;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+}
+
+/* 小屏手机 */
+@media (max-width: 480px) {
+    .site-header,
+    .header {
+        padding: 10px 16px;
+    }
+
+    .logo {
+        font-size: 16px;
+    }
+}
+
+/* ============================================================
+   § 动画库 —— 共享关键帧 + 工具类
+   通过 common.css 在每个页面加载。提供入场动画、微交互，
+   以及严格的 `prefers-reduced-motion` 关闭选项。
+   ============================================================ */
+
+/* --- 关键帧 --- */
+@keyframes anim-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes anim-fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes anim-fade-down {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes anim-fade-left {
+  from { opacity: 0; transform: translateX(-14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes anim-fade-right {
+  from { opacity: 0; transform: translateX(14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes anim-pop-in {
+  0%   { opacity: 0; transform: scale(0.86); }
+  60%  { opacity: 1; transform: scale(1.04); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes anim-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+@keyframes anim-soft-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33%      { transform: translateY(-3px) rotate(0.4deg); }
+  66%      { transform: translateY(2px)  rotate(-0.4deg); }
+}
+
+@keyframes anim-bounce-soft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+@keyframes anim-icon-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
+}
+
+@keyframes anim-underline-grow {
+  from { transform: translateX(-50%) scaleX(0); }
+  to   { transform: translateX(-50%) scaleX(1); }
+}
+
+@keyframes anim-shine-sweep {
+  0%   { transform: translateX(-160%) skewX(-18deg); }
+  100% { transform: translateX(260%) skewX(-18deg); }
+}
+
+@keyframes anim-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes anim-pulse-ring {
+  0%   { box-shadow: 0 0 0 0 currentColor; }
+  70%  { box-shadow: 0 0 0 10px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+@keyframes anim-gradient-pan {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes anim-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@keyframes anim-blink {
+  0%, 50%      { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+/* --- 入场工具类 --- */
+.anim-fade-in       { animation: anim-fade-in   0.6s ease both; }
+.anim-fade-up       { animation: anim-fade-up   0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.anim-fade-down     { animation: anim-fade-down 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.anim-fade-left     { animation: anim-fade-left 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.anim-fade-right    { animation: anim-fade-right 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.anim-pop-in        { animation: anim-pop-in    0.5s cubic-bezier(0.2, 0.8, 0.3, 1.4) both; }
+
+/* Stagger —— 应用在容器上，子元素依次入场。 */
+.anim-stagger > * { animation: anim-fade-up 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.anim-stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.anim-stagger > *:nth-child(2) { animation-delay: 0.12s; }
+.anim-stagger > *:nth-child(3) { animation-delay: 0.19s; }
+.anim-stagger > *:nth-child(4) { animation-delay: 0.26s; }
+.anim-stagger > *:nth-child(5) { animation-delay: 0.33s; }
+.anim-stagger > *:nth-child(6) { animation-delay: 0.40s; }
+.anim-stagger > *:nth-child(7) { animation-delay: 0.47s; }
+.anim-stagger > *:nth-child(8) { animation-delay: 0.54s; }
+.anim-stagger > *:nth-child(n+9) { animation-delay: 0.60s; }
+
+/* 按钮 / 链接 / 卡片的悬停按下微交互。 */
+.tap-feedback        { transition: transform 0.12s ease, box-shadow 0.2s ease; }
+.tap-feedback:active { transform: scale(0.97); }
+
+/* --- 减弱动效：全局尊重该设置 ---
+   装饰性动画被关闭；功能性状态变化（可见性 / 颜色）仍然生效，
+   只是瞬间切换。 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .anim-stagger > * { animation-delay: 0s !important; }
+}

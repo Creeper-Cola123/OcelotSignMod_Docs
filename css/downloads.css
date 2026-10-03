@@ -1,0 +1,597 @@
+/* 下载区块 —— 平台列表卡片（不使用表格）。
+   限定在 .downloads 内，避免影响其他区块。 */
+.downloads {
+    background-color: #ffffff;
+    padding: 80px 60px;
+}
+
+/* 双列卡片网格，用于两条 mod 条目 */
+.download-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+/* 卡片包装 —— 抬升的表面、柔和阴影、悬停浮起 */
+.download-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+    padding: 28px;
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+                box-shadow 0.35s ease,
+                border-color 0.35s ease;
+    position: relative;
+    border: 1px solid transparent;
+    overflow: hidden;
+    animation: anim-fade-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+/* 悬停时从顶部滑入的装饰性强调线 */
+.download-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #4a90d9 0%, #357abd 50%, #2c3e50 100%);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.download-card:nth-child(1) { animation-delay: 0.1s; }
+.download-card:nth-child(2) { animation-delay: 0.25s; }
+
+.download-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
+    border-color: rgba(74, 144, 217, 0.35);
+}
+
+.download-card:hover::before {
+    transform: scaleX(1);
+}
+
+/* 卡片头行 —— 标题 + 元信息胶囊基线对齐 */
+.download-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+/* 卡片标题 */
+.download-card-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0;
+    letter-spacing: -0.3px;
+    line-height: 1.3;
+}
+
+/* 元信息标签胶囊（项目 + 加载器） */
+.download-card-meta {
+    font-size: 12px;
+    font-weight: 600;
+    color: #8a98a8;
+    background-color: #f0f3f7;
+    padding: 4px 10px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    white-space: nowrap;
+}
+
+/* 简短描述段落 */
+.download-card-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #5a6a7a;
+    margin: 0 0 20px;
+}
+
+/* 平台行的纵向堆叠列表 */
+.platform-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+}
+
+/* 每个平台行是可点击的横条 */
+.platform-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 16px;
+    border-radius: 10px;
+    background-color: #f7f9fc;
+    border-left: 3px solid transparent;
+    color: #2c3e50;
+    text-decoration: none;
+    transition: background-color 0.25s ease, transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1), border-left-color 0.25s ease, padding-left 0.25s ease, box-shadow 0.25s ease;
+    min-height: 44px; /* 触摸热区 */
+}
+
+.platform-row:hover {
+    background-color: #eef2f7;
+    transform: translateX(4px);
+    padding-left: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+/* 品牌色圆点 —— 行悬停时脉动，并略微放大 */
+.platform-row-icon {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 14px;
+    flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.platform-row:hover .platform-row-icon {
+    transform: scale(1.4);
+    box-shadow: 0 0 0 4px currentColor;
+    animation: anim-pulse-ring 1.6s ease-out infinite;
+}
+
+/* 平台名（flex-grow 把动作推到行的右边缘） */
+.platform-row-name {
+    flex-grow: 1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* 右对齐的动作标签 */
+.platform-row-action {
+    font-size: 13px;
+    color: #8a98a8;
+    transition: color 0.2s ease;
+}
+
+.platform-row:hover .platform-row-action {
+    color: #2c3e50;
+}
+
+/* 平台品牌色 —— 仅作用于圆点 + 左侧边 */
+.platform-row--cf .platform-row-icon { background-color: #f16436; }
+.platform-row--cf { border-left-color: #f16436; }
+
+.platform-row--mr .platform-row-icon { background-color: #1bd96a; }
+.platform-row--mr { border-left-color: #1bd96a; }
+
+.platform-row--gh .platform-row-icon { background-color: #24292f; }
+.platform-row--gh { border-left-color: #24292f; }
+
+.platform-row--mc .platform-row-icon { background-color: #1e88e5; }
+.platform-row--mc { border-left-color: #1e88e5; }
+
+/* 网格下方的信息提示框 */
+.download-info {
+    max-width: 1100px;
+    margin: 40px auto 0;
+    padding: 16px 22px;
+    background-color: #f5f8fc;
+    border-left: 4px solid #4a90d9;
+    border-radius: 8px;
+    color: #4a5a6a;
+    font-size: 14px;
+    line-height: 1.7;
+    text-align: left;
+    animation: anim-fade-up 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) 0.35s both;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-left-width 0.25s ease;
+}
+
+.download-info:hover {
+    transform: translateX(3px);
+    box-shadow: 0 6px 18px rgba(74, 144, 217, 0.12);
+    border-left-width: 6px;
+}
+
+.download-info strong {
+    color: #2c3e50;
+    margin-right: 6px;
+}
+
+/* ========== download.html page-only blocks ========== */
+
+.download-hero {
+    background-color: #1a1a2e;
+    color: #fff;
+    padding: 56px 60px 48px;
+    text-align: center;
+}
+
+.download-hero h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.download-hero p {
+    font-size: 15px;
+    color: #b8c0d0;
+    max-width: 580px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+.section-block {
+    padding: 60px;
+}
+
+.section-block:nth-of-type(odd) {
+    background-color: #f5f5f5;
+}
+
+.section-block:nth-of-type(even) {
+    background-color: #fff;
+}
+
+.section-block-title {
+    font-size: 24px;
+    color: #1a1a2e;
+    margin-bottom: 32px;
+    text-align: center;
+    font-weight: 700;
+}
+
+.feedback-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.download-subsection {
+    max-width: 1100px;
+    margin: 64px auto 0;
+    padding-top: 40px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.download-subsection .section-block-title {
+    margin-bottom: 32px;
+}
+
+.download-subsection .feedback-grid {
+    margin-top: 0;
+}
+
+.feedback-card {
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    padding: 24px;
+    border-left: 4px solid #f0a500;
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+                box-shadow 0.35s ease,
+                border-left-width 0.25s ease;
+    animation: anim-fade-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.feedback-card:nth-child(1) { animation-delay: 0.15s; }
+.feedback-card:nth-child(2) { animation-delay: 0.30s; }
+
+.feedback-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.12);
+    border-left-width: 6px;
+}
+
+.feedback-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0 0 8px;
+}
+
+.feedback-card-desc {
+    font-size: 13px;
+    color: #5a6a7a;
+    margin: 0 0 16px;
+    line-height: 1.6;
+}
+
+.feedback-card .platform-row {
+    background-color: #fafbfd;
+}
+
+/* QQ 信息提示框（单行社区群说明） */
+.qq-info {
+    max-width: 1100px;
+    margin: 32px auto 0;
+    padding: 18px 22px;
+    background-color: #fff8e7;
+    border-left: 4px solid #f0a500;
+    border-radius: 8px;
+    color: #5a4a2a;
+    font-size: 14px;
+    line-height: 1.7;
+    animation: anim-fade-up 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) 0.4s both;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-left-width 0.25s ease;
+}
+
+.qq-info:hover {
+    transform: translateX(3px);
+    box-shadow: 0 6px 18px rgba(240, 165, 0, 0.16);
+    border-left-width: 6px;
+}
+
+.qq-info strong {
+    color: #1a1a2e;
+    margin-right: 6px;
+}
+
+.qq-info a {
+    color: #c8860a;
+    text-decoration: underline;
+}
+
+/* 前置条件清单 */
+.checklist {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px 32px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    animation: anim-fade-up 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0ebe0;
+    transition: background-color 0.25s ease, padding-left 0.25s ease, transform 0.25s ease;
+    border-radius: 6px;
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-left: -8px;
+    margin-right: -8px;
+}
+
+.checklist-item:hover {
+    background-color: rgba(74, 144, 217, 0.06);
+    transform: translateX(4px);
+}
+
+.checklist-item:last-child {
+    border-bottom: none;
+}
+
+.checklist-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #4a90d9;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), background-color 0.25s ease, box-shadow 0.3s ease;
+}
+
+.checklist-item:hover .checklist-icon {
+    transform: rotate(360deg) scale(1.1);
+    background-color: #357abd;
+    box-shadow: 0 6px 16px rgba(74, 144, 217, 0.35);
+}
+
+.checklist-body {
+    flex: 1;
+}
+
+.checklist-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 4px;
+}
+
+.checklist-desc {
+    font-size: 13px;
+    color: #5a6a7a;
+    line-height: 1.6;
+}
+
+/* FAQ details / summary 折叠面板 */
+.faq-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-list details {
+    background: #fff;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.25s ease;
+    animation: anim-fade-up 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.faq-list details:nth-child(1) { animation-delay: 0.10s; }
+.faq-list details:nth-child(2) { animation-delay: 0.18s; }
+.faq-list details:nth-child(3) { animation-delay: 0.26s; }
+.faq-list details:nth-child(4) { animation-delay: 0.34s; }
+.faq-list details:nth-child(n+5) { animation-delay: 0.40s; }
+
+.faq-list details:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+}
+
+.faq-list summary {
+    padding: 16px 22px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.15s, color 0.2s;
+}
+
+.faq-list summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-list summary::after {
+    content: '+';
+    font-size: 22px;
+    color: #4a90d9;
+    line-height: 1;
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), color 0.25s ease;
+    display: inline-block;
+}
+
+.faq-list details[open] summary::after {
+    transform: rotate(45deg);
+    color: #1a1a2e;
+}
+
+.faq-list summary:hover {
+    background-color: #f5f8fc;
+    color: #4a90d9;
+}
+
+.faq-list details[open] summary {
+    border-bottom: 1px solid #f0ebe0;
+}
+
+.faq-list .faq-answer {
+    padding: 14px 22px 18px;
+    font-size: 14px;
+    color: #5a6a7a;
+    line-height: 1.7;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 1024px) {
+    .download-hero { padding: 44px 30px 36px; }
+    .section-block { padding: 44px 30px; }
+}
+
+@media (max-width: 768px) {
+    .downloads,
+    .section-block {
+        padding: 40px 16px;
+    }
+
+    .download-grid,
+    .feedback-grid {
+        grid-template-columns: 1fr;
+        gap: 22px;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .download-grid-wrap {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .download-card,
+    .feedback-card {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 22px;
+    }
+
+    .download-card-title {
+        font-size: 20px;
+    }
+
+    .platform-row {
+        padding: 12px 14px;
+        min-height: 44px;
+    }
+
+    .platform-row-name {
+        font-size: 13px;
+        flex-grow: 0;
+    }
+
+    .platform-row-action {
+        font-size: 12px;
+    }
+
+    .download-info,
+    .qq-info {
+        padding: 14px 18px;
+        font-size: 13px;
+        margin-top: 24px;
+    }
+
+    .download-hero h1 {
+        font-size: 26px;
+    }
+
+    .section-block-title {
+        font-size: 20px;
+        margin-bottom: 22px;
+    }
+
+    .checklist {
+        padding: 18px 20px;
+    }
+
+    .checklist-item {
+        gap: 10px;
+        padding: 12px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .download-card-title {
+        font-size: 18px;
+    }
+
+    .platform-row {
+        padding: 10px 12px;
+    }
+
+    .platform-row-name {
+        font-size: 12px;
+    }
+
+    .platform-row-action {
+        font-size: 11px;
+    }
+
+    .download-info,
+    .qq-info {
+        font-size: 12px;
+        padding: 12px 14px;
+    }
+
+    .checklist-title {
+        font-size: 14px;
+    }
+
+    .checklist-desc {
+        font-size: 12px;
+    }
+}

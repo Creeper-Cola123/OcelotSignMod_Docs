@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>告示牌资源包投稿指南 | 豹猫指示牌模组</title>
+    <link rel="stylesheet" href="../../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../../css/plaza.css?v=20261004">
+    <style>
+    /* ================================================================
+       plaza-submit.html — dedicated guide styles (plaza aesthetic)
+       
+       All colors / gradients / accents mirror guide/plaza/creative-plaza.html
+       (defined in css/plaza.css) so the two pages read as one continuous
+       surface: navy gradient hero with dot grid, warm cream card surface,
+       yellow/blue brand accents.
+       ================================================================ */
+
+    body.plaza-page {
+        background-color: #f5f0e6;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4c9a8' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    /* ---- Plaza hero strip — same layered gradient + glows + dot grid
+           as the creative-plaza hero (defined in .plaza-hero, plaza.css) ---- */
+    .plaza-hero-submit {
+        position: relative;
+        overflow: hidden;
+        padding: 56px 60px 44px;
+        text-align: center;
+        color: #fff;
+        background:
+            radial-gradient(circle at 18% 28%, rgba(74, 144, 217, 0.32), transparent 55%),
+            radial-gradient(circle at 82% 78%, rgba(240, 165, 0, 0.22), transparent 60%),
+            linear-gradient(135deg, #15152b 0%, #1f1f3d 55%, #15152b 100%);
+        isolation: isolate;
+    }
+    .plaza-hero-submit::before {
+        /* Same fine dot grid as .plaza-hero for premium texture */
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+        background-size: 22px 22px;
+        background-position: 0 0;
+        z-index: 0;
+        pointer-events: none;
+    }
+    .plaza-hero-submit > * {
+        position: relative;
+        z-index: 1;
+    }
+    .plaza-hero-submit h1 {
+        font-size: 32px;
+        color: #fff;
+        margin-bottom: 14px;
+        letter-spacing: 2px;
+        font-weight: 700;
+        text-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    }
+    .plaza-hero-submit p {
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.78);
+        max-width: 640px;
+        margin: 0 auto 28px;
+        line-height: 1.85;
+    }
+
+    /* ---- Plaza body ---- */
+    .plaza-body {
+        padding: 48px 60px 72px;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    /* ---- Section card — matches plaza's warm card surface ---- */
+    .plaza-section-card {
+        position: relative;
+        background: linear-gradient(135deg, #fafaf5 0%, #fff 100%);
+        border: 1px solid rgba(212, 201, 168, 0.3);
+        border-radius: 12px;
+        padding: 28px 32px;
+        margin-bottom: 24px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+    .plaza-section-card h2 {
+        font-size: 20px;
+        color: #1a1a2e;
+        margin: 0 0 20px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid rgba(212, 201, 168, 0.4);
+        letter-spacing: 0.5px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .plaza-section-card h2::before {
+        /* Vertical yellow gradient accent bar — same as
+           .resource-detail-section-title::before in plaza.css */
+        content: "";
+        width: 4px;
+        height: 18px;
+        background: linear-gradient(180deg, #f0a500, #ffc233);
+        border-radius: 2px;
+        flex-shrink: 0;
+    }
+    .plaza-section-card h3 {
+        font-size: 15px;
+        color: #1a1a2e;
+        margin: 20px 0 10px;
+        font-weight: 700;
+    }
+    .plaza-section-card h3:first-child { margin-top: 0; }
+    .plaza-section-card p {
+        font-size: 14px;
+        color: #444;
+        line-height: 1.85;
+        margin-bottom: 12px;
+    }
+    .plaza-section-card p:last-child { margin-bottom: 0; }
+
+    /* ---- Prohibited-content variant: red tinted background + red title ---- */
+    .plaza-section-card.plaza-section-prohibited {
+        background: linear-gradient(135deg, #fff8f8 0%, #fff 100%);
+        border-color: rgba(192, 57, 43, 0.18);
+    }
+    .plaza-section-card.plaza-section-prohibited h2 { color: #c0392b; }
+
+    /* ---- Email highlight card — same warm gradient as .plaza-coming-soon ---- */
+    .plaza-email-card {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 18px 24px;
+        background: linear-gradient(135deg, #fffaf0 0%, #fff5e0 100%);
+        border: 1px solid rgba(240, 165, 0, 0.18);
+        border-left: 4px solid #f0a500;
+        border-radius: 12px;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+        box-shadow: 0 4px 16px rgba(240, 165, 0, 0.07);
+    }
+    .plaza-email-card .plaza-email-icon { font-size: 28px; flex-shrink: 0; }
+    .plaza-email-card .plaza-email-text { flex: 1; min-width: 200px; }
+    .plaza-email-card .plaza-email-text strong {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 4px;
+        color: #1a1a2e;
+    }
+    .plaza-email-card .plaza-email-text span { font-size: 13px; color: #666; }
+    .plaza-email-card .plaza-email-badge {
+        font-size: 11px;
+        padding: 4px 10px;
+        background: linear-gradient(135deg, #4a90d9, #5aa0e9);
+        color: #fff;
+        border-radius: 999px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        box-shadow: 0 2px 6px rgba(74, 144, 217, 0.25);
+    }
+
+    /* Hero-context email card — overlaid on the navy hero, so use
+       translucent white to stay readable on the dark gradient. */
+    .plaza-hero-submit .plaza-email-card {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-left: 4px solid rgba(255, 255, 255, 0.25);
+        box-shadow: none;
+        max-width: 560px;
+        margin: 0 auto 4px;
+    }
+    .plaza-hero-submit .plaza-email-card .plaza-email-text strong { color: #fff; }
+    .plaza-hero-submit .plaza-email-card .plaza-email-text span { color: rgba(255, 255, 255, 0.7); }
+    .plaza-hero-submit .plaza-email-card .plaza-email-badge {
+        background: rgba(255, 255, 255, 0.18);
+        color: rgba(255, 255, 255, 0.85);
+        box-shadow: none;
+    }
+
+    /* ---- Info list (inside cards) ---- */
+    .plaza-info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .plaza-info-list li {
+        font-size: 14px;
+        line-height: 1.85;
+        color: #333;
+    }
+    .plaza-info-list li strong { color: #1a1a2e; }
+    .plaza-info-list li code {
+        background: rgba(240, 165, 0, 0.12);
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-size: 13px;
+        color: #1a1a2e;
+        font-weight: 500;
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    /* ---- Prohibited list (red, kept for warning semantic) ---- */
+    .plaza-prohibited-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .plaza-prohibited-list li {
+        font-size: 14px;
+        line-height: 1.7;
+        color: #333;
+    }
+    .plaza-prohibited-list li strong { color: #c0392b; }
+
+    /* ---- Normative examples — blue accent matches plaza brand ---- */
+    .plaza-norm-example {
+        background: rgba(74, 144, 217, 0.06);
+        border: 1px solid rgba(74, 144, 217, 0.2);
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin: 10px 0;
+        font-size: 14px;
+        line-height: 1.85;
+        box-shadow: 0 2px 8px rgba(74, 144, 217, 0.05);
+    }
+    .plaza-norm-example strong { color: #4a90d9; }
+    .plaza-norm-example em { color: #666; font-style: normal; }
+
+    /* ---- Email template ---- */
+    .plaza-email-template {
+        background: linear-gradient(135deg, #fff 0%, #fffaf0 100%);
+        border: 1px solid rgba(212, 201, 168, 0.4);
+        border-radius: 12px;
+        padding: 20px 24px;
+        font-size: 14px;
+        line-height: 2;
+        margin-top: 16px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+    .plaza-email-template p { margin: 0 0 8px; color: #444; }
+    .plaza-email-template p:last-child { margin-bottom: 0; }
+    .plaza-email-template hr {
+        margin: 14px 0; border: none; border-top: 1px dashed rgba(212, 201, 168, 0.5);
+    }
+    .plaza-email-template .plaza-field {
+        display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .plaza-email-template .plaza-field-label {
+        font-weight: 600;
+        min-width: 80px;
+        color: #1a1a2e;
+    }
+    .plaza-email-template .plaza-field-content { flex: 1; color: #333; min-width: 200px; }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 900px) {
+        .plaza-hero-submit { padding: 40px 24px 36px; }
+        .plaza-body { padding: 32px 24px 56px; }
+        .plaza-back-btn-wrap { top: 40px; left: 24px; }
+    }
+    @media (max-width: 600px) {
+        .plaza-section-card { padding: 20px 18px; }
+        .plaza-hero-submit h1 { font-size: 26px; letter-spacing: 1.5px; }
+        .plaza-back-btn-wrap { top: 32px; left: 16px; }
+    }
+
+    /* ---- Entrance animations ---- */
+    .plaza-hero-submit h1 { animation: anim-pop-in 0.7s cubic-bezier(0.2, 0.8, 0.3, 1.3) 0.2s both; }
+    .plaza-hero-submit p  { animation: anim-fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.35s both; }
+
+    /* ---- Back link (floats at h1's vertical level, left of body edge) ---- */
+    .plaza-back-btn-wrap {
+        position: absolute;
+        top: 56px;
+        left: 60px;
+        z-index: 2;
+        text-align: left;
+        animation: anim-fade-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+    .plaza-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: color 0.2s;
+        letter-spacing: 0.3px;
+        margin-bottom: 0;
+    }
+    .plaza-back-btn:hover {
+        color: #fff;
+        text-decoration: none;
+    }
+    .plaza-back-btn-arrow {
+        width: 14px;
+        height: 14px;
+        fill: currentColor;
+        display: block;
+        flex-shrink: 0;
+    }
+
+    /* h1 sits in the centred flow; no special margin override needed
+       because the back link is absolutely positioned (out of flow). */
+    </style>
+</head>
+<body class="plaza-page">
+    <div id="site-header"></div>
+
+    <!-- Plaza Hero -->
+    <section class="plaza-hero-submit">
+        <div class="plaza-back-btn-wrap">
+            <a class="plaza-back-btn" href="creative-plaza.html">
+                <svg class="plaza-back-btn-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+                返回
+            </a>
+        </div>
+        <h1>📧 告示牌资源包投稿指南</h1>
+        <p>欢迎各位城建爱好者与模组玩家向"豹猫苦力怕可乐·开发组"投稿您精心制作的《豹猫指示牌模组》告示牌资源包！<br>请在投稿前仔细阅读以下规范，投稿邮箱如下：</p>
+        <div class="plaza-email-card">
+            <div class="plaza-email-icon">📬</div>
+            <div class="plaza-email-text">
+                <strong>投稿邮箱</strong>
+                <span>ocelot.moddev@outlook.com</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plaza Body -->
+    <div class="plaza-body">
+
+        <!-- Section 1: Requirements -->
+        <div class="plaza-section-card">
+            <h2>一、资源包制作与质量要求</h2>
+
+            <h3>1. 命名规范</h3>
+            <ol class="plaza-info-list">
+                <li>为方便官方整合与统一管理，资源包内<strong>所有内容必须放置在 <code>ocelotsignmod</code> 命名空间内</strong>，文件路径以 <code>assets/ocelotsignmod/</code> 开头。</li>
+                <li>所有文件夹和文件命名<strong>只能使用小写字母、数字和下划线</strong>（如 <code>my_custom_sign.png</code>），严禁空格、中文或大写字母。</li>
+            </ol>
+
+            <h3>2. 图像与模型规格</h3>
+            <ol class="plaza-info-list">
+                <li>图案文件必须为 <strong>.png</strong> 格式，长宽比严格 <strong>1:1</strong>，建议分辨率 <strong>512×512</strong> 或 <strong>256×256</strong>。</li>
+                <li>自定义 3D 模型需遵循 16×16×16 原版比例。模型命名规范为 "<strong>[资源包名称] 模型名称</strong>"，例如：<code>[Hong Kong, China] Linear Delineator A</code>。</li>
+            </ol>
+
+            <h3>3. 高级自定义 UI 分类</h3>
+            <ol class="plaza-info-list">
+                <li><strong>请使用"高级自定义 UI"进行分类</strong>，切勿将图案或字体全部塞入模组的默认分类中。</li>
+                <li>在 <code>ui_definitions</code> 文件夹下创建专属 UI 配置文件（如 <code>my_road_signs.json</code>），建议合理使用 <code>"useSubfolders"</code>（子文件夹/标签页）和 <code>"filterMode"</code>（白名单过滤）。</li>
+                <li>资源包内的<strong>分类名称及底层代码一律使用英文</strong>，但图案本身可以包含中文或其他语言。</li>
+            </ol>
+
+            <h3>4. 版权与开源</h3>
+            <ol class="plaza-info-list">
+                <li>请严格注意字体或图案的版权归属。遇侵权风险时请主动寻找<strong>免费开源平替字体</strong>（如思源黑体、霞鹜文楷等）或获取授权。</li>
+                <li>可自行选择开源/分发协议，例如：<strong>CC BY-NC-SA 4.0、MIT、GPLv3</strong> 或"<strong>保留所有权利</strong>"。</li>
+            </ol>
+
+            <h3>5. 敏感内容规避</h3>
+            <ol class="plaza-info-list">
+                <li>请务必正确使用中国主权名称，严禁违背"一个中国"原则的表述。规范示例：</li>
+            </ol>
+            <div class="plaza-norm-example">
+                <strong>中国大陆</strong> — Chinese Mainland<br>
+                <strong>中国香港</strong> — Hong Kong, China<br>
+                <strong>中国台湾</strong> — Taiwan, a province of China
+            </div>
+            <ol class="plaza-info-list" start="2">
+                <li><strong>请不要在图案或模型中出现任何国家或地区的旗帜/国旗</strong>，以维护纯粹的城建环境。</li>
+            </ol>
+        </div>
+
+        <!-- Section 2: Prohibited -->
+        <div class="plaza-section-card plaza-section-prohibited">
+            <h2>🚫 二、严禁内容清单（一经发现，永久拒收）</h2>
+            <p style="font-size:14px;color:#555;margin-bottom:16px;">您的资源包及配套文件中，<strong>严格禁止</strong>出现以下内容：</p>
+            <ul class="plaza-prohibited-list">
+                <li><strong>反动、敏感话题：</strong>涉及任何国家/地区近期或历史的敏感社会性事件。</li>
+                <li><strong>涉及任何政治的内容：</strong>政治人物、政党标志、政治口号等。</li>
+                <li><strong>分裂国家：</strong>任何暗示或支持分裂、破坏领土完整的言论或图片。</li>
+                <li><strong>色情：</strong>任何露骨、R18、性暗示的图像或文字。</li>
+                <li><strong>低俗与暴力：</strong>血腥、惊悚、引人不适的恶俗梗或暴力画面。</li>
+                <li><strong>侵权：</strong>未经授权直接解包盗用其他游戏、模组或收费素材库的资源。</li>
+                <li><strong>恶意代码或冗余文件：</strong>宣传广告、引流链接或恶意破坏性脚本。</li>
+            </ul>
+        </div>
+
+        <!-- Section 3: Email Template -->
+        <div class="plaza-section-card">
+            <h2>📬 三、投稿邮件模板</h2>
+            <p>准备好您的 <code>.zip</code> 格式资源包后，请使用以下模板发送邮件至 <strong>ocelot.moddev@outlook.com</strong>。</p>
+            <div class="plaza-email-template">
+                <p><strong>收件人：</strong>ocelot.moddev@outlook.com</p>
+                <p><strong>主题：</strong>【投稿】[您的资源包名称] — 例如：【投稿】中国香港交通资源包</p>
+                <hr>
+                <div class="plaza-field">
+                    <span class="plaza-field-label">作者：</span>
+                    <span class="plaza-field-content">_________________________________（圈名/ID，可附带 B站/Github/个人主页链接）</span>
+                </div>
+                <div class="plaza-field">
+                    <span class="plaza-field-label">简介：</span>
+                    <span class="plaza-field-content">__________________________________（资源包内容、图案/模型数量、适用场景等）</span>
+                </div>
+                <div class="plaza-field">
+                    <span class="plaza-field-label">采用协议：</span>
+                    <span class="plaza-field-content">___________________________________________（如 CC BY-NC-SA 4.0）</span>
+                </div>
+                <hr>
+                <p><strong>附件：</strong>请附上您的 <code>.zip</code> 资源包，若文件过大可附带长期有效的网盘链接。</p>
+            </div>
+        </div>
+
+        <!-- Section 4: Review -->
+        <div class="plaza-section-card">
+            <h2>⏳ 四、审核与收录说明</h2>
+            <ol class="plaza-info-list">
+                <li>并非所有投稿都会被收录，通常每 <strong>1~2 个月</strong>集中审阅一次。</li>
+                <li>通过审核后会邮件通知；未通过则不回复，敬请谅解。</li>
+                <li>内容优秀但有格式小问题（如 JSON 错误、路径错误）的资源包，开发组会协助修改完善。</li>
+                <li>存在严重侵权、命名极其不规范或触犯"严禁清单"的资源包，将直接拒绝收录。</li>
+            </ol>
+        </div>
+
+        <p style="text-align:center;color:#888;font-size:13px;margin-top:12px;">感谢您对《豹猫指示牌模组》的支持与贡献，期待看到您的创意资源包！</p>
+
+    </div><!-- .plaza-body -->
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" title="回到顶部">
+        <svg class="back-to-top-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">顶部</span>
+    </div>
+
+    <script src="../../js/components.js?v=20261004"></script>
+</body>
+</html>

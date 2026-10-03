@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Pack Maker | Ocelot Sign Mod</title>
+    <link rel="stylesheet" href="../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../css/content.css?v=20261004">
+    <link rel="stylesheet" href="../css/tool-packmaker.css?v=20261004">
+    <link rel="stylesheet" href="../css/pm-base.css?v=20261004">
+    <link rel="stylesheet" href="../css/pm-animations.css?v=20261004">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="../js/i18n-core.js?v=20261004"></script>
+    <script src="../js/i18n-landing.js?v=20261004"></script>
+    <script src="../js/i18n-packmaker.js?v=20261004"></script>
+    <script src="../js/i18n-modals.js?v=20261004"></script>
+    <script src="../js/i18n-plaza.js?v=20261004"></script>
+    <script src="../js/i18n.js?v=20261004"></script>
+</head>
+<body data-theme="dark">
+
+    <!-- Shared header -->
+    <div id="site-header"></div>
+
+    <!-- Warning Banner -->
+    <div class="warning-banner" id="warningBanner">
+        <span class="warning-icon">⚠️</span>
+        <span class="warning-text">It is strictly prohibited to use the Resource Pack Maker to create any illegal content including reactionary, pornographic, terrorist, or violent material. Thank you for your cooperation.</span>
+        <button class="warning-close" onclick="closeWarningBanner()" title="Close">×</button>
+    </div>
+
+    <!-- Top Bar -->
+    <div class="maker-bar">
+        <div class="maker-bar-title">🎨 Resource Pack Maker</div>
+        <span class="pack-badge" id="packBadge">
+            <span class="dot"></span>
+            <span id="packBadgeText">No pack loaded</span>
+        </span>
+        <div style="flex:1"></div>
+        <div class="bar-actions">
+            <button class="btn btn-secondary btn-sm" onclick="document.getElementById('zipInput').click()">📂 Upload Pack</button>
+            <button class="btn btn-secondary btn-sm" onclick="createNewPack()">✨ New Pack</button>
+            <button class="btn btn-primary btn-sm" onclick="generateAndDownload()">⬇ Generate &amp; Download</button>
+        </div>
+        <input type="file" id="zipInput" accept=".zip" style="display:none" onchange="handleZipUpload(event)">
+    </div>
+
+    <!-- H1 Tabs -->
+    <div class="h1-tabs" id="h1Tabs">
+        <div class="h1-tab active" data-tab="patterns" onclick="switchH1Tab('patterns', this)">
+            <span class="tab-icon">🖼</span>
+            <span>Patterns</span>
+        </div>
+        <div class="h1-tab" data-tab="fonts" onclick="switchH1Tab('fonts', this)">
+            <span class="tab-icon">🔤</span>
+            <span>Fonts</span>
+        </div>
+        <div class="h1-tab" data-tab="models" onclick="switchH1Tab('models', this)">
+            <span class="tab-icon">🎲</span>
+            <span>Custom Models</span>
+        </div>
+        <div class="h1-tab" data-tab="explorer" onclick="switchH1Tab('explorer', this)">
+            <span class="tab-icon">📁</span>
+            <span>Explorer</span>
+        </div>
+        <div class="h1-tab" data-tab="pack-settings" onclick="switchH1Tab('pack-settings', this)">
+            <span class="tab-icon">📦</span>
+            <span>Pack Settings</span>
+        </div>
+    </div>
+
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-container">
+            <div class="welcome-icon">🎨</div>
+            <h1 class="welcome-title">Resource Pack Maker</h1>
+            <p class="welcome-subtitle">
+                Visual editor for “Ocelot Sign Mod” resource packs. Automatically generates <code>ui_definitions</code> and <code>custom_fonts</code> configuration files.
+            </p>
+
+            <div class="welcome-actions">
+                <button class="welcome-btn" onclick="document.getElementById('zipInput').click()">
+                    <div class="welcome-btn-icon">📂</div>
+                    <div class="welcome-btn-label">Upload Pack</div>
+                    <div class="welcome-btn-desc">Start from an existing .zip file</div>
+                </button>
+                <button class="welcome-btn primary" onclick="createNewPack()">
+                    <div class="welcome-btn-icon">✨</div>
+                    <div class="welcome-btn-label">New Empty Pack</div>
+                    <div class="welcome-btn-desc">Create from scratch</div>
+                </button>
+            </div>
+
+            <div class="welcome-dropzone" id="welcomeDropzone"
+                 onclick="document.getElementById('zipInput').click()">
+                <p>📦 or drag &amp; drop a <strong>.zip</strong> resource pack file here</p>
+            </div>
+
+            <div class="welcome-features">
+                <div class="welcome-feature">
+                    <div class="welcome-feature-icon">🖼</div>
+                    <div class="welcome-feature-title">Pattern Management</div>
+                    <div class="welcome-feature-desc">Manage road signs and UI icons by category</div>
+                </div>
+                <div class="welcome-feature">
+                    <div class="welcome-feature-icon">🔤</div>
+                    <div class="welcome-feature-title">Font Definition Editor</div>
+                    <div class="welcome-feature-desc">Supports .ttf / .otf / .woff imports</div>
+                </div>
+                <div class="welcome-feature">
+                    <div class="welcome-feature-icon">📁</div>
+                    <div class="welcome-feature-title">File Explorer</div>
+                    <div class="welcome-feature-desc">Browse and operate on all pack files</div>
+                </div>
+                <div class="welcome-feature">
+                    <div class="welcome-feature-icon">⬇</div>
+                    <div class="welcome-feature-title">One-Click Export</div>
+                    <div class="welcome-feature-desc">Generate a standard resource pack .zip</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Body -->
+    <div class="maker-body">
+        <div class="overlay-editor" id="overlayEditor">
+            <!-- H2 Sidebar -->
+            <div class="h2-sidebar">
+                <div class="h2-sidebar-header">
+                    <span class="h2-sidebar-title" id="h2SidebarTitle">Pattern Categories</span>
+                </div>
+                <div class="h2-list" id="h2List"></div>
+                <div class="h2-add-btn" onclick="addH2()">
+                    <span>+</span><span>New Category</span>
+                </div>
+                <div class="h2-sidebar-footer">
+                    <button class="btn btn-secondary btn-sm" onclick="saveAllToZip()" style="width:100%">
+                        💾 Save to Pack
+                    </button>
+                </div>
+            </div>
+
+            <!-- H3 Main Area -->
+            <div class="h3-main">
+                <div class="no-category" id="noPackOverlay" style="display:none">
+                    <div class="no-category-icon">📦</div>
+                    <p>Please upload a resource pack or create a new empty one.<br><br>
+                    <button class="btn btn-secondary btn-sm" onclick="createNewPack()">✨ New Pack</button>
+                    <button class="btn btn-secondary btn-sm" onclick="document.getElementById('zipInput').click()">📂 Upload ZIP</button>
+                    </p>
+                </div>
+
+                <!-- File Explorer -->
+                <div class="explorer-view" id="explorerView" style="display:none">
+                    <div class="explorer-toolbar">
+                        <button class="exp-btn" onclick="explorerGoBack()" title="Back">◀</button>
+                        <button class="exp-btn" onclick="explorerGoForward()" title="Forward">▶</button>
+                        <button class="exp-btn" onclick="explorerGoUp()" title="Up">⬆</button>
+                        <button class="exp-btn" onclick="explorerReload()" title="Refresh">🔄</button>
+                        <div class="exp-address">
+                            <span class="exp-address-icon">📍</span>
+                            <span class="exp-address-path" id="expAddressPath">📦 Pack</span>
+                        </div>
+                        <div style="flex:1"></div>
+                        <div class="exp-view-toggle">
+                            <button class="exp-btn active" id="expViewList" onclick="setExplorerView('list')" title="List">☰</button>
+                            <button class="exp-btn" id="expViewGrid" onclick="setExplorerView('grid')" title="Grid">▦</button>
+                        </div>
+                    </div>
+                    <div class="explorer-ops-toolbar">
+                        <button class="exp-op-btn" id="expBtnCut" onclick="explorerCut()" title="Cut (Ctrl+X)" disabled>✂ Cut</button>
+                        <button class="exp-op-btn" id="expBtnCopy" onclick="explorerCopy()" title="Copy (Ctrl+C)" disabled>📋 Copy</button>
+                        <button class="exp-op-btn" id="expBtnPaste" onclick="explorerPaste()" title="Paste (Ctrl+V)" disabled>📥 Paste</button>
+                        <button class="exp-op-btn" id="expBtnDelete" onclick="explorerDelete()" title="Delete (Del)" disabled>🗑 Delete</button>
+                        <button class="exp-op-btn" id="expBtnRename" onclick="explorerRename()" title="Rename (F2)" disabled>✏ Rename</button>
+                        <button class="exp-op-btn" id="expBtnDownload" onclick="explorerDownload()" title="Download" disabled>⬇ Download</button>
+                        <button class="exp-op-btn" onclick="explorerNewFile()" title="New File">📄 New File</button>
+                        <button class="exp-op-btn" onclick="explorerNewFolder()" title="New Folder">📁 New Folder</button>
+                        <button class="exp-op-btn" onclick="document.getElementById('expUploadInput').click()" title="Upload to current folder">⬆ Upload</button>
+                        <input type="file" id="expUploadInput" multiple style="display:none" onchange="handleExplorerUpload(event)">
+                    </div>
+                    <div class="explorer-content" id="explorerContent"></div>
+                    <div class="explorer-statusbar" id="explorerStatus">Ready</div>
+                </div>
+
+                <!-- Custom Models View -->
+                <div class="models-view" id="modelsView" style="display:none">
+                    <div class="models-header-bar">
+                        <div class="models-header-info">
+                            <span class="models-header-title">🎲 Custom Models</span>
+                            <span class="models-header-desc">Model files live in <code>assets/&lt;namespace&gt;/models/custom_models/</code>; registration entries are written to <code>assets/ocelotsignmod/model_definitions/</code></span>
+                        </div>
+                        <div class="models-header-actions">
+                            <button class="btn btn-primary btn-sm" onclick="openNewModelDialog()">➕ New Model</button>
+                            <button class="btn btn-secondary btn-sm" onclick="refreshModelsList()">🔄 Refresh</button>
+                            <button class="btn btn-secondary btn-sm" onclick="navigateToModelsFolder()">📂 Open Folder</button>
+                        </div>
+                    </div>
+                    <div class="new-model-dialog" id="newModelDialog">
+                        <div class="nm-header">
+                            <span style="font-size:18px">🎲</span>
+                            <span class="nm-header-title" id="newModelHeaderTitle">New Custom Model</span>
+                            <div style="flex:1"></div>
+                            <button class="btn btn-secondary btn-sm" onclick="closeNewModelDialog()">✕ Cancel</button>
+                        </div>
+                        <div class="nm-steps" id="nmSteps">
+                            <div class="nm-step active" id="nmStep1">
+                                <div class="nm-step-num">1</div>
+                                <span>Upload Model File</span>
+                            </div>
+                            <div class="nm-step-sep"></div>
+                            <div class="nm-step" id="nmStep2">
+                                <div class="nm-step-num">2</div>
+                                <span>Upload Textures</span>
+                            </div>
+                            <div class="nm-step-sep"></div>
+                            <div class="nm-step" id="nmStep3">
+                                <div class="nm-step-num">3</div>
+                                <span>Fill Info</span>
+                            </div>
+                        </div>
+                        <div class="nm-body" id="nmBody1">
+                            <div class="nm-upload-zone" id="nmJsonZone"
+                             onclick="document.getElementById('nmJsonInput').click()"
+                             ondragover="handleDropZoneDragOver(event)"
+                             ondragleave="handleDropZoneDragLeave(event)"
+                             ondrop="handleNmJsonDrop(event)">
+                                <div class="nm-upload-icon">📄</div>
+                                <div class="nm-upload-hint"><strong>Click to upload</strong> or drag a file here</div>
+                                <div class="nm-upload-sub">Only .json files supported (BlockBench export)</div>
+                                <input type="file" id="nmJsonInput" accept=".json" onchange="handleNmJsonUpload(this)">
+                            </div>
+                            <div id="nmJsonInfo" style="display:none">
+                                <div class="nm-json-name" id="nmJsonName"></div>
+                                <div class="nm-json-preview" id="nmJsonPreview"></div>
+                                <div class="nm-json-error" id="nmJsonError" style="display:none"></div>
+                            </div>
+                        </div>
+                        <div class="nm-body" id="nmBody2" style="display:none">
+                            <div id="nmTexHeader" style="font-size:12px;color:#8b949e;margin-bottom:10px">
+                                Fill the <b style="color:#79c0ff">namespace</b> and <b style="color:#79c0ff">path</b> (relative to <code>textures/</code>) for each texture, then upload PNG files.
+                            </div>
+                            <div id="nmTexList" class="nm-tex-list"></div>
+                            <div style="margin-top:12px;text-align:right">
+                                <button class="btn btn-secondary btn-sm" onclick="nmAddExtraTex()">➕ Add Extra Texture</button>
+                            </div>
+                        </div>
+                        <div class="nm-body" id="nmBody3" style="display:none">
+                            <div class="nm-form-group">
+                                <label class="nm-form-label">Model Identifier <code>model_id</code></label>
+                                <input class="nm-form-input" id="nmModelId" type="text" placeholder="Auto-inferred from file name" disabled>
+                                <div class="nm-form-hint">Used in-game for registration; must be unique. Use English and underscores.</div>
+                            </div>
+                            <div class="nm-form-group">
+                                <label class="nm-form-label">Display Name <code>localized_name</code></label>
+                                <input class="nm-form-input" id="nmLocalizedName" type="text" placeholder="e.g. My Model">
+                                <div class="nm-form-hint">Name shown in-game. Leave blank to use model_id.</div>
+                            </div>
+                            <div class="nm-form-group">
+                                <label class="nm-form-label">Namespace <code>namespace</code></label>
+                                <input class="nm-form-input" id="nmNamespace" type="text" placeholder="minecraft" value="minecraft">
+                                <div class="nm-form-hint">Namespace where the model JSON is stored.</div>
+                            </div>
+                        </div>
+                        <div class="nm-footer" id="nmFooter">
+                            <button class="btn btn-secondary btn-sm" id="nmBackBtn" onclick="nmGoBack()" style="display:none">← Back</button>
+                            <div class="nm-footer-hint" id="nmHint">Please upload a model JSON file first</div>
+                            <button class="btn btn-primary btn-sm" id="nmNextBtn" onclick="nmGoNext()" disabled>Next →</button>
+                        </div>
+                    </div>
+                    <!-- Edit Model Dialog -->
+                    <div class="new-model-dialog" id="editModelDialog">
+                        <div class="nm-header">
+                            <span style="font-size:18px">✏️</span>
+                            <span class="nm-header-title">Edit Model</span>
+                            <div style="flex:1"></div>
+                            <button class="btn btn-secondary btn-sm" onclick="closeEditModelDialog()">✕ Cancel</button>
+                        </div>
+                        <div class="nm-body" id="emBody">
+                            <div class="nm-form-group">
+                                <label class="nm-form-label">Model Identifier <code>model_id</code></label>
+                                <input class="nm-form-input" id="emModelId" type="text" disabled>
+                                <div class="nm-form-hint">model_id is the filename and cannot be modified.</div>
+                            </div>
+                            <div class="nm-form-group">
+                                <label class="nm-form-label">Namespace <code>namespace</code></label>
+                                <input class="nm-form-input" id="emNamespace" type="text" disabled>
+                                <div class="nm-form-hint">Namespace is bound to the file path and cannot be modified.</div>
+                            </div>
+                            <div class="nm-form-group">
+                                <label class="nm-form-label">Display Name <code>localized_name</code></label>
+                                <input class="nm-form-input" id="emLocalizedName" type="text" placeholder="e.g. My Model">
+                                <div class="nm-form-hint">Name shown in-game.</div>
+                            </div>
+                        </div>
+                        <div class="nm-footer">
+                            <div class="nm-footer-hint">Edit the display name and save to apply.</div>
+                            <button class="btn btn-primary btn-sm" onclick="saveEditModel()">💾 Save</button>
+                        </div>
+                    </div>
+                    <div class="models-list-area" id="modelsListArea"></div>
+                </div>
+
+                <div class="no-category" id="noCategoryOverlay" style="display:none">
+                    <div class="no-category-icon">🗂</div>
+                    <p>Select a category from the left to edit its content blocks</p>
+                </div>
+
+                <div class="h3-main-header" id="h3MainHeader" style="display:none">
+                    <div style="flex:1;min-width:0">
+                        <div class="h3-main-title" id="h3MainTitle">—</div>
+                        <div class="h3-main-subtitle" id="h3MainSubtitle"></div>
+                        <div class="h3-main-hint" id="h3MainHint">
+                            <div class="h3-main-hint-row">
+                                <button id="h3HintToggle" type="button" class="h3-main-hint-toggle expanded"
+                                    onclick="toggleH3Hint()" title="Click to toggle whether the hint is shown in-game">
+                                    <span class="h3-main-hint-toggle-text">Hint</span>
+                                    <span class="h3-main-hint-switch">
+                                        <span class="h3-main-hint-switch-knob"></span>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="h3-main-hint-body">
+                                <input id="h3HintInput" type="text" class="h3-main-hint-input"
+                                    placeholder="e.g. Click a pattern to insert it into the sign"
+                                    oninput="updateH3Hint(this.value)">
+                                <div class="h3-main-hint-meta">Text shown above this category in-game.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" onclick="addH3()">+ New Block</button>
+                </div>
+
+                <div class="h3-sections-area" id="h3SectionsArea">
+                    <div class="h3-empty" id="h3Empty" style="display:none">
+                        <div class="h3-empty-icon">📋</div>
+                        <h3>No content blocks yet</h3>
+                        <p>Click "+ New Block" in the upper right to add a content block. The corresponding JSON configuration will be generated automatically.</p>
+                        <button class="btn btn-secondary btn-sm" onclick="addH3()">+ Add First Block</button>
+                    </div>
+                    <div id="h3CardsList"></div>
+                </div>
+
+                <!-- Pack Settings View -->
+                <div class="pack-settings-view" id="packSettingsView" style="display:none">
+                    <div class="ps-header">
+                        <div class="ps-header-icon">📦</div>
+                        <div>
+                            <div class="ps-header-title">Pack Settings</div>
+                            <div class="ps-header-desc">Manage pack.mcmeta and cover image</div>
+                        </div>
+                    </div>
+                    <div class="ps-body">
+                        <div class="ps-section">
+                            <div class="ps-section-title">📋 pack.mcmeta</div>
+                            <div class="ps-form-row">
+                                <label class="ps-label">Pack format version</label>
+                                <input class="ps-input" id="psFormat" type="number" min="1" step="1" placeholder="e.g. 34">
+                                <div class="ps-hint">Common values: 1.21.3+ → 34, 1.20.2~1.21 → 26, 1.19.4 → 22, 1.19~1.19.3 → 18, 1.17~1.18.2 → 15, 1.16 → 9, 1.15 → 8. See <a href="https://minecraft.wiki/w/Resource_pack#Format_version" target="_blank" style="color:#388bfd">Minecraft Wiki</a>.</div>
+                            </div>
+                            <div class="ps-form-row">
+                                <label class="ps-label">Pack description</label>
+                                <input class="ps-input" id="psDesc" type="text" placeholder="Text shown in the resource pack menu, supports color codes (§)">
+                                <div class="ps-hint">Description shown under the pack name in the resource pack menu.</div>
+                            </div>
+                            <div class="ps-form-row">
+                                <label class="ps-label">Output ZIP filename</label>
+                                <div class="ps-filename-row">
+                                    <input class="ps-input" id="psFileName" type="text" placeholder="Leave blank to use the pack description as filename">
+                                    <span class="ps-filename-suffix">.zip</span>
+                                </div>
+                                <div class="ps-hint">Filename (no extension) used when exporting the resource pack</div>
+                            </div>
+                            <div class="ps-actions-row">
+                                <button class="btn btn-primary btn-sm" onclick="savePackMetaFromSettings()">💾 Save</button>
+                            </div>
+                        </div>
+                        <div class="ps-section">
+                            <div class="ps-section-title">🖼 Cover Image</div>
+                            <div class="ps-form-row">
+                                <label class="ps-label">Pack cover</label>
+                                <div class="ps-img-area" id="psImgArea"></div>
+                            </div>
+                            <div class="ps-pack-png-info">
+                                <div class="ps-info-row">
+                                    <span class="ps-info-key">Filename</span>
+                                    <code class="ps-info-val">pack.png</code>
+                                </div>
+                                <div class="ps-info-row">
+                                    <span class="ps-info-key">Location</span>
+                                    <code class="ps-info-val">Pack root (ZIP root, not under assets/)</code>
+                                </div>
+                                <div class="ps-info-row">
+                                    <span class="ps-info-key">Recommended size</span>
+                                    <span class="ps-info-val">128 × 128 pixels (any square size allowed, will be auto-scaled)</span>
+                                </div>
+                                <div class="ps-info-row">
+                                    <span class="ps-info-key">Format</span>
+                                    <span class="ps-info-val">PNG (no transparent blending; Minecraft overlays on a grey background)</span>
+                                </div>
+                            </div>
+                            <div class="ps-actions-row">
+                                <label class="btn btn-secondary btn-sm" style="cursor:pointer" for="psImgInput">📤 Upload Cover</label>
+                                <input type="file" id="psImgInput" accept="image/png" style="display:none" onchange="handlePackImageUpload(this)">
+                                <button class="btn btn-secondary btn-sm" onclick="removePackImage()">🗑 Remove Cover</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel -->
+            <div class="right-panel" id="rightPanel">
+                <div class="right-panel-header">
+                    <span class="right-panel-title">📁 File Browser</span>
+                    <button class="toggle-panel-btn" onclick="toggleRightPanel()" title="Collapse">◀</button>
+                </div>
+                <div class="right-panel-body">
+                    <div class="pack-info-mini" id="packInfoMini" style="display:none">
+                        <div class="row"><span class="k">Description</span><span class="v" id="pmDesc">—</span></div>
+                        <div class="row"><span class="k">Version</span><span class="v" id="pmFormat">—</span></div>
+                        <div class="row"><span class="k">Files</span><span class="v" id="pmFiles">—</span></div>
+                    </div>
+                    <div id="fileBrowser">
+                        <div style="padding:12px;text-align:center;color:#484f58;font-size:12px">
+                            Load pack to view<br>file list
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Category Modal -->
+    <div class="modal-overlay" id="catModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title" id="catModalTitle">🗂 New Category</span>
+                <button class="modal-close" onclick="closeCatModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Category Name *</label>
+                    <input type="text" class="form-input" id="catName" placeholder="My Custom Signs">
+                    <div class="form-hint">Name shown on the left sidebar in-game.</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category ID</label>
+                    <input type="text" class="form-input" id="catId" placeholder="Auto-generated from name">
+                    <div class="form-hint">Auto-generated from name if left blank (lowercase letters, digits, underscores only).</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Namespace</label>
+                    <input type="text" class="form-input" id="catNs" placeholder="my_pack" value="my_pack">
+                    <div class="form-hint">Namespace prefix for resource paths.</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Resource Base Path</label>
+                    <input type="text" class="form-input" id="catBasePath" placeholder="textures/signs" value="textures/signs">
+                    <div class="form-hint">Scan path relative to assets/&lt;namespace&gt;/, no trailing /.</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeCatModal()">Cancel</button>
+                <button class="btn btn-primary" id="catModalConfirmBtn" onclick="confirmCatModal()">Create</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Upload Modal -->
+    <div class="modal-overlay" id="imgUploadModal">
+        <div class="modal" style="width:560px">
+            <div class="modal-header">
+                <span class="modal-title">📤 Upload Images to This Block</span>
+                <button class="modal-close" onclick="closeImgUploadModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Target Folder</label>
+                    <div class="img-upload-target" id="imgUploadTarget">—</div>
+                    <div class="form-hint">All uploaded files will be saved to the folder above.</div>
+                </div>
+                <div class="form-group">
+                    <div class="upload-zone" id="imgUploadZone" style="position:relative"
+                         ondragover="handleDropZoneDragOver(event)"
+                         ondragleave="handleDropZoneDragLeave(event)">
+                        <input type="file" id="imgUploadInput" multiple
+                            accept="image/png,image/jpeg,image/jpg,image/gif,image/webp,.png,.jpg,.jpeg,.gif,.webp"
+                            style="position:absolute;inset:0;opacity:0;cursor:pointer;z-index:10">
+                        <div class="upload-zone-icon">📁</div>
+                        <p><strong>Click to select images</strong> or drag them here</p>
+                        <p class="hint">Supports PNG / JPG / GIF / WebP, multiple files at once</p>
+                    </div>
+                </div>
+                <div class="form-group" id="imgUploadOptions" style="display:none">
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+                        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#c9d1d9;cursor:pointer">
+                            <input type="checkbox" id="imgUploadAutoRatio" checked>
+                            <span>Detect aspect ratio (warn if not 1:1)</span>
+                        </label>
+                        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#c9d1d9;cursor:pointer">
+                            <input type="checkbox" id="imgUploadSkipExisting" checked>
+                            <span>Skip existing files (do not overwrite)</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" id="imgUploadListGroup" style="display:none">
+                    <label class="form-label">File Processing Results</label>
+                    <div id="imgUploadList" style="display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto;padding:4px 2px"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="imgUploadSummary" style="flex:1;color:#8b949e;font-size:12px"></span>
+                <button id="imgUploadClearBtn" class="btn btn-ghost btn-sm" onclick="clearImgUploadResults()" style="display:none">🧹 Clear Results</button>
+                <button id="imgUploadStartBtn" class="btn btn-primary" onclick="startImgUpload()" style="display:none">▶ Start Upload</button>
+                <button class="btn btn-secondary" onclick="closeImgUploadModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font Upload Modal -->
+    <div class="modal-overlay" id="fontUploadModal">
+        <div class="modal" style="width:580px">
+            <div class="modal-header">
+                <span class="modal-title">🔤 Upload Fonts to This Block</span>
+                <button class="modal-close" onclick="closeFontUploadModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Target Folder</label>
+                    <div class="img-upload-target" id="fontUploadTarget">—</div>
+                    <div class="form-hint">Uploaded .ttf / .otf files are saved to the folder above; the corresponding Minecraft font JSON configuration is generated automatically.</div>
+                </div>
+                <div class="form-group">
+                    <div class="upload-zone" id="fontUploadZone" style="position:relative"
+                         ondragover="handleDropZoneDragOver(event)"
+                         ondragleave="handleDropZoneDragLeave(event)">
+                        <input type="file" id="fontUploadInput" multiple
+                            accept=".ttf,.otf,font/ttf,font/otf"
+                            style="position:absolute;inset:0;opacity:0;cursor:pointer;z-index:10">
+                        <div class="upload-zone-icon">🔤</div>
+                        <p><strong>Click to select font files</strong> or drag them here</p>
+                        <p class="hint">Supports .ttf / .otf, multiple files at once</p>
+                    </div>
+                </div>
+                <div class="form-group" id="fontUploadListGroup" style="display:none">
+                    <label class="form-label">Files to Upload</label>
+                    <div id="fontUploadList" style="display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto;padding:4px 2px"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="fontUploadSummary" style="flex:1;color:#8b949e;font-size:12px"></span>
+                <button id="fontUploadClearBtn" class="btn btn-ghost btn-sm" onclick="clearFontUploadResults()" style="display:none">🧹 Clear Results</button>
+                <button id="fontUploadStartBtn" class="btn btn-primary" onclick="startFontUpload()" style="display:none">▶ Start Upload</button>
+                <button class="btn btn-secondary" onclick="closeFontUploadModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font JSON Editor Modal -->
+    <div class="modal-overlay" id="fontJsonEditorModal" style="z-index:1100">
+        <div class="modal" style="width:760px;max-height:88vh">
+            <div class="modal-header">
+                <span class="modal-title" id="fontJsonEditorTitle">🎨 Font JSON Editor</span>
+                <button class="modal-close" onclick="closeFontJsonEditor()">×</button>
+            </div>
+            <div class="modal-body" id="fontJsonEditorBody" style="overflow-y:auto;max-height:calc(88vh - 110px)"></div>
+            <div class="modal-footer">
+                <span id="fontJsonEditorSummary" style="flex:1;color:#8b949e;font-size:12px"></span>
+                <button class="btn btn-ghost btn-sm" onclick="addFontJsonProvider()">+ Add provider</button>
+                <button class="btn btn-primary" onclick="saveFontJsonEditor()">💾 Save JSON</button>
+                <button class="btn btn-secondary" onclick="closeFontJsonEditor()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Subfolder Modal -->
+    <div class="modal-overlay" id="addSFModal">
+        <div class="modal" style="width:520px">
+            <div class="modal-header">
+                <span class="modal-title" id="addSFModalTitle">📁 Add Subfolder Label</span>
+                <button class="modal-close" onclick="closeAddSFModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" id="addSFFoldersListGroup">
+                    <label class="form-label">Pick from first-level subfolders of the current directory</label>
+                    <div id="addSFFoldersList" style="display:flex;flex-wrap:wrap;gap:6px;padding:4px 2px;max-height:140px;overflow-y:auto">
+                        <span style="color:#8b949e;font-size:12px">No un-added subfolders</span>
+                    </div>
+                    <div class="form-hint" id="addSFFoldersListHint">Click a folder below to auto-fill; you can edit the display name separately.</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" id="addSFNewDirLabel">Or enter a new subfolder name (will be auto-created if missing)</label>
+                    <input type="text" class="form-input" id="addSFNewDir" placeholder="black">
+                    <div class="form-hint" id="addSFNewDirHint">Lowercase letters, digits and underscores only.</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Button display name *</label>
+                    <input type="text" class="form-input" id="addSFDisplayName" placeholder="Black Arrows">
+                    <div class="form-hint">Text shown on the in-game button. Leave blank to use the folder name.</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddSFModal()">Cancel</button>
+                <button class="btn btn-primary" id="addSFConfirmBtn" onclick="confirmAddSFFromTab()">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pick Path Modal -->
+    <div class="modal-overlay" id="pickPathModal">
+        <div class="modal" style="width:560px">
+            <div class="modal-header">
+                <span class="modal-title">📂 Pick Resource Folder</span>
+                <button class="modal-close" onclick="closePickPathModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Breadcrumb</label>
+                    <div id="pickPathBreadcrumb" style="display:flex;flex-wrap:wrap;gap:4px;padding:4px 2px;font-size:12px"></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Current folder</label>
+                    <div id="pickPathCurrent" style="font-family:monospace;font-size:12px;color:#79c0ff;padding:4px 2px;word-break:break-all">—</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Subfolders</label>
+                    <div id="pickPathTree" class="pick-path-tree" style="max-height:260px;overflow-y:auto;border:1px solid #21262d;border-radius:5px;background:#0d1117;padding:4px 0">
+                        <div style="padding:16px;color:#8b949e;font-size:12px;text-align:center">Loading…</div>
+                    </div>
+                    <div class="form-hint">Click a subfolder to descend; click "Select this folder" to use the current directory.</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span style="flex:1;color:#8b949e;font-size:12px" id="pickPathPreview">Will fill: —</span>
+                <button class="btn btn-secondary" onclick="closePickPathModal()">Cancel</button>
+                <button class="btn btn-primary" id="pickPathConfirmBtn" onclick="confirmPickPath()">✓ Select This Folder</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Image Modal -->
+    <div class="modal-overlay" id="imageRenameModal">
+        <div class="modal" style="width:560px">
+            <div class="modal-header">
+                <span class="modal-title">📝 Rename Uploaded Images</span>
+                <button class="modal-close" onclick="closeImageRenameModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Uploaded images (click a name to edit)</label>
+                    <div id="imageRenameList" style="display:flex;flex-direction:column;gap:6px;max-height:320px;overflow-y:auto;padding:4px 2px"></div>
+                    <div class="form-hint">Renaming will also rename the files in the pack so thumbnails match the filename. Leave blank to skip a file.</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeImageRenameModal()">Skip</button>
+                <button class="btn btn-primary" onclick="confirmImageRename()">✓ Save Names</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Font Modal -->
+    <div class="modal-overlay" id="renameFontModal">
+        <div class="modal" style="width:480px">
+            <div class="modal-header">
+                <span class="modal-title">✏️ Rename Font</span>
+                <button class="modal-close" onclick="closeRenameFontModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Display name *</label>
+                    <input type="text" class="form-input" id="renameFontDisplayName" placeholder="OPPO Sans">
+                    <div class="form-hint">Text shown on the in-game font button.</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Font ID *</label>
+                    <input type="text" class="form-input" id="renameFontId" placeholder="oppo_sans or minecraft:oppo_sans">
+                    <div class="form-hint">Maps to <code>assets/&lt;namespace&gt;/font/&lt;id&gt;.json</code>. May include a namespace prefix; lowercase letters, digits, underscores and hyphens only.</div>
+                </div>
+                <div class="form-group" id="renameFontFileGroup">
+                    <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#c9d1d9;cursor:pointer">
+                        <input type="checkbox" id="renameFontRenameFile" checked>
+                        <span id="renameFontFileLabel">Also rename the corresponding .ttf / .json files</span>
+                    </label>
+                    <div class="form-hint">Uncheck to only update the font configuration without touching the files.</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeRenameFontModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="confirmRenameFont()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font Config Modal -->
+    <div class="modal-overlay" id="fontConfigModal">
+        <div class="modal" style="width:560px">
+            <div class="modal-header">
+                <span class="modal-title" id="fontConfigModalTitle">🔤 Font Configuration</span>
+                <button class="modal-close" onclick="closeFontConfigModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Font display name *</label>
+                    <input type="text" class="form-input" id="fcDisplayName" placeholder="OPPO Sans">
+                    <div class="form-hint">Text shown on the in-game font button.</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Font ID *</label>
+                    <input type="text" class="form-input" id="fcFontId" placeholder="oppo_sans">
+                    <div class="form-hint">Used for <code>assets/&lt;namespace&gt;/font/&lt;id&gt;.json</code> filename. Lowercase letters, digits and underscores only.</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Namespace *</label>
+                    <input type="text" class="form-input" id="fcNs" placeholder="minecraft">
+                    <div class="form-hint">Maps to <code>assets/&lt;namespace&gt;/</code>.</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Source font file</label>
+                    <input type="text" class="form-input" id="fcFontPath" readonly style="background:#0d1117;color:#79c0ff;font-family:monospace">
+                    <div class="form-hint">Path of the font file already uploaded to the pack.</div>
+                </div>
+                <div class="form-group" id="fcAdvancedGroup">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="openFontConfigAdvancedEditor()" id="fcAdvancedBtn">✏ Visual JSON providers editor</button>
+                    <div class="form-hint">Opens the full providers editor (character mapping, sizes, sampling rate, etc.).</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeFontConfigModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="confirmFontConfigModal()">💾 Save &amp; Add to List</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New File Modal -->
+    <div class="modal-overlay" id="newFileModal">
+        <div class="modal" style="width:480px">
+            <div class="modal-header">
+                <span class="modal-title">📄 New File</span>
+                <button class="modal-close" onclick="closeNewFileModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">File name (without extension) *</label>
+                    <input type="text" class="form-input" id="newFileName" placeholder="new_file" autocomplete="off" spellcheck="false">
+                    <div class="form-hint">Avoid illegal characters: / \ : * ? " &lt; &gt; |</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Extension (without dot, optional)</label>
+                    <input type="text" class="form-input" id="newFileExt" list="newFileExtList" placeholder="txt" autocomplete="off" spellcheck="false">
+                    <datalist id="newFileExtList">
+                        <option value="txt"><option value="json"><option value="mcmeta">
+                        <option value="md"><option value="html"><option value="css"><option value="js">
+                    </datalist>
+                    <div class="form-hint">Leave blank to create a plain text file with no extension.</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeNewFileModal()">Cancel</button>
+                <button class="btn btn-primary" id="newFileCreateBtn" onclick="confirmNewFile()">📄 Create</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Preview Lightbox (gallery-style, matches index.html) -->
+    <div class="lightbox" id="imgPreviewOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+        <span class="lightbox-counter" id="imgPreviewCounter">1 / 1</span>
+        <button class="lightbox-nav lightbox-prev" id="imgPreviewPrev" type="button" onclick="previewPrevImage()" aria-label="上一张">‹</button>
+        <button class="lightbox-nav lightbox-next" id="imgPreviewNext" type="button" onclick="previewNextImage()" aria-label="下一张">›</button>
+        <button class="lightbox-close" id="imgPreviewClose" type="button" onclick="closeImagePreview()" aria-label="关闭 (Esc)">×</button>
+        <div class="lightbox-image-wrap">
+            <img class="lightbox-image" id="imgPreviewImg" alt="">
+        </div>
+        <button class="lightbox-zoom-display" id="imgPreviewZoomLevel" type="button" onclick="resetPreviewZoom()" title="重置缩放 (0)">100%</button>
+        <button class="lightbox-action zoom-out" id="imgPreviewZoomOut" type="button" onclick="zoomOutPreview()" title="缩小 (-)">−</button>
+        <button class="lightbox-action zoom-in"  id="imgPreviewZoomIn"  type="button" onclick="zoomInPreview()"  title="放大 (+)">+</button>
+        <div class="lightbox-loading" id="imgPreviewLoading" style="display:none"><div class="spinner"></div><span id="imgPreviewLoadingText">加载中…</span></div>
+        <div class="lightbox-error"   id="imgPreviewError"   style="display:none"><div class="lightbox-error-icon">❌</div><span id="imgPreviewErrorText">无法加载图片</span></div>
+    </div>
+
+    <!-- Text Editor Overlay -->
+    <div class="text-editor-overlay" id="textEditorOverlay">
+        <div class="text-editor-toolbar">
+            <button class="te-back" id="teBackBtn" onclick="closeTextEditor(true)" title="Back (Esc)">
+                <span>◀</span><span>Back</span>
+            </button>
+            <span class="te-name" id="teFileName">file.json</span>
+            <span class="te-path" id="teFilePath">assets/foo/bar.json</span>
+            <span class="te-dirty" id="teDirtyBadge">● Unsaved</span>
+            <button class="te-save" id="teSaveBtn" onclick="saveTextEditor()" title="Save (Ctrl+S)">
+                <span>💾</span><span>Save</span>
+            </button>
+            <button class="te-close" onclick="closeTextEditor(true)" title="Close (Esc)">×</button>
+        </div>
+        <div class="text-editor-body" id="teBody"></div>
+        <div class="text-editor-footer">
+            <span class="te-status" id="teStatus">Loading...</span>
+            <span class="te-meta" id="teMeta"></span>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <span id="toastMsg">Success</span>
+    </div>
+
+    <script src="../js/components.js?v=20261004"></script>
+    <script src="../js/pm-utils.js?v=20261004"></script>
+    <script src="../js/pm-state.js?v=20261004"></script>
+    <script src="../js/pm-zip.js?v=20261004"></script>
+    <script src="../js/pm-tabs.js?v=20261004"></script>
+    <script src="../js/pm-fonts.js?v=20261004"></script>
+    <script src="../js/pm-explorer.js?v=20261004"></script>
+    <script src="../js/pm-preview.js?v=20261004"></script>
+    <script src="../js/pm-text-editor.js?v=20261004"></script>
+    <script src="../js/pm-models.js?v=20261004"></script>
+    <script src="../js/pm-pack-settings.js?v=20261004"></script>
+    <script src="../js/pm-modals.js?v=20261004"></script>
+    <script src="../js/pm-bootstrap.js?v=20261004"></script>
+</body>
+</html>

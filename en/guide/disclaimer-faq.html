@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disclaimer & FAQ | Ocelot Sign Mod</title>
+    <link rel="stylesheet" href="../../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../../css/layout.css?v=20261004">
+    <link rel="stylesheet" href="../../css/content.css?v=20261004">
+</head>
+<body>
+    <div id="site-header"></div>
+    <div class="main-container">
+        <div id="site-sidebar"></div>
+
+        <main class="content">
+        <div class="content-inner">
+            <h1>Disclaimer &amp; FAQ</h1>
+
+<h2>Disclaimer</h2>
+
+<p>This mod only provides frameworks and functions related to signs. Players or server administrators shall bear full responsibility for any custom content imported via resource packs (including but not limited to images, fonts, texts, etc.). It is strictly prohibited to use this mod to create or disseminate any illegal or non-compliant content. <strong>The mod author shall not be held liable for any disputes arising from user-created content.</strong></p>
+
+<p>This mod is completely free and open-source, and has never been sold on any e-commerce platforms (such as Taobao, Xianyu, etc.), nor has it ever been published on NetEase Minecraft. <strong>If you have purchased this mod for money, you have been scammed. Please apply for a refund and report the merchant as soon as possible!</strong> Support the official version and resist resale.</p>
+
+<p>There is no official forum for this mod at present. Do not trust any third-party channels or unofficial groups to avoid being defrauded.</p>
+
+<p>Although tests have been conducted prior to release, modifying game content always comes with risks. <strong>You are strongly recommended to back up your game saves before installing or updating the mod.</strong> The author shall not be responsible for data loss or save corruption caused by mod conflicts, improper operations or other reasons.</p>
+
+<hr>
+
+<h2 id="faq">Frequently Asked Questions (FAQ)</h2>
+
+<div class="faq-item" id="q1">
+<h3>Q1: Why is there a color difference between the pattern on the sign and the sign block itself?</h3>
+<p><strong>A:</strong> This is determined by the underlying rendering characteristics of Minecraft and counts as a normal phenomenon. As an add-on for MishangUC, this mod inherits the vanilla text component mechanism. Even if identical color codes are set for the text and the block in code, visual discrepancies will still appear on-screen due to different rendering pipelines.</p>
+<ul>
+<li><strong>Blocks</strong> adopt <strong>World Shaders</strong>, which perform smooth interpolation based on the light level of surrounding blocks to calculate realistic shadows and brightness variations.</li>
+<li><strong>Texts or patterns on signs</strong> are drawn as a second overlay layer with an <strong>independent font shader</strong>, which responds far less sensitively to ambient lighting.</li>
+</ul>
+<p>Eliminating this color gap completely requires a full rewrite of the underlying rendering system, which involves extremely high development difficulty and may trigger additional mod conflicts. Therefore, this color difference cannot be fully removed at the current stage.</p>
+</div>
+
+<div class="faq-item" id="q2">
+<h3>Q2: Why do sign layout and alignment shift after installing mods like Caxton or Modern UI?</h3>
+<p><strong>A:</strong> The font layout and alignment of this mod largely rely on Minecraft's native font rendering engine. The aforementioned mods deeply replace or alter the underlying text rendering mechanism. Different rendering engines calculate kerning, line height and character size in distinct ways, which leads to offset text, messed-up layouts or changed character dimensions.</p>
+<p>No universal fix is available for this issue. <strong>We advise sticking to one fixed font rendering environment for a single world or server and avoid switching such rendering mods midway.</strong></p>
+</div>
+
+<div class="faq-item" id="q3">
+<h3>Q3: Why can't I view patterns on signs, or texts turn into hollow squares (garbled characters), or nothing displays at all?</h3>
+<p><strong>A:</strong> This issue is normally caused by <strong>improper resource pack loading</strong>.</p>
+<p>If you join a multiplayer server or load a specific world that references custom content, the corresponding custom resource pack must be properly installed and enabled in the in-game resource pack menu. Missing resource packs prevent the game from locating target images or font files, resulting in error placeholder squares or invisible content.</p>
+</div>
+
+<div class="faq-item" id="q4">
+<h3>Q4: What is the future development plan for the Ocelot Sign Mod?</h3>
+<p><strong>A:</strong> Before its official release, the Ocelot Sign Mod has already gone through multi-version internal testing on two servers, and its core features have stabilized. No large-scale feature updates are planned in the short term. Future development will focus on porting to newer Minecraft versions, bug fixes, and a small amount of supplementary content. Due to limited bandwidth, the author will not follow every Minecraft version — only a subset of mainstream versions will be selected for updates, and there are no plans to backport to versions older than 1.19 (exclusive). Future plans include releasing an expansion resource pack containing road sign graphics from other countries/regions, and an open player-submission channel is being considered. Everyone is welcome to submit self-made graphics and help build the resource pack ecosystem.</p>
+<p>Please note: the above is the development plan for the <strong>Ocelot Sign Mod</strong> only, not for the Mishang Urban Construction mod. For plans regarding MishangUC, please refer to content published by the MishangUC author.</p>
+</div>
+
+<div class="faq-item" id="q5">
+<h3>Q5: Why does the mod crash or report errors when running on Forge/NeoForge?</h3>
+<p><strong>A:</strong> This mod and its prerequisite mod are developed exclusively for the Fabric platform. There are currently no official adaptation plans for Forge/NeoForge, and nearly <strong>all</strong> of the error reports received so far come from cross-platform usage. Loading through Sinytra Connector is unstable and easily leads to compatibility issues. If you still need to use it cross-platform, you may look for a third-party Sinytra Connector-compatible build of MishangUC. <strong>This is not an officially recommended approach — please back up your world before trying. The author takes no responsibility for any save corruption or other issues caused by doing so. This mod is built for Fabric, and the author will not handle issues triggered by loading the Fabric mod on Forge via Sinytra Connector — your understanding is appreciated.</strong></p>
+<p>If you still intend to try it, the following workarounds have been provided by other players and are for reference only:</p>
+<ul>
+<li><strong>Method 1.</strong> Download the unofficial Sinytra Connector fix build of MishangUC made by a community member: <a href="https://www.curseforge.com/minecraft/mc-mods/mishang-urban-construction-sinytra-connector-fix" target="_blank">https://www.curseforge.com/minecraft/mc-mods/mishang-urban-construction-sinytra-connector-fix</a>, then install the <em>Ocelot Sign Mod</em>.</li>
+<li><strong>Method 2.</strong> When loading this mod via Sinytra Connector crashes with a <code>NoSuchMethodError</code>, delete the converted mod files inside the <code>mods/.connector</code> directory, then restart the game so it re-runs the conversion. Binary inspection has shown that the <code>.class</code> bytecode files produced by the two conversion runs differ.</li>
+<li><strong>Method 3.</strong> If the MishangUC version you are currently using is still receiving updates, upgrade both MishangUC and the Ocelot Sign Mod to their latest versions — the newest MishangUC release has already fixed this issue. <strong>This method only works for MishangUC versions that are still being actively maintained</strong>; for discontinued versions, please use Method 1 or Method 2 instead. You can check which MishangUC versions are still being updated via <a href="https://www.bilibili.com/opus/1017477310071177225" target="_blank">this link</a>.</li>
+</ul>
+<p><strong>Even with the above workarounds, we strongly discourage running this mod through Sinytra Connector — running a Fabric mod on Forge is inherently extremely unstable.</strong></p>
+</div>
+
+<div class="faq-item" id="q6">
+<h3>Q6: Why can't I see the text on a sign when I am far away?</h3>
+<p><strong>A:</strong> This behavior is caused by the rendering mechanism of the prerequisite mod, <em>MishangUC</em>. The <em>Ocelot Sign Mod</em> reuses the sign logic from <em>MishangUC</em> directly, so it is normal that text disappears at long distance. A community member has provided a workaround for reference:</p>
+<ul>
+<li><strong>Method 1.</strong> Install the "I See You Over There!" mod. This optimization mod lets you customize the render distance of Minecraft entities and block entities, fixing the issue of far-distance content not rendering while also offering fine-grained performance configuration options.<br>Download: <a href="https://modrinth.com/mod/i-see-you-over-there" target="_blank">https://modrinth.com/mod/i-see-you-over-there</a></li>
+</ul>
+</div>
+
+<div class="faq-item" id="q7">
+<h3>Q7: Will this mod be adapted for Minecraft Transit Railway (MTR)?</h3>
+<p><strong>A:</strong> No. The two mods have unrelated features and underlying mechanisms, so there are no adaptation plans. Please do not report MTR-related issues to the <em>Ocelot Sign Mod</em> — the two mods are entirely independent.</p>
+</div>
+
+<div class="faq-item" id="q8">
+<h3>Q8: How do I determine whether an issue comes from the prerequisite mod MishangUC or from the Ocelot Sign Mod?</h3>
+<p><strong>Troubleshooting steps:</strong></p>
+<ul>
+<li>Disable the <em>Ocelot Sign Mod</em> and check whether the issue still occurs.</li>
+<li>Disable both the <em>Ocelot Sign Mod</em> and its prerequisite <em>MishangUC</em>, and check whether the issue still occurs.</li>
+</ul>
+<p>Note: if the issue is confirmed to come from the prerequisite mod <em>MishangUC</em>, please submit the report through the <em>MishangUC</em> feedback channel, attaching the game log, mod version, game version, and reproduction steps so the developers can investigate.</p>
+<p>If the issue is confirmed to come from the <em>Ocelot Sign Mod</em>, please submit the report through the <em>Ocelot Sign Mod</em> feedback channel, attaching the game log, mod version, game version, and reproduction steps so the developers can investigate.</p>
+</div>
+
+<div class="faq-item" id="q9">
+<h3>Q9: I bought the Ocelot Sign Mod on an e-commerce platform (Taobao, Xianyu, etc.) or on NetEase Minecraft. What should I do?</h3>
+<p><strong>A:</strong> Please apply for a refund as soon as possible and report the seller to the official platform or to the mod author. Support the official version and resist resale! This mod has never authorized any e-commerce platform or individual to engage in commercial sales. Players are advised not to be deceived and to help maintain a healthy gaming ecosystem together.</p>
+</div>
+
+
+
+        </div>
+    </main>
+    </div>
+
+    <!-- Right-side page TOC: auto-built from H1-H4 in the article body. -->
+    <aside class="page-toc" id="pageToc" aria-label="On this page">
+        <div class="page-toc-title">On this page</div>
+        <nav class="page-toc-nav" id="pageTocNav"></nav>
+    </aside>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" title="Back to Top">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">Top</span>
+    </div>
+
+    <script src="../../js/components.js?v=20261004"></script>
+    <script>
+    (function () {
+        var nav = document.getElementById('pageTocNav');
+        var content = document.querySelector('.content-inner') || document.querySelector('.content');
+        if (!nav || !content) return;
+
+        var headings = content.querySelectorAll('h1, h2, h3');
+        if (!headings.length) return;
+
+        // Assign stable ids to headings that don't have one yet.
+        var slugify = function (s) {
+            return s.toLowerCase()
+                .replace(/[^\p{L}\p{N}\s-]/gu, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .slice(0, 60) || 'section';
+        };
+        var usedIds = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            if (!h.id) {
+                var base = slugify(h.textContent);
+                var id = base;
+                var i = 2;
+                while (usedIds[id] || document.getElementById(id)) {
+                    id = base + '-' + i++;
+                }
+                h.id = id;
+            }
+            usedIds[h.id] = true;
+        });
+
+        // Build the nested list. The stack's bottom frame is always the
+        // root <ul>; every push appends a fresh child <ul> to the new
+        // <li> so deeper headings nest inside it.
+        var root = document.createElement('ul');
+        var stack = [{ level: 0, list: root }];
+
+        Array.prototype.forEach.call(headings, function (h) {
+            var level = parseInt(h.tagName.charAt(1), 10);
+            // Pop frames whose level is >= the current heading's level so
+            // we return to the right ancestor. Stack bottom (level 0) is
+            // never popped because 0 < any heading level.
+            while (stack[stack.length - 1].level >= level) {
+                stack.pop();
+            }
+            var parentList = stack[stack.length - 1].list;
+            var li = document.createElement('li');
+            li.className = 'toc-h' + level;
+            var a = document.createElement('a');
+            a.href = '#' + h.id;
+            a.textContent = h.textContent;
+            a.dataset.targetId = h.id;
+            li.appendChild(a);
+            parentList.appendChild(li);
+            // Each li gets its own child list for nested headings.
+            var childList = document.createElement('ul');
+            li.appendChild(childList);
+            stack.push({ level: level, list: childList });
+        });
+
+        nav.appendChild(root);
+
+        var links = nav.querySelectorAll('a');
+        var linkByHeading = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            var link = nav.querySelector('a[data-target-id="' + h.id + '"]');
+            if (link) linkByHeading[h.id] = { link: link, heading: h };
+        });
+
+        var setActive = function (id) {
+            Array.prototype.forEach.call(links, function (a) { a.classList.remove('is-active'); });
+            if (id && linkByHeading[id]) linkByHeading[id].link.classList.add('is-active');
+        };
+
+        // Click handler — smooth-scroll, then update URL without jumping.
+        Array.prototype.forEach.call(links, function (a) {
+            a.addEventListener('click', function (e) {
+                var target = document.getElementById(a.dataset.targetId);
+                if (!target) return;
+                e.preventDefault();
+                var headerOffset = 80;
+                var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+                setActive(a.dataset.targetId);
+                history.replaceState(null, '', '#' + a.dataset.targetId);
+            });
+        });
+
+        // Highlight the heading nearest the top of the viewport.
+        var visibleHeadings = [];
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                var id = entry.target.id;
+                var idx = visibleHeadings.findIndex(function (v) { return v.id === id; });
+                if (entry.isIntersecting) {
+                    if (idx === -1) visibleHeadings.push({ id: id, top: entry.boundingClientRect.top });
+                    else visibleHeadings[idx].top = entry.boundingClientRect.top;
+                } else if (idx !== -1) {
+                    visibleHeadings.splice(idx, 1);
+                }
+            });
+            if (!visibleHeadings.length) return;
+            visibleHeadings.sort(function (a, b) { return a.top - b.top; });
+            // Prefer the topmost one that's still below the header line.
+            var pick = null;
+            for (var i = 0; i < visibleHeadings.length; i++) {
+                if (visibleHeadings[i].top >= 80) { pick = visibleHeadings[i]; break; }
+            }
+            if (!pick) pick = visibleHeadings[0];
+            setActive(pick.id);
+        }, {
+            rootMargin: '-80px 0px -55% 0px',
+            threshold: 0
+        });
+
+        Array.prototype.forEach.call(headings, function (h) { observer.observe(h); });
+    })();
+    </script>
+</body>
+</html>

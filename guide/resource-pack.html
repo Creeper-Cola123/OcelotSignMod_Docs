@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>制作字体图案资源包 | 豹猫指示牌模组</title>
+    <link rel="stylesheet" href="../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../css/layout.css?v=20261004">
+    <link rel="stylesheet" href="../css/content.css?v=20261004">
+</head>
+<body>
+    <div id="site-header"></div>
+    <div class="main-container">
+        <div id="site-sidebar"></div>
+
+        <main class="content">
+        <div class="content-inner">
+            <h1>制作字体图案资源包 | 迷上城建与豹猫指示牌模组</h1>
+
+<p>为了让你的告示牌使用你喜欢的艺术字体，或展示特定的图片，你可以通过制作迷上城建模组的资源包来实现。</p>
+
+<blockquote>
+<p>这些图案与字体文件存储在资源包里。如果在多人服务器使用，必须让所有玩家都装上这个资源包，否则别人看你的告示牌只能看到错误代码。</p>
+</blockquote>
+
+<div class="info-box">
+  <p>💡 <strong>提示</strong>：你可以通过下方章节手写 JSON 来完成图案与字体的注册。如果你觉得手动编写比较麻烦，也可以直接使用「资源包在线编辑器」一键生成资源包，<a href="/tool-packmaker.html">前往资源包在线编辑器 →</a></p>
+</div>
+
+<hr>
+
+<h2>一、构建资源包的基础框架</h2>
+
+<h3>1. 创建根目录</h3>
+
+<p>在你的电脑上新建一个空白文件夹并命名，例如本教程命名为 <code>MyCustomPack</code>。</p>
+
+<h3>2. 编写 pack.mcmeta 描述文件</h3>
+
+<p>在 <code>MyCustomPack</code> 文件夹内，新建一个文本文档，将名字和后缀改为 <code>pack.mcmeta</code>。用记事本或其他代码编辑器打开它，输入以下内容并保存：</p>
+
+<pre><code>{
+  "pack": {
+    "pack_format": 34,
+    "description": "告示牌自定义字体与图案资源包"
+  }
+}</code></pre>
+
+<blockquote>
+<p>📌 <code>pack_format</code> 代表适用的游戏版本（例如 1.20.4 通常是 <code>26</code>，1.20.2 通常是 <code>18</code>，1.20~1.20.1 通常是 <code>15</code>，1.19.4 通常是 <code>22</code>，1.21 是 <code>34</code>，1.21.2 是 <code>45</code>，1.21.4 是 <code>61</code> 等）。请根据你游玩的版本修改此数值。</p>
+</blockquote>
+
+<h3>3. 建立 Assets 文件夹与命名空间</h3>
+
+<p>在 <code>MyCustomPack</code> 文件夹内，新建一个名为 <code>assets</code> 的文件夹。进入 <code>assets</code>，新建一个代表你<strong>命名空间（Namespace）</strong>的文件夹。例如本教程命名为 <code>my_pack</code>。</p>
+
+<blockquote>
+<p>命名空间只能使用小写字母、数字、下划线，不允许出现除了这些字符外的其他字符。后续你在游戏中调用资源时，都会带有 <code>my_pack:</code> 的前缀。</p>
+</blockquote>
+
+<h4>目录结构示意</h4>
+
+<pre><code>MyCustomPack/
+ ├── pack.mcmeta
+ └── assets/
+     └── my_pack/  &lt;-- 这是你的命名空间</code></pre>
+
+<hr>
+
+<h2>二、引入并配置自定义字体（迷上城建原生）</h2>
+
+<h3>1. 放置字体文件</h3>
+
+<p>在 <code>assets/my_pack/</code> 文件夹内，新建一个名为 <code>font</code> 的文件夹。将你准备好的 <code>.ttf</code> 格式的 TrueType 字体文件重命名为只有小写字母、数字、下划线的格式，比如 <code>custom_font.ttf</code>，然后放进 <code>font</code> 文件夹。</p>
+
+<h3>2. 编写字体 JSON 配置文件</h3>
+
+<p>在同一个 <code>font</code> 文件夹下，新建一个 JSON 文本文档，例如 <code>title_style.json</code>（这个名字将是你游戏中调用的字体 ID）。打开它并输入：</p>
+
+<pre><code>{
+    "providers": [
+        {
+            "type": "ttf",
+            "file": "my_pack:custom_font.ttf",
+            "size": 12.0,
+            "oversample": 8.0
+        },
+        {
+            "type": "legacy_unicode",
+            "sizes": "minecraft:font/glyph_sizes.bin",
+            "template": "minecraft:font/unicode_page_%s.png"
+        }
+    ]
+}</code></pre>
+
+<h4>参数说明</h4>
+<table>
+<thead>
+<tr><th>参数</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td><code>"type": "ttf"</code></td><td>声明我们使用的是 TTF 自定义字体。</td></tr>
+<tr><td><code>"file": "my_pack:custom_font.ttf"</code></td><td>告诉游戏去哪里找字体。<code>my_pack</code> 是命名空间，对应刚才的文件夹名。</td></tr>
+<tr><td><code>"size": 12.0</code></td><td>字体在游戏内的基础渲染大小。</td></tr>
+<tr><td><code>"oversample": 8.0</code></td><td>超采样倍率（清晰度）。数值越大，字体在游戏中放大或高分辨率下就越清晰、边缘越平滑，但也会占用更多显存。</td></tr>
+<tr><td><code>legacy_unicode</code></td><td>如果你的自定义 <code>.ttf</code> 字体库不全（例如缺了某些生僻字或特殊符号），这一段会让游戏自动使用 Minecraft 原版的字符来填补空白，防止显示出"未知方块（乱码）"。</td></tr>
+</tbody>
+</table>
+
+<h3>3. 在游戏中调用该字体</h3>
+
+<p>在迷上城建模组当中，在告示牌内使用文本组件的格式是：<code>-json &lt;代码&gt;</code>（自定义 JSON 文本，宽容模式，键/值可省略引号）。</p>
+
+<p>加载资源包后，在告示牌编辑界面添加一行文本，输入：</p>
+
+<pre><code>-json {text:"这是一段测试文字", color:gold, font:"my_pack:title_style"}</code></pre>
+
+<blockquote>
+<p>⚠️ 注意：<code>font</code> 的值是 <strong>命名空间:json文件名</strong>，不要加 <code>.json</code> 后缀！</p>
+</blockquote>
+
+<hr>
+
+<h2>三、引入并调用自定义图案 (Texture)（迷上城建原生）</h2>
+
+<p>迷上城建模组虽然内置了大量的 <code>-pattern</code> 图案，但如果你想显示任意外部图片，就需要用到 <code>-texture</code> 来加载图片。</p>
+
+<h3>1. 放置图片文件</h3>
+
+<p>假设在 <code>assets/my_pack/</code> 文件夹下，我们新建了一个 <code>icon</code> 文件夹。</p>
+
+<p>比如将你的图片（必须是 <code>.png</code> 格式，长宽比必须是 <strong>1:1</strong>）重命名，只能使用小写字母、数字、下划线，例如 <code>logo.png</code>，然后放入 <code>icon</code> 文件夹中。</p>
+
+<h3>2. 在游戏中调用图案</h3>
+
+<p>在告示牌新建一行文本，直接输入：</p>
+
+<pre><code>-texture my_pack:icon/logo.png</code></pre>
+
+<p>图片将会被渲染在告示牌上。你可以像调整文字一样，使用界面的按钮调整图片的 X/Y 偏移、缩放大小等。</p>
+
+<blockquote>
+<p>⚠️ 注意：这里不支持网络链接，只支持本地资源包内的路径。</p>
+</blockquote>
+
+<hr>
+
+<h2>四、将自定义图案和字体注册到游戏列表（豹猫的指示牌专属）</h2>
+
+<p>豹猫的指示牌模组支持通过 JSON 配置文件将自定义的图案和字体注册到模组自带的 UI 界面中，方便玩家直接点击插入。</p>
+
+<blockquote>
+<p>⚠️ <strong>核心注意</strong>：注册列表的 JSON 文件<strong>必须放在 <code>ocelotsignmod</code> 命名空间下</strong>（以追加到模组原生列表中），但你的图片和字体本体依然可以放在自己的命名空间（如 <code>my_pack</code>）下！</p>
+</blockquote>
+
+<h3>1. 自定义图案注册</h3>
+
+<div class="warning-box">
+  <p>⚠️ <strong>警告</strong>：由于目前这个功能目前出现了极为严重的bug，因此不建议使用四、1和四、2的方法来进行注册，你可以下滑到四、3查看高级自定义UI，那个功能是比较稳定的。我们可能在未来删除四、1和四、2的注册方式，但是四、3高级自定义UI的方式我们仍然会保留，建议优先使用四、3的方法。如果你已经采用四、1 或四、2 的方式进行了注册，可以将资源包导入资源包在线编辑器，编辑器会自动把这些旧格式转换为四、3 的注册方式。</p>
+</div>
+
+<p>在资源包的 <code>assets/ocelotsignmod/patterns/</code> 目录下创建 <code>custom_patterns.json</code> 文件：</p>
+
+<h4>目录结构示意</h4>
+
+<pre><code>MyCustomPack/
+ ├── pack.mcmeta
+ └── assets/
+     ├── my_pack/
+     │   └── textures/
+     │       └── icon/
+     │           └── logo.png
+     └── ocelotsignmod/        &lt;-- 必须是这个命名空间
+         └── patterns/
+             └── custom_patterns.json</code></pre>
+
+<h4>JSON 文件格式</h4>
+
+<pre><code>[
+  {
+    "displayName": "图案显示名称",
+    "texture": "my_pack:icon/logo.png",
+    "insert": ""
+  },
+  {
+    "displayName": "另一个图案",
+    "texture": "my_pack:textures/custom/arrow.png",
+    "insert": "-texture my_pack:textures/custom/arrow.png"
+  }
+]</code></pre>
+
+<h4>字段说明</h4>
+<table>
+<thead>
+<tr><th>字段</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td><code>"displayName"</code></td><td>图案在 UI 列表中显示的名称。</td></tr>
+<tr><td><code>"texture"</code></td><td>图案贴图的资源路径，可以正常引用你自己的命名空间 <code>my_pack:</code>。</td></tr>
+<tr><td><code>"insert"</code></td><td>【可选】点击"插入"按钮时向告示牌输入的内容。如果留空 <code>""</code>，则自动生成 <code>-texture &lt;贴图路径&gt;</code>。</td></tr>
+</tbody>
+</table>
+
+<h3>2. 自定义字体注册</h3>
+
+<div class="warning-box">
+  <p>⚠️ <strong>警告</strong>：由于目前这个功能目前出现了极为严重的bug，因此不建议使用四、1和四、2的方法来进行注册，你可以下滑到四、3查看高级自定义UI，那个功能是比较稳定的。我们可能在未来删除四、1和四、2的注册方式，但是四、3高级自定义UI的方式我们仍然会保留，建议优先使用四、3的方法。如果你已经采用四、1 或四、2 的方式进行了注册，可以将资源包导入资源包在线编辑器，编辑器会自动把这些旧格式转换为四、3 的注册方式。</p>
+</div>
+
+<p>在资源包的 <code>assets/ocelotsignmod/fonts/</code> 目录下创建 <code>custom_fonts.json</code> 文件：</p>
+
+<pre><code>{
+  "tab": "fonts",
+  "isFontMode": true,
+  "fontList": [
+    {
+      "fontId": "my_pack:title_style",
+      "displayName": "标题字体"
+    }
+  ]
+}</code></pre>
+
+<h4>字段说明</h4>
+<table>
+<thead>
+<tr><th>字段</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td><code>"tab"</code></td><td>设为 <code>"fonts"</code> 表示这是一个字体列表。</td></tr>
+<tr><td><code>"isFontMode"</code></td><td>必须设为 <code>true</code>，表示此区块渲染字体列表而非图片。</td></tr>
+<tr><td><code>"fontList"</code></td><td>字体数组，每个对象对应一行字体。</td></tr>
+<tr><td><code>"fontId"</code></td><td>字体 ID，格式为 <strong>命名空间:字体JSON文件名</strong>（不含 <code>.json</code> 后缀）。</td></tr>
+<tr><td><code>"displayName"</code></td><td>字体在 UI 列表中显示的友好名称。</td></tr>
+</tbody>
+</table>
+
+<h3>3. 高级自定义 UI 定义（进阶功能）</h3>
+
+<div class="access-box">
+  <p>✅ <strong>推荐</strong>：此方法是目前最稳定、功能最完整的注册方式，强烈推荐使用此方法进行资源注册。</p>
+</div>
+
+<p>除了使用默认的"自定义资源包"分类，你还可以通过编写 JSON 文件，在游戏界面的左侧边栏独立创建一个全新的、专属的分类菜单（支持多级文件夹结构、图片白名单过滤等）。</p>
+
+<blockquote>
+<p>这部分 JSON 支持放在你自己的命名空间下。</p>
+</blockquote>
+
+<h4>放置路径与目录结构</h4>
+
+<p>在 <code>assets/&lt;你的命名空间&gt;/ui_definitions/</code> 下创建任意名称的 JSON 文件（例如 <code>road_signs_ui.json</code>）。</p>
+
+<pre><code>MyCustomPack/
+ └── assets/
+     └── my_pack/
+         └── ui_definitions/
+             └── road_signs_ui.json</code></pre>
+
+<h4>JSON 结构与界面对应关系解析</h4>
+
+<p>下面的代码展示了一个高级 UI 的完整结构，请仔细对比注释来理解它们在游戏界面中出现的位置：</p>
+
+<pre><code>{
+  "tab": "patterns",
+  "category_name": "我的自定义路牌",
+  "header_text": "这是显示在右侧界面最顶部的说明文字。",
+  "sections": [
+    {
+      "title": "箭头标识 (区块标题)",
+      "description": "这是显示在区块标题下方的灰色小字描述。",
+      "basePath": "my_pack:textures/signs/",
+      "useSubfolders": true,
+      "subFolders": [
+        {"dirName": "black", "displayName": "黑色箭头"},
+        {"dirName": "white", "displayName": "白色箭头"}
+      ],
+      "filterMode": "NONE",
+      "filterList": []
+    },
+    {
+      "title": "特殊图案 (第二个区块)",
+      "description": "这里展示了如何使用白名单过滤功能。",
+      "basePath": "my_pack:textures/special/",
+      "useSubfolders": false,
+      "filterMode": "WHITELIST",
+      "filterList": ["logo.png", "banner.png"]
+    }
+  ]
+}</code></pre>
+
+<h4>详细字段说明 (UI 映射关系)</h4>
+
+<h5>全局配置（左侧边栏）</h5>
+<table>
+<thead>
+<tr><th>字段</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td><code>"tab"</code></td><td>顶部大标签，决定菜单归属。可选 <code>"patterns"</code>（图案列表）或 <code>"fonts"</code>（字体列表）。</td></tr>
+<tr><td><code>"category_name"</code></td><td>左侧边栏的折叠菜单名称（与"迷上自带图案"、"路牌"等并列显示）。</td></tr>
+</tbody>
+</table>
+
+<h5>右侧主内容区</h5>
+<table>
+<thead>
+<tr><th>字段</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td><code>"header_text"</code></td><td>顶部浅蓝色背景框内的总说明文字。点击左侧 <code>category_name</code> 后显示。</td></tr>
+<tr><td><code>"sections"</code></td><td>内容区块数组，可向下滚动；每个元素代表一个可独立配置的区块。</td></tr>
+</tbody>
+</table>
+
+<h5>区块配置（Sections）</h5>
+<table>
+<thead>
+<tr><th>字段</th><th>类型</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td><code>"title"</code></td><td>String</td><td>区块标题，橙色字体显示。</td></tr>
+<tr><td><code>"description"</code></td><td>String</td><td>标题下方的灰色说明文本。</td></tr>
+<tr><td><code>"basePath"</code></td><td>String</td><td>资源读取路径，模组会在该路径下扫描图片。格式为 <strong>命名空间:文件夹路径/</strong>。</td></tr>
+<tr><td><code>"useSubfolders"</code></td><td>Boolean</td><td>是否启用子文件夹。设为 <code>true</code> 时，区块标题下方会生成一行可点击的标签按钮，用于切换不同子文件夹内的图片。</td></tr>
+<tr><td><code>"subFolders"</code></td><td>Array</td><td>启用 <code>useSubfolders</code> 时定义标签页的数组。每个条目包含：<br>· <code>dirName</code>：实际子文件夹名（模组会在 <code>basePath</code> 下读取该文件夹）。<br>· <code>displayName</code>：玩家在界面上看到的按钮文字。</td></tr>
+<tr><td><code>"filterMode"</code></td><td>String (Enum)</td><td>自动扫描图片时的过滤模式：<br>· <code>NONE</code>：不过滤，显示文件夹内所有图片。<br>· <code>WHITELIST</code>：白名单，仅显示 <code>filterList</code> 中列出的图片。<br>· <code>BLACKLIST</code>：黑名单，隐藏 <code>filterList</code> 中列出的图片，显示其余。</td></tr>
+<tr><td><code>"filterList"</code></td><td>Array&lt;String&gt;</td><td>配合过滤模式使用的文件名数组，例如 <code>["test.png", "error.png"]</code>。</td></tr>
+<tr><td><code>"isFontMode"</code></td><td>Boolean</td><td>当顶部 <code>tab</code> 设为 <code>"fonts"</code> 时必须设为 <code>true</code>；区块将渲染字体列表而非图片网格。</td></tr>
+<tr><td><code>"fontList"</code></td><td>Array</td><td>启用 <code>isFontMode</code> 时定义字体列表，格式为 <code>[{"fontId": "ns:font", "displayName": "..."}]</code>。</td></tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2>五、玩家自定义从 BlockBench 导出的 JSON 模型</h2>
+
+<p>豹猫的指示牌支持玩家使用 BlockBench 导出的 JSON 模型文件，通过"自定义模型方块"在游戏中展示任意 3D 模型。</p>
+
+<h3>1. 放置模型 JSON 文件（核心必须）</h3>
+
+<p>模组会自动扫描并注册 <code>custom_models</code> 文件夹下的所有模型。将 BlockBench 导出的模型 JSON 文件放置在 <code>assets/&lt;你的命名空间&gt;/models/custom_models/</code> 目录下。</p>
+
+<h4>目录结构示意</h4>
+
+<pre><code>MyCustomPack/
+ └── assets/
+     └── my_pack/
+         └── models/
+             └── custom_models/
+                 └── my_sign.json</code></pre>
+
+<p>BlockBench 导出的模型 JSON 需遵循 Minecraft 原版模型格式，例如：</p>
+
+<pre><code>{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "my_pack:block/my_sign_texture"
+  }
+}</code></pre>
+
+<h3>2. 创建模型显示定义文件（可选，推荐）</h3>
+
+<p>如果只放模型文件，它在游戏选择界面的名字会默认是文件名（如 <code>my_sign</code>）。为了给模型起一个好听的中文名，需要在 <code>assets/&lt;你的命名空间&gt;/model_definitions/</code> 目录下创建一个<strong>同名</strong>的 JSON 配置文件：</p>
+
+<h4>定义文件格式（<code>model_definitions/my_sign.json</code>）</h4>
+
+<pre><code>{
+  "model_id": "my_sign",
+  "localized_name": "我的自定义路牌"
+}</code></pre>
+
+<h3>3. 放置贴图文件</h3>
+
+<p>模型引用的贴图文件需放置在模型代码指向的路径，通常是 <code>assets/&lt;命名空间&gt;/textures/block/</code> 目录下：</p>
+
+<pre><code>MyCustomPack/
+ └── assets/
+     └── my_pack/
+         └── textures/
+             └── block/
+                 └── my_sign_texture.png</code></pre>
+
+<h3>4. BlockBench 导出注意事项</h3>
+
+<p>在使用 BlockBench 制作模型时，请注意以下几点：</p>
+
+<ol>
+<li><strong>模型尺寸</strong>：Minecraft 方块模型的标准尺寸为 <code>16×16×16</code> 单位。建议将模型尺寸控制在 1 个方块范围内。</li>
+<li><strong>贴图尺寸</strong>：贴图长宽建议为 <code>16×16</code>、<code>32×32</code>、<code>64×64</code> 等标准尺寸，长宽比例必须为 <strong>1:1</strong>。</li>
+<li><strong>命名规范</strong>：模型 ID、贴图文件名只能使用小写字母、数字、下划线。</li>
+<li><strong>导出格式</strong>：在 BlockBench 中选择 <strong>"Export Block Model"</strong> 导出为 Minecraft 原版模型 JSON 格式。</li>
+<li><strong>面朝向</strong>：BlockBench 中模型默认朝向南方（正 Z 方向），模组会根据方块放置时的朝向自动旋转模型，无需担心放置后的方向错误。</li>
+</ol>
+
+<h3>5. 在游戏中使用自定义模型方块</h3>
+
+<ol>
+<li>获取"自定义模型方块"物品（可通过创造模式物品栏或命令获取）。</li>
+<li>右键点击物品，打开模型选择界面。</li>
+<li>在列表中选择你注册的模型（如"我的自定义路牌"）。</li>
+<li>选定模型后，物品会显示 <code>模型: xxx (+NBT)</code> 提示。</li>
+<li>将方块放置在游戏中，即可看到自定义模型渲染效果。</li>
+</ol>
+
+<h3>6. 多人服务器使用注意事项</h3>
+
+<p>在多人服务器中使用自定义模型方块时，所有玩家都需要安装包含相同模型定义和贴图的资源包，否则其他玩家只能看到一直旋转的默认错误贴图。</p>
+
+<hr>
+
+<h2>六、打包与安装</h2>
+
+<p>文件都放好后，我们需要将它们打包成游戏能识别的 <code>.zip</code> 压缩包。</p>
+
+<ol>
+<li>双击进入 <code>MyCustomPack</code> 文件夹。</li>
+<li>同时选中里面的 <code>assets</code> 文件夹 和 <code>pack.mcmeta</code> 文件。</li>
+<li>右键点击它们 → 选择"压缩为 ZIP 文件"（或添加到压缩文件...）。</li>
+<li>将生成的 <code>.zip</code> 压缩包重命名为你喜欢的名字（例如 <code>MyServerPack.zip</code>）。</li>
+</ol>
+
+<p>启动 Minecraft，进入"选项"→"资源包"→"打开资源包文件夹"，将这个 <code>.zip</code> 文件放入文件夹内，并在游戏内启用它即可。</p>
+
+        </div>
+    </main>
+    </div>
+
+    <!-- Right-side page TOC: auto-built from H1-H4 in the article body. -->
+    <aside class="page-toc" id="pageToc" aria-label="本页导航">
+        <div class="page-toc-title">本页导航</div>
+        <nav class="page-toc-nav" id="pageTocNav"></nav>
+    </aside>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" title="回到顶部">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">顶部</span>
+    </div>
+
+    <script src="../js/components.js?v=20261004"></script>
+    <script>
+    (function () {
+        var nav = document.getElementById('pageTocNav');
+        var content = document.querySelector('.content-inner') || document.querySelector('.content');
+        if (!nav || !content) return;
+
+        var headings = content.querySelectorAll('h1, h2, h3');
+        if (!headings.length) return;
+
+        // Assign stable ids to headings that don't have one yet.
+        var slugify = function (s) {
+            return s.toLowerCase()
+                .replace(/[^\p{L}\p{N}\s-]/gu, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .slice(0, 60) || 'section';
+        };
+        var usedIds = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            if (!h.id) {
+                var base = slugify(h.textContent);
+                var id = base;
+                var i = 2;
+                while (usedIds[id] || document.getElementById(id)) {
+                    id = base + '-' + i++;
+                }
+                h.id = id;
+            }
+            usedIds[h.id] = true;
+        });
+
+        // Build the nested list. Stack bottom is the root <ul>; every
+        // push appends a fresh child <ul> to the new <li> so deeper
+        // headings nest inside it.
+        var root = document.createElement('ul');
+        var stack = [{ level: 0, list: root }];
+
+        Array.prototype.forEach.call(headings, function (h) {
+            var level = parseInt(h.tagName.charAt(1), 10);
+            while (stack[stack.length - 1].level >= level) {
+                stack.pop();
+            }
+            var parentList = stack[stack.length - 1].list;
+            var li = document.createElement('li');
+            li.className = 'toc-h' + level;
+            var a = document.createElement('a');
+            a.href = '#' + h.id;
+            a.textContent = h.textContent;
+            a.dataset.targetId = h.id;
+            li.appendChild(a);
+            parentList.appendChild(li);
+            var childList = document.createElement('ul');
+            li.appendChild(childList);
+            stack.push({ level: level, list: childList });
+        });
+
+        nav.appendChild(root);
+
+        var links = nav.querySelectorAll('a');
+        var linkByHeading = {};
+        Array.prototype.forEach.call(headings, function (h) {
+            var link = nav.querySelector('a[data-target-id="' + h.id + '"]');
+            if (link) linkByHeading[h.id] = { link: link, heading: h };
+        });
+
+        var setActive = function (id) {
+            Array.prototype.forEach.call(links, function (a) { a.classList.remove('is-active'); });
+            if (id && linkByHeading[id]) linkByHeading[id].link.classList.add('is-active');
+        };
+
+        // Click handler — smooth-scroll, then update URL without jumping.
+        Array.prototype.forEach.call(links, function (a) {
+            a.addEventListener('click', function (e) {
+                var target = document.getElementById(a.dataset.targetId);
+                if (!target) return;
+                e.preventDefault();
+                var headerOffset = 80;
+                var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+                setActive(a.dataset.targetId);
+                history.replaceState(null, '', '#' + a.dataset.targetId);
+            });
+        });
+
+        // Highlight the heading nearest the top of the viewport.
+        var visibleHeadings = [];
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                var id = entry.target.id;
+                var idx = visibleHeadings.findIndex(function (v) { return v.id === id; });
+                if (entry.isIntersecting) {
+                    if (idx === -1) visibleHeadings.push({ id: id, top: entry.boundingClientRect.top });
+                    else visibleHeadings[idx].top = entry.boundingClientRect.top;
+                } else if (idx !== -1) {
+                    visibleHeadings.splice(idx, 1);
+                }
+            });
+            if (!visibleHeadings.length) return;
+            visibleHeadings.sort(function (a, b) { return a.top - b.top; });
+            var pick = null;
+            for (var i = 0; i < visibleHeadings.length; i++) {
+                if (visibleHeadings[i].top >= 80) { pick = visibleHeadings[i]; break; }
+            }
+            if (!pick) pick = visibleHeadings[0];
+            setActive(pick.id);
+        }, {
+            rootMargin: '-80px 0px -55% 0px',
+            threshold: 0
+        });
+
+        Array.prototype.forEach.call(headings, function (h) { observer.observe(h); });
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,490 @@
+/* ========== 主体（仅指南页 —— sticky-footer 布局） ========== */
+html {
+    height: 100%;
+    /* 为固定顶部页头预留空间，让直接 URL 锚点链接（例如 sign-usage.html#xxx）
+   不会把目标标题塞进页头之下。与页面内 TOC JS 中的 `headerOffset = 80` 对齐。 */
+    scroll-padding-top: 90px;
+}
+
+body {
+    font-family: "Microsoft YaHei", "PingFang SC", -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* 全视口十字图案。body 背景从下方所有半透明容器（侧栏 / .content）透出，
+   让图案在整页保持连续，而不是只画在右侧。 */
+    background-color: #f5f0e6;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4c9a8' fill-opacity='0.25'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ========== 主容器 ========== */
+.main-container {
+    display: flex;
+    flex: 1;
+    min-height: 0;   /* 防止嵌套 flex 容器溢出 */
+    align-items: stretch;
+}
+
+/* ========== 侧栏（保留 .sidebar 别名兼容旧页面） ==========
+   页面 HTML 使用 <div id="site-sidebar"> 作为 .main-container 内的 flex 子项。
+   组件加载器在其中注入 <nav class="site-sidebar">。外层 #site-sidebar 是
+   flex 子项，默认会被拉伸匹配最高的兄弟元素 —— 所以深色侧栏会与内容区
+   一起延伸到页面底部。内部的 <nav> 在桌面端被重置，避免重复应用侧栏样式。 */
+#site-sidebar {
+    width: 260px;
+    /* 毛玻璃卡片 —— 白色半透明叠加在 body 的图案背景上，让十字图案柔和透出，
+   与页面视觉融合而非对抗。1px 白色描边为模糊效果补一条高光描边。 */
+    background-color: rgba(255, 255, 255, 0.45);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    flex-shrink: 0;
+    padding: 20px 0;
+    /* 较宽的外边距让卡片清楚地浮在视口边缘之外，而不是紧紧贴边。
+   body 图案从上下间隙中透出，营造更通透的呼吸感。 */
+    margin: 20px 0 20px 20px;
+}
+
+@media (min-width: 769px) {
+    /* 桌面端，内部 <nav> 不应重复应用侧栏的尺寸 / 背景 */
+    #site-sidebar > nav.site-sidebar,
+    .site-sidebar > nav.site-sidebar {
+        background-color: transparent;
+        padding: 0;
+        width: auto;
+    }
+
+    /* 让导航列表固定在页头下方，页面内容从其下方滚动。
+       外层 #site-sidebar 保持 flex-stretch 全高，让深色背景延伸到底部；
+       只有导航列表本身跟随视口。 */
+    #site-sidebar > nav.site-sidebar {
+        position: sticky;
+        top: 62px;
+        max-height: calc(100vh - 110px);
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+    }
+
+    #site-sidebar > nav.site-sidebar::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    #site-sidebar > nav.site-sidebar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    #site-sidebar > nav.site-sidebar::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+    }
+
+    #site-sidebar > nav.site-sidebar::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(0, 0, 0, 0.35);
+    }
+}
+
+/* 旧式 .sidebar 类 —— 直接作为顶层 flex 子项使用。
+   与 #site-sidebar 相同的毛玻璃处理，让尚未迁移到组件加载器的旧页面
+   也能保持一致的视觉风格。 */
+.sidebar {
+    width: 260px;
+    background-color: rgba(255, 255, 255, 0.45);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    flex-shrink: 0;
+    padding: 20px 0;
+    margin: 20px 0 20px 20px;
+}
+
+.sidebar-section {
+    margin-bottom: 5px;
+    animation: anim-fade-left 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: 0.15s;
+}
+
+.sidebar-title {
+    padding: 12px 28px;
+    color: #595959;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.85;
+    transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+.sidebar-section:hover .sidebar-title {
+    opacity: 1;
+    color: #1a1a2e;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 25px 12px 28px;
+    color: #595959;
+    text-decoration: none;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+    border-left: 3px solid transparent;
+    position: relative;
+    overflow: hidden;
+    animation: anim-fade-left 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: 0.25s;
+}
+
+.sidebar-item:nth-of-type(1) { animation-delay: 0.32s; }
+.sidebar-item:nth-of-type(2) { animation-delay: 0.39s; }
+.sidebar-item:nth-of-type(3) { animation-delay: 0.46s; }
+.sidebar-item:nth-of-type(4) { animation-delay: 0.53s; }
+.sidebar-item:nth-of-type(5) { animation-delay: 0.60s; }
+.sidebar-item:nth-of-type(6) { animation-delay: 0.67s; }
+.sidebar-item:nth-of-type(7) { animation-delay: 0.74s; }
+
+.sidebar-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: #4a90d9;
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.sidebar-item:hover {
+    background-color: #f5f5f5;
+    color: #262626;
+    padding-left: 33px;
+}
+
+.sidebar-item:hover::before {
+    transform: scaleY(1);
+}
+
+.sidebar-item:active {
+    transform: scale(0.985);
+}
+
+.sidebar-item.active {
+    background-color: rgba(74, 144, 217, 0.08);
+    color: #4a90d9;
+    font-weight: 600;
+    border-left-color: #4a90d9;
+}
+
+.sidebar-item.active::before {
+    transform: scaleY(1);
+    animation: anim-pulse-ring 1.6s ease-out infinite;
+    border-radius: 2px;
+}
+
+.sidebar-divider {
+    margin: 12px 20px;
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* ========== 内容区 ==========
+   .content 当前故意做成透明 —— 暖米色与十字图案落在 body 上，
+   所以侧栏下与内容井内看到的是同一张背景。.content-inner（内部）
+   是这一列里唯一不透明的表面，让视线自然落在文章上。 */
+.content {
+    flex: 1;
+    padding: 40px;
+    min-height: calc(100vh - 50px);
+    overflow-y: auto;
+}
+
+.content-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    /* 近不透明卡片，让长文在高对比度下盖在图案化页面背景之上。
+   1px 细描边 + 分层阴影暗示卡片存在，不会显得笨重。 */
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 45px 50px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04),
+                0 1px 4px rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    animation: anim-fade-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s both;
+}
+
+/* 内容表格横向滚动容器。
+   应用在基础层（不只是 mobile 媒体查询里），这样被页面端 JS 包裹的表格
+   在平板和窄桌面也能滚动。原本就装得下卡片的表格不受影响 —— 只有当
+   内容真的超出容器宽度时 overflow-x 才会触发。 */
+.content-inner > .table-scroll {
+    overflow-x: auto;
+}
+
+/* ========== 右侧页面目录（sign-usage.html） ==========
+   浮动在视口右侧，让主区域 .main-container 的 flex 布局保持原样。
+   JS 从 .content-inner 内的 H1-H4 自动构建列表，并在最接近视口顶部的
+   标题对应链接上切换 .is-active。 */
+.page-toc {
+    /* 默认隐藏 —— 浮动面板只在宽屏有意义，
+       文章主体右侧有足够呼吸空间。下方 (min-width: 1280px) 块中再开启。 */
+    display: none;
+    position: fixed;
+    top: 88px;
+    right: 20px;
+    width: 240px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    padding: 16px 14px;
+    /* 毛玻璃面板：浅色背景 + 饱和度提升，
+       让背后的图案可辨又不喧宾夺主。 */
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+    z-index: 50;
+    font-size: 13px;
+    animation: anim-fade-left 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) 0.3s both;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(212, 201, 168, 0.55) transparent;
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    backdrop-filter: blur(12px) saturate(150%);
+}
+
+.page-toc::-webkit-scrollbar { width: 4px; }
+.page-toc::-webkit-scrollbar-thumb { background-color: rgba(212, 201, 168, 0.55); border-radius: 2px; }
+
+.page-toc-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #8a92a4;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.page-toc-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.page-toc-nav li {
+    margin: 0;
+}
+
+.page-toc-nav a {
+    display: block;
+    padding: 5px 10px;
+    color: #5a6678;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    line-height: 1.4;
+    border-radius: 0 4px 4px 0;
+    transition: color 0.2s ease, background-color 0.2s ease, border-left-color 0.2s ease, padding-left 0.2s ease;
+}
+
+.page-toc-nav a:hover {
+    color: #1a1a2e;
+    background-color: rgba(74, 144, 217, 0.08);
+    padding-left: 14px;
+}
+
+.page-toc-nav a.is-active {
+    color: #4a90d9;
+    border-left-color: #4a90d9;
+    background-color: rgba(74, 144, 217, 0.14);
+    font-weight: 600;
+}
+
+.page-toc-nav .toc-h1 > a {
+    font-size: 14px;
+    padding: 7px 10px;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+.page-toc-nav .toc-h2 > a {
+    padding-left: 14px;
+    font-size: 13px;
+}
+
+.page-toc-nav .toc-h3 > a {
+    padding-left: 22px;
+    font-size: 12px;
+    color: #6e7681;
+}
+
+.page-toc-nav .toc-h4 > a {
+    padding-left: 30px;
+    font-size: 12px;
+    color: #8a92a4;
+}
+
+.page-toc-nav .toc-h3 > a.is-active,
+.page-toc-nav .toc-h4 > a.is-active {
+    color: #4a90d9;
+}
+
+/* 目录可见时，在 .content 上预留 280px 右侧空白，
+   让文章主体不会与浮动面板重叠（面板 240px + 约 40px 呼吸空间）。
+   面板本身隐藏时一并移除。 */
+@media (min-width: 1280px) {
+    .page-toc { display: block; }
+
+    .content {
+        padding-right: 280px;
+    }
+}
+
+/* 桌面端隐藏移动端元素 */
+.menu-toggle,
+.overlay {
+    display: none;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 1024px) {
+    #site-sidebar,
+    .site-sidebar,
+    .sidebar {
+        width: 220px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+
+    /* 移动端重置外层 #site-sidebar 容器 —— 它的视觉样式只针对桌面端。
+       它的子元素在移动端全是 fixed 定位，外层包装实际上为空。
+
+       重要：必须同时清除 backdrop-filter。任何带 backdrop-filter
+       （或 transform / filter / will-change）的祖先元素会成为其
+       position:fixed 后代的包含块，这会把浮动的 .menu-toggle 按钮
+       （bottom: 24px / left: 24px）以及内部的 .site-sidebar 抽屉
+       （top: 0 / left: -280px）拉进自己的短容器坐标系里，而不是视口。 */
+    #site-sidebar {
+        width: auto;
+        background-color: transparent;
+        padding: 0;
+        align-self: stretch;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        box-shadow: none;
+        border: 0;
+        margin: 0;
+    }
+
+    /* ========== 侧栏抽屉 ========== */
+    .site-sidebar,
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -280px;
+        width: 280px;
+        height: 100vh;
+        min-height: 100vh;
+        max-height: 100vh;
+        background-color: #1a1a2e;
+        padding: 20px 0;
+        z-index: 1002;
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .site-sidebar.open,
+    .sidebar.open {
+        left: 0;
+        animation: anim-fade-left 0.32s ease both;
+    }
+
+    /* 抽屉主体文字。抽屉表面是 #1a1a2e（上方），
+       桌面端 .sidebar-item / .sidebar-title 的 #595959 灰色在深色上几乎不可见。
+       这里重新着色：标题、默认项颜色、悬停胶囊、激活指示 —— 仅作用于移动端抽屉。
+       桌面端不受影响，因为规则在 @media (max-width: 768px) 内。 */
+    .sidebar-title {
+        color: rgba(255, 255, 255, 0.55);
+    }
+
+    .sidebar-section:hover .sidebar-title {
+        color: rgba(255, 255, 255, 0.85);
+    }
+
+    .sidebar-item {
+        color: rgba(255, 255, 255, 0.92);
+    }
+
+    .sidebar-item:hover {
+        background-color: rgba(255, 255, 255, 0.06);
+        color: #fff;
+    }
+
+    .sidebar-item.active {
+        background-color: rgba(74, 144, 217, 0.22);
+        color: #fff;
+    }
+
+    /* ========== 遮罩 ========== */
+    .overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1001;
+        opacity: 0;
+        visibility: hidden;
+        -webkit-backdrop-filter: blur(2px);
+        backdrop-filter: blur(2px);
+        transition: opacity 0.3s, visibility 0.3s, backdrop-filter 0.3s;
+    }
+
+    .overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* ========== 汉堡菜单按钮 ==========
+       .menu-toggle 的基础样式（圆形、阴影、悬停、层级）在 common.css 中，
+       作为与 .back-to-top 的成对设计存在。mobile.css 在窄屏覆盖尺寸与偏移。
+       本文件只需在移动端翻转 display，让抽屉触发器变为可见。 */
+    .menu-toggle {
+        display: flex;
+    }
+
+    .content {
+        padding: 20px;
+    }
+
+    .content-inner {
+        padding: 25px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .content {
+        padding: 14px 10px;
+    }
+
+    .content-inner {
+        padding: 18px 14px;
+    }
+
+    .content table {
+        font-size: 13px;
+    }
+}

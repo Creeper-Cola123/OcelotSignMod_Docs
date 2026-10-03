@@ -1,0 +1,25 @@
+<!--
+  Shared site sidebar (Chinese, light variant).
+  Loaded by js/components.js when the page has <div id="site-sidebar">.
+
+  All hrefs are root-relative (leading /), correct from any page depth.
+  rewriteComponentLinks() further normalises them to relative paths.
+-->
+<button type="button" class="menu-toggle" id="menuToggle" aria-label="打开菜单">
+  <span></span>
+</button>
+<div class="overlay" id="overlay"></div>
+
+<nav class="site-sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-title">文档目录</div>
+    <a data-key="sign-usage"         href="/guide/sign-usage.html"         class="sidebar-item">告示牌基本使用方法</a>
+    <a data-key="resource-pack"        href="/guide/resource-pack.html"        class="sidebar-item">制作字体图案资源包</a>
+    <a data-key="rare-traffic-signs"   href="/guide/rare-traffic-signs.html"   class="sidebar-item">极其少见的交通标志解释</a>
+    <a data-key="credits-license"      href="/guide/credits-license.html"      class="sidebar-item">鸣谢、模组声明与协议</a>
+    <a data-key="disclaimer-faq"       href="/guide/disclaimer-faq.html"       class="sidebar-item">免责声明与常见问题</a>
+    <hr class="sidebar-divider">
+    <a href="https://github.com/SolidBlock-cn/mishanguc/wiki" class="sidebar-item external-link" target="_blank" rel="noopener noreferrer">前往迷上城建Wiki</a>
+    <a data-key="friends-links" href="/guide/friends-links.html" class="sidebar-item">友链</a>
+</div>
+</nav>

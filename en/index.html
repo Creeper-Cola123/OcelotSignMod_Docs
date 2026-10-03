@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function() {
+  // Force browser to check for new version of this page
+  if (!window.__pageLoaded) {
+    window.__pageLoaded = true;
+    // Add a cache-busting parameter to ensure fresh load
+    var noCache = 'nocache=' + Date.now();
+    if (location.search.indexOf('nocache') === -1) {
+      var sep = location.search ? '&' : '?';
+      // Use replaceState to update URL without reload, but force fetch
+      if ('caches' in window) {
+        // Modern approach: clear service worker cache if exists
+        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(reg) { reg.unregister(); });
+        });
+      }
+      // Force reload with cache-busting (only on first load)
+      if (sessionStorage.getItem('__freshLoaded') !== '1') {
+        sessionStorage.setItem('__freshLoaded', '1');
+        location.replace(location.href + sep + noCache);
+      }
+    }
+  }
+})();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ocelot Sign Mod</title>
+    <link rel="stylesheet" href="../css/common.css?v=20261004">
+    <link rel="stylesheet" href="../css/landing.css?v=20261004">
+    <link rel="stylesheet" href="../css/downloads.css?v=20261004">
+    <link rel="stylesheet" href="../css/projects.css?v=20261004">
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="vp-hero-info">
+            <img class="vp-hero-image" src="../pic/logo.webp?v=20261004" alt="Ocelot Sign Mod">
+            <div class="vp-hero-infos">
+                <h1 id="main-title" class="vp-hero-title">Ocelot Sign Mod<span class="logo-badge">Official Version</span><span class="logo-badge">MishangUC Version</span></h1>
+                <p id="main-description">Focused on road traffic signage, the mod inherits MishangUC's highly flexible text and pattern editing system, specializing in various traffic signs and public-place markers.</p>
+                <p class="vp-hero-actions">
+                    <a class="auto-link external-link vp-hero-action primary no-external-link-icon" href="#downloads" aria-label="Download" iconsizing="both">
+                        <iconify-icon class="vp-icon" icon="fa6-solid:download" width="1em" height="1em" sizing="both" key="download"></iconify-icon>Download
+                    </a>
+                    <a class="route-link auto-link vp-hero-action default no-external-link-icon" href="../guide/sign-usage.html" aria-label="Docs" iconsizing="both">Documentation</a>
+                    <a class="route-link auto-link vp-hero-action default no-external-link-icon" href="../guide/plaza/creative-plaza.html" aria-label="Creative Plaza" iconsizing="both">Creative Plaza</a>
+                    <a class="route-link auto-link vp-hero-action default no-external-link-icon" href="../tool-packmaker.html" aria-label="Resource Pack Maker" iconsizing="both">Resource Pack Maker</a>
+                    <a class="auto-link external-link vp-hero-action default no-external-link-icon" href="https://github.com/Creeper-Cola123/OcelotSignMod-Minecraft" aria-label="GitHub Repository" rel="noopener noreferrer" target="_blank" iconsizing="both">GitHub Repository</a>
+                    <a class="auto-link external-link vp-hero-action default no-external-link-icon" href="https://www.bilibili.com/video/BV1kFgq6PE4D/" aria-label="Intro Video" rel="noopener noreferrer" target="_blank" iconsizing="both">
+                        <iconify-icon class="vp-icon" icon="fa6-brands:bilibili" width="1em" height="1em" sizing="both" key="bilibili"></iconify-icon>Intro Video
+                    </a>
+                    <a class="auto-link external-link vp-hero-action default no-external-link-icon" href="https://qm.qq.com/q/bmn7Yhb50O" aria-label="QQ Group" rel="noopener noreferrer" target="_blank" iconsizing="both">
+                        <iconify-icon class="vp-icon" icon="fa6-brands:qq" width="1em" height="1em" sizing="both" key="qq"></iconify-icon>QQ Group
+                    </a>
+                    <a class="auto-link external-link vp-hero-action default no-external-link-icon" href="https://github.com/SolidBlock-cn/mishanguc/wiki" aria-label="Visit MishangUC Wiki" rel="noopener noreferrer" target="_blank" iconsizing="both">
+                        Visit MishangUC Wiki
+                    </a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Scroll cue: only visible when hero is in viewport (scroll triggers fade-out) -->
+        <div class="hero-scroll-cue" aria-hidden="true">
+            <span class="hero-scroll-cue-text">Scroll to explore more</span>
+            <span class="hero-scroll-cue-icon">
+                <iconify-icon icon="fa6-solid:chevron-down" width="14" height="14"></iconify-icon>
+            </span>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-card-image">
+                    <img src="/pic/img/08.webp?v=20261004" alt="MishangUC">
+                </div>
+                <div class="feature-card-content">
+                    <h3>MishangUC</h3>
+                    <p>Mishang Urban Construction (MishangUC) is a Fabric-platform building and decoration mod that delivers an immersive, high-freedom city-building experience. The mod adds realistic road blocks with acceleration and auto-line marking, richly customizable lighting, flexible sign blocks, and a variety of railings. It also bundles a powerful toolset — quick build, force-place, block rotation/mirror, NBT and state viewer — that dramatically speeds up construction and debugging.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-card-content">
+                    <h3>Ocelot Sign Mod</h3>
+                    <p>As a major expansion of the MishangUC ecosystem, Ocelot Sign Mod is a Fabric-platform sign mod focused on road traffic signage. It inherits MishangUC's flexible text and pattern editor and adds authentic road sign art based on the Chinese Mainland standard, plus a rich set of public-info symbols, dedicated editable road sign blocks, and matching sign posts. On top of the road blocks, it adds special "advance guide arrows" on the ground, eye-catching orange arrows, and various prohibition arrows to flesh out the on-road traffic guidance. Combined with the official Pattern & Font list, players can browse and call up the entire library of resources.</p>
+                    <p>This mod is an add-on of MishangUC. Per MishangUC's open-source license, this mod is open-sourced under LGPL-3.0. Third-party fonts and pre-existing code modifications inside the mod follow their original OFL-1.1 and LGPL-3.0 licenses — see the LICENSE file in the repository for details.</p>
+                </div>
+                <div class="feature-card-image">
+                    <img src="/pic/img/04.webp?v=20261004" alt="Ocelot Sign Mod">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery">
+        <h2 class="section-title">Mod Gallery</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="../pic/img/01.webp?v=20261004" alt="Highway Lane Signs">
+                <div class="overlay">Highway Lane Signs</div>
+            </div>
+            <div class="gallery-item">
+                <img src="../pic/img/02.webp?v=20261004" alt="Highway Exit Signs">
+                <div class="overlay">Highway Exit Signs</div>
+            </div>
+            <div class="gallery-item">
+                <img src="../pic/img/03.webp?v=20261004" alt="Warning Signs">
+                <div class="overlay">Warning Signs</div>
+            </div>
+            <div class="gallery-item">
+                <img src="../pic/img/04.webp?v=20261004" alt="Expressway Entrance Signs">
+                <div class="overlay">Expressway Entrance Signs</div>
+            </div>
+            <div class="gallery-item">
+                <img src="../pic/img/05.webp?v=20261004" alt="Direction Signs">
+                <div class="overlay">Direction Signs</div>
+            </div>
+            <div class="gallery-item">
+                <img src="../pic/img/06.webp?v=20261004" alt="Various Types of Signs">
+                <div class="overlay">Various Types of Signs</div>
+            </div>
+            <div class="gallery-item">
+                <img src="../pic/img/07.webp?v=20261004" alt="Linear Delineators">
+                <div class="overlay">Linear Delineators</div>
+            </div>
+            <div class="gallery-item">
+                <img src="../pic/img/08.webp?v=20261004" alt="Road Arrows">
+                <div class="overlay">Road Arrows</div>
+            </div>
+            <div class="gallery-item">
+                <img src="../pic/img/09.webp?v=20261004" alt="Public-Place Signs">
+                <div class="overlay">Public-Place Signs</div>
+            </div>
+            <div class="gallery-item">
+                <img src="../pic/img/10.webp?v=20261004" alt="Public-Place Signs">
+                <div class="overlay">Public-Place Signs</div>
+            </div>
+            <div class="gallery-item">
+                <img src="../pic/img/11.webp?v=20261004" alt="Road Direction Signs">
+                <div class="overlay">Road Direction Signs</div>
+            </div>
+            <div class="gallery-item">
+                <img src="../pic/img/12.webp?v=20261004" alt="Road Direction Signs">
+                <div class="overlay">Road Direction Signs</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mod Features Section -->
+    <section class="mod-features">
+        <h2 class="mod-features-title">Mod Features</h2>
+        <div class="mod-features-grid">
+            <div class="mod-features-img"><img src="../pic/features/01.webp?v=20261004" alt=""></div>
+            <div class="mod-features-img"><img src="../pic/features/02.webp?v=20261004" alt=""></div>
+            <div class="mod-features-text">
+                <h3>Rich Graphic Assets</h3>
+                <p>The mod bundles the complete GB5768 road sign library, so you can call up ready-made icons with one click — no more searching around.</p>
+            </div>
+            <div class="mod-features-text">
+                <h3>Easy-to-Use Editor</h3>
+                <p>An editor that's easy to pick up — get started in no time and enjoy a smooth creative experience.</p>
+            </div>
+            <div class="mod-features-img"><img src="../pic/features/03.webp?v=20261004" alt=""></div>
+            <div class="mod-features-img"><img src="../pic/features/04.webp?v=20261004" alt=""></div>
+            <div class="mod-features-text">
+                <h3>Realistic Road Signs</h3>
+                <p>Faithfully reproduces real-world material details for an immersive, lifelike look.</p>
+            </div>
+            <div class="mod-features-text">
+                <h3>Various Sign Styles</h3>
+                <p>Offers a wide range of sign styles from city arterials to highways, fitting every scenario.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Downloads Section -->
+    <section class="downloads" id="downloads">
+        <h2 class="projects-title">Download</h2>
+
+        <div class="download-grid-wrap">
+            <div class="download-grid">
+                <article class="download-card">
+                    <div class="download-card-head">
+                        <h3 class="download-card-title">MishangUC</h3>
+                        <span class="download-card-meta">MishangUC · Fabric</span>
+                    </div>
+                    <p class="download-card-desc">A city-building decoration mod built specifically for the Fabric platform.</p>
+                    <div class="platform-list">
+                        <a href="https://www.curseforge.com/minecraft/mc-mods/mishang-urban-construction" class="platform-row platform-row--cf" rel="noopener noreferrer" target="_blank">
+                            <span class="platform-row-icon" aria-hidden="true"></span>
+                            <span class="platform-row-name">CurseForge</span>
+                            <span class="platform-row-action">Download →</span>
+                        </a>
+                        <a href="https://modrinth.com/mod/mishang-urban-construction" class="platform-row platform-row--mr" rel="noopener noreferrer" target="_blank">
+                            <span class="platform-row-icon" aria-hidden="true"></span>
+                            <span class="platform-row-name">Modrinth</span>
+                            <span class="platform-row-action">Download →</span>
+                        </a>
+                        <a href="https://github.com/SolidBlock-cn/mishanguc" class="platform-row platform-row--gh" rel="noopener noreferrer" target="_blank">
+                            <span class="platform-row-icon" aria-hidden="true"></span>
+                            <span class="platform-row-name">GitHub</span>
+                            <span class="platform-row-action">Repository →</span>
+                        </a>
+                        <a href="https://www.mcmod.cn/class/5743.html" class="platform-row platform-row--mc" rel="noopener noreferrer" target="_blank">
+                            <span class="platform-row-icon" aria-hidden="true"></span>
+                            <span class="platform-row-name">MCMOD</span>
+                            <span class="platform-row-action">Page →</span>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="download-card">
+                    <div class="download-card-head">
+                        <h3 class="download-card-title">Ocelot Sign Mod</h3>
+                        <span class="download-card-meta">OcelotSignMod · Fabric</span>
+                    </div>
+                    <p class="download-card-desc">A road-traffic sign mod focused on signage that inherits the MishangUC editor.</p>
+                    <div class="platform-list">
+                        <a href="https://www.curseforge.com/minecraft/mc-mods/ocelotsignmod" class="platform-row platform-row--cf" rel="noopener noreferrer" target="_blank">
+                            <span class="platform-row-icon" aria-hidden="true"></span>
+                            <span class="platform-row-name">CurseForge</span>
+                            <span class="platform-row-action">Download →</span>
+                        </a>
+                        <a href="https://modrinth.com/mod/ocelotsignmod" class="platform-row platform-row--mr" rel="noopener noreferrer" target="_blank">
+                            <span class="platform-row-icon" aria-hidden="true"></span>
+                            <span class="platform-row-name">Modrinth</span>
+                            <span class="platform-row-action">Download →</span>
+                        </a>
+                        <a href="https://github.com/Creeper-Cola123/OcelotSignMod-Minecraft" class="platform-row platform-row--gh" rel="noopener noreferrer" target="_blank">
+                            <span class="platform-row-icon" aria-hidden="true"></span>
+                            <span class="platform-row-name">GitHub</span>
+                            <span class="platform-row-action">Repository →</span>
+                        </a>
+                        <a href="https://www.mcmod.cn/class/28882.html" class="platform-row platform-row--mc" rel="noopener noreferrer" target="_blank">
+                            <span class="platform-row-icon" aria-hidden="true"></span>
+                            <span class="platform-row-name">MCMOD</span>
+                            <span class="platform-row-action">Page →</span>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <div class="download-info">
+            <strong>Prerequisite:</strong> This mod is an add-on of MishangUC. MishangUC must be installed first.
+        </div>
+
+        <!-- Issue feedback: nested inside the downloads section -->
+        <div id="feedback" class="download-subsection">
+            <h2 class="section-block-title">Feedback</h2>
+            <div class="feedback-grid">
+                <div class="feedback-card">
+                    <h3 class="feedback-card-title">MishangUC</h3>
+                    <p class="feedback-card-desc">Submit bugs, feature requests, and crash logs at the upstream repository.</p>
+                    <div class="platform-list">
+                        <a href="https://github.com/SolidBlock-cn/mishanguc/issues" class="platform-row platform-row--gh" rel="noopener noreferrer" target="_blank">
+                            <span class="platform-row-icon" aria-hidden="true"></span>
+                            <span class="platform-row-name">GitHub Issues</span>
+                            <span class="platform-row-action">Submit →</span>
+                        </a>
+                        <a href="https://www.mcmod.cn/class/5743.html" class="platform-row platform-row--mc" rel="noopener noreferrer" target="_blank">
+                            <span class="platform-row-icon" aria-hidden="true"></span>
+                            <span class="platform-row-name">MCMOD</span>
+                            <span class="platform-row-action">Feedback →</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="feedback-card">
+                    <h3 class="feedback-card-title">Ocelot Sign Mod</h3>
+                    <p class="feedback-card-desc">Submit bugs, feature requests, and crash logs for this mod at the link below.</p>
+                    <div class="platform-list">
+                        <a href="https://github.com/Creeper-Cola123/OcelotSignMod-Minecraft/issues" class="platform-row platform-row--gh" rel="noopener noreferrer" target="_blank">
+                            <span class="platform-row-icon" aria-hidden="true"></span>
+                            <span class="platform-row-name">GitHub Issues</span>
+                            <span class="platform-row-action">Submit →</span>
+                        </a>
+                        <a href="https://www.mcmod.cn/class/28882.html" class="platform-row platform-row--mc" rel="noopener noreferrer" target="_blank">
+                            <span class="platform-row-icon" aria-hidden="true"></span>
+                            <span class="platform-row-name">MCMOD</span>
+                            <span class="platform-row-action">Feedback →</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="qq-info">
+                <strong>QQ Group:</strong>Both mods' QQ community group numbers are listed in each GitHub repository's README. Feel free to join for discussion and feedback.
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Lightbox -->
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+        <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Close">×</button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="Previous">‹</button>
+        <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="Next">›</button>
+        <div class="lightbox-image-wrap">
+            <img id="lightboxImage" alt="">
+            <figcaption class="lightbox-caption" id="lightboxCaption"></figcaption>
+            <div class="lightbox-counter" id="lightboxCounter"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© Ocelot Sign Mod · Licensed under LGPL-3.0</p>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" title="Back to Top">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">TOP</span>
+    </div>
+
+    <script src="../js/components.js?v=20261004"></script>
+    <script src="../js/landing.js?v=20261004"></script>
+</body>
+</html>
