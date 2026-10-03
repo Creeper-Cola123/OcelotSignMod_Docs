@@ -6,32 +6,7 @@
   All paths are root-relative (leading /), correct from any page depth.
 -->
 <header class="site-header">
-<script>
-(function() {
-  // Force browser to check for new version of this page
-  if (!window.__pageLoaded) {
-    window.__pageLoaded = true;
-    // Add a cache-busting parameter to ensure fresh load
-    var noCache = 'nocache=' + Date.now();
-    if (location.search.indexOf('nocache') === -1) {
-      var sep = location.search ? '&' : '?';
-      // Use replaceState to update URL without reload, but force fetch
-      if ('caches' in window) {
-        // Modern approach: clear service worker cache if exists
-        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
-          regs.forEach(function(reg) { reg.unregister(); });
-        });
-      }
-      // Force reload with cache-busting (only on first load)
-      if (sessionStorage.getItem('__freshLoaded') !== '1') {
-        sessionStorage.setItem('__freshLoaded', '1');
-        location.replace(location.href + sep + noCache);
-      }
-    }
-  }
-})();
-</script>
-  <a href="/index.html" class="logo">豹猫指示牌模组<span class="logo-badge">官方版本</span><span class="logo-badge">迷上城建版本</span></a>
+<a href="/index.html" class="logo">豹猫指示牌模组<span class="logo-badge">官方版本</span><span class="logo-badge">迷上城建版本</span></a>
   <nav class="site-nav">
     <a data-key="home"   href="/index.html">首页</a>
     <a data-key="docs"   href="/guide/sign-usage.html">文档</a>

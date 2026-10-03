@@ -4,32 +4,7 @@
   which are also valid for depth-1 pages. rewriteComponentLinks() corrects them.
 -->
 <header class="site-header">
-<script>
-(function() {
-  // Force browser to check for new version of this page
-  if (!window.__pageLoaded) {
-    window.__pageLoaded = true;
-    // Add a cache-busting parameter to ensure fresh load
-    var noCache = 'nocache=' + Date.now();
-    if (location.search.indexOf('nocache') === -1) {
-      var sep = location.search ? '&' : '?';
-      // Use replaceState to update URL without reload, but force fetch
-      if ('caches' in window) {
-        // Modern approach: clear service worker cache if exists
-        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
-          regs.forEach(function(reg) { reg.unregister(); });
-        });
-      }
-      // Force reload with cache-busting (only on first load)
-      if (sessionStorage.getItem('__freshLoaded') !== '1') {
-        sessionStorage.setItem('__freshLoaded', '1');
-        location.replace(location.href + sep + noCache);
-      }
-    }
-  }
-})();
-</script>
-  <a href="../../en/index.html" class="logo">Ocelot Sign Mod<span class="logo-badge">Official Version</span><span class="logo-badge">MishangUC Version</span></a>
+<a href="../../en/index.html" class="logo">Ocelot Sign Mod<span class="logo-badge">Official Version</span><span class="logo-badge">MishangUC Version</span></a>
   <nav class="site-nav">
     <a data-key="home"   href="../../en/index.html">Home</a>
     <a data-key="docs"   href="../../en/guide/sign-usage.html">Docs</a>
