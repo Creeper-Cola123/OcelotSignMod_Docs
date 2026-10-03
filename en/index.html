@@ -1,32 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-(function() {
-  // Force browser to check for new version of this page
-  if (!window.__pageLoaded) {
-    window.__pageLoaded = true;
-    // Add a cache-busting parameter to ensure fresh load
-    var noCache = 'nocache=' + Date.now();
-    if (location.search.indexOf('nocache') === -1) {
-      var sep = location.search ? '&' : '?';
-      // Use replaceState to update URL without reload, but force fetch
-      if ('caches' in window) {
-        // Modern approach: clear service worker cache if exists
-        navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function(regs) {
-          regs.forEach(function(reg) { reg.unregister(); });
-        });
-      }
-      // Force reload with cache-busting (only on first load)
-      if (sessionStorage.getItem('__freshLoaded') !== '1') {
-        sessionStorage.setItem('__freshLoaded', '1');
-        location.replace(location.href + sep + noCache);
-      }
-    }
-  }
-})();
-</script>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ocelot Sign Mod</title>
     <link rel="stylesheet" href="../css/common.css?v=20261004">
@@ -325,5 +300,47 @@
 
     <script src="../js/components.js?v=20261004"></script>
     <script src="../js/landing.js?v=20261004"></script>
+<script>
+(function() {
+  if (!('serviceWorker' in navigator)) return;
+
+  function detectSwPath() {
+    // 通过 components.js 的 src 推算站点根
+    var scripts = document.getElementsByTagName('script');
+    for (var i = 0; i < scripts.length; i++) {
+      var src = scripts[i].src || '';
+      if (src.indexOf('components.js') !== -1) {
+        try {
+          var u = new URL(src);
+          var segs = u.pathname.split('/').filter(Boolean);
+          segs.pop(); // components.js
+          segs.pop(); // js
+          return (segs.length === 0 ? '/' : '/' + segs.join('/') + '/') + 'sw.js';
+        } catch (e) { /* fall through */ }
+      }
+    }
+    return 'sw.js';
+  }
+
+  function register() {
+    navigator.serviceWorker.register(detectSwPath()).then(function(reg) {
+      // 定时检查更新（30 分钟），用户长时间停留时也能拉到新版
+      setInterval(function() { reg.update().catch(function() {}); }, 30 * 60 * 1000);
+      // 切回标签页时也检查一次
+      document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) reg.update().catch(function() {});
+      });
+    }).catch(function(err) {
+      console.warn('[SW] registration failed:', err);
+    });
+  }
+
+  if (document.readyState === 'complete') {
+    register();
+  } else {
+    window.addEventListener('load', register);
+  }
+})();
+</script>
 </body>
 </html>

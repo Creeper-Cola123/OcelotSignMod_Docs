@@ -139,17 +139,28 @@
     return parts.join('/') || '.';
   }
 
-  /** 通过 fetch 注入 HTML 片段，完成后调用 onInjected(elt)。 */
+  /** 通过 fetch 注入 HTML 片段，完成后调用 onInjected(elt)。
+   *  失败时不再只是 console.warn，而是直接暴露在 target 上，
+   *  并保留 onInjected 钩子的调用，让调用方可以做降级处理。 */
   function loadFragment(src, targetSel, onInjected) {
     const target = document.querySelector(targetSel);
     if (!target) return;
     fetch(src, { cache: 'no-cache' })
-      .then(r => { if (!r.ok) throw new Error(src + ' ' + r.status); return r.text(); })
+      .then(r => { if (!r.ok) throw new Error(src + ' HTTP ' + r.status); return r.text(); })
       .then(html => {
         target.innerHTML = html;
-        if (typeof onInjected === 'function') onInjected(target);
+        if (typeof onInjected === 'function') onInjected(target, null);
       })
-      .catch(err => console.warn('[components.js] fetch failed:', err));
+      .catch(err => {
+        // 把错误信息暴露在容器里，方便用户反馈
+        console.error('[components.js] failed to load', src, err);
+        target.classList.add('site-header-load-error');
+        target.innerHTML =
+          '<div class="site-header-error" role="alert">' +
+          '⚠️ 顶部菜单加载失败 (' + (err && err.message ? err.message : '未知错误') + ')。' +
+          '请刷新页面或检查网络。</div>';
+        if (typeof onInjected === 'function') onInjected(target, err);
+      });
   }
 
   // ── 组件链接改写 ──────────────────────────────────────────────────────────
