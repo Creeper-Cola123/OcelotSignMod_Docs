@@ -33,7 +33,6 @@
       el.classList.add('active');
       // 每次切换一级标签时都重新播放标签高亮动画。
       // 动画播放结束后立即移除该类，以便下次点击可以重新播放。
-      // 动画播放结束后立即移除该类，以便下次点击可以重新播放。
       void el.offsetWidth;
       el.classList.add('just-activated');
       setTimeout(function () { el.classList.remove('just-activated'); }, 650);
@@ -128,7 +127,7 @@
       html += `<li class="tree-folder${isExpanded ? '' : ' collapsed'}">
         <div class="tree-item" data-tree-path="${PM.fns.escapeAttr(childPath)}" onclick="toggleFileBrowserFolder(this)">
           <span class="tree-toggle">▾</span>
-          <span class="tree-icon folder">📁</span>
+          <span class="tree-icon folder"><span class="ic ic-folder"></span></span>
           <span class="tree-label">${PM.fns.escapeHtml(name)}</span>
         </div>
         <ul class="tree-children" style="list-style:none;padding-left:14px;margin:0">${subHtml}</ul>
@@ -137,15 +136,15 @@
     files.forEach(name => {
       const fullPath = basePath ? basePath + '/' + name : name;
       const ext = name.includes('.') ? name.split('.').pop().toLowerCase() : '';
-      let iconCls = 'plain', iconChar = '📄';
-      if (['png','jpg','jpeg','gif','bmp','webp'].includes(ext)) { iconCls = 'image'; iconChar = '🖼'; }
-      else if (ext === 'json') { iconCls = 'json'; iconChar = '📋'; }
-      else if (['ttf','otf','woff','woff2'].includes(ext)) { iconCls = 'font'; iconChar = '🔤'; }
-      else if (ext === 'mcmeta') { iconCls = 'plain'; iconChar = '⚙'; }
+      let iconCls = 'plain', iconName = 'ic-file';
+      if (['png','jpg','jpeg','gif','bmp','webp'].includes(ext)) { iconCls = 'image'; iconName = 'ic-image'; }
+      else if (ext === 'json') { iconCls = 'json'; iconName = 'ic-file-code'; }
+      else if (['ttf','otf','woff','woff2'].includes(ext)) { iconCls = 'font'; iconName = 'ic-type'; }
+      else if (ext === 'mcmeta') { iconCls = 'plain'; iconName = 'ic-settings'; }
       html += `<li>
         <div class="tree-item" title="${PM.fns.escapeHtml(fullPath)}">
           <span class="tree-toggle" style="visibility:hidden">·</span>
-          <span class="tree-icon ${iconCls}">${iconChar}</span>
+          <span class="tree-icon ${iconCls}"><span class="ic ${iconName}"></span></span>
           <span class="tree-label">${PM.fns.escapeHtml(name)}</span>
         </div>
       </li>`;
@@ -179,12 +178,12 @@
     }
     list.innerHTML = cats.map((c, i) => `
       <div class="h2-item ${i === PM.state.selectedH2 ? 'active' : ''}" onclick="selectH2(${i})">
-        <span class="h2-icon">🗂</span>
+        <span class="h2-icon"><span class="ic ic-layers"></span></span>
         <span class="h2-name">${PM.fns.escapeHtml(c.name || c.id)}</span>
         <span class="h2-count">${(c.sections || []).length}</span>
         <div class="h2-actions">
-          <button class="h2-act-btn" onclick="event.stopPropagation();editH2(${i})" title="${PM.fns.escapeHtml(PM.fns.t('pm.h2.action.editTitle'))}">✏</button>
-          <button class="h2-act-btn danger" onclick="event.stopPropagation();deleteH2(${i})" title="${PM.fns.escapeHtml(PM.fns.t('pm.h2.action.deleteTitle'))}">🗑</button>
+          <button class="h2-act-btn" onclick="event.stopPropagation();editH2(${i})" title="${PM.fns.escapeHtml(PM.fns.t('pm.h2.action.editTitle'))}"><span class="ic ic-pencil"></span></button>
+          <button class="h2-act-btn danger" onclick="event.stopPropagation();deleteH2(${i})" title="${PM.fns.escapeHtml(PM.fns.t('pm.h2.action.deleteTitle'))}"><span class="ic ic-trash"></span></button>
         </div>
       </div>`).join('');
   }
@@ -242,14 +241,14 @@
     if (list) list.style.display = '';
     list.innerHTML = sections.map((s, i) => `
       <div class="h3-card ${i === PM.state.editingH3 ? 'editing' : ''}">
-        <div class="h3-card-header" onclick="toggleH3Editing(${i})" title="点击展开/收起编辑面板">
+        <div class="h3-card-header" onclick="toggleH3Editing(${i})" title="${PM.fns.escapeAttr(PM.fns.t('pm.h3.toggle'))}">
           <span class="h3-card-num">${i + 1}</span>
           <span class="h3-card-title">${PM.fns.escapeHtml(s.name || PM.fns.t('pm.h3.sectionDefault', { idx: i + 1 }))}</span>
           <span class="h3-card-meta">${(s.isFontMode ? (s.fontList || []).length : (s.entries || []).length) + (s.isFontMode ? ' ' + PM.fns.t('pm.mode.fontCount') : ' entries')}</span>
           <div class="h3-card-actions">
             <button class="h2-act-btn" onclick="event.stopPropagation();moveH3(${i}, -1)" title="${PM.fns.escapeHtml(PM.fns.t('pm.card.moveUp'))}" ${i === 0 ? 'disabled' : ''}>▲</button>
             <button class="h2-act-btn" onclick="event.stopPropagation();moveH3(${i}, 1)" title="${PM.fns.escapeHtml(PM.fns.t('pm.card.moveDown'))}" ${i === sections.length - 1 ? 'disabled' : ''}>▼</button>
-            <button class="h2-act-btn danger" onclick="event.stopPropagation();deleteH3(${i})" title="${PM.fns.escapeHtml(PM.fns.t('action.delete'))}">🗑</button>
+            <button class="h2-act-btn danger" onclick="event.stopPropagation();deleteH3(${i})" title="${PM.fns.escapeHtml(PM.fns.t('action.delete'))}"><span class="ic ic-trash"></span></button>
           </div>
         </div>
         <div class="h3-card-body">
@@ -265,8 +264,8 @@
             <label>${PM.fns.escapeHtml(s.isFontMode ? PM.fns.t('pm.h3.block.nsLabel') : PM.fns.t('pm.h3.block.pathLabel'))}</label>
             <div style="display:flex;gap:6px;flex:1">
               <input type="text" value="${PM.fns.escapeHtml(s.isFontMode ? (s.basePath ? s.basePath.split(':')[0] : '') : (s.basePath || ''))}" oninput="updateH3Field(${i}, 'basePath', this.value)" placeholder="${PM.fns.escapeHtml(s.isFontMode ? PM.fns.t('pm.h3.block.basePathPlaceholderFonts') : PM.fns.t('pm.h3.block.basePathPlaceholderPatterns'))}" id="basePathInput-${i}">
-              <button type="button" class="btn btn-secondary btn-sm" onclick="openSectionImageBrowser(${i})" title="${PM.fns.escapeHtml(PM.fns.t('pm.card.openInExplorer'))}">📁 ${PM.fns.escapeHtml(PM.fns.t('action.openFolder'))}</button>
-              ${!s.isFontMode ? `<button type="button" class="btn btn-secondary btn-sm" onclick="openPickPathModal(${i})" title="${PM.fns.escapeHtml(PM.fns.t('pm.card.pickPathTitle'))}">📂 ${PM.fns.escapeHtml(PM.fns.t('pm.card.pickPathBtn'))}</button>` : ''}
+              <button type="button" class="btn btn-secondary btn-sm" onclick="openSectionImageBrowser(${i})" title="${PM.fns.escapeHtml(PM.fns.t('pm.card.openInExplorer'))}"><span class="ic ic-folder"></span>${PM.fns.escapeHtml(PM.fns.t('action.openFolder'))}</button>
+              ${!s.isFontMode ? `<button type="button" class="btn btn-secondary btn-sm" onclick="openPickPathModal(${i})" title="${PM.fns.escapeHtml(PM.fns.t('pm.card.pickPathTitle'))}"><span class="ic ic-folder-open"></span>${PM.fns.escapeHtml(PM.fns.t('pm.card.pickPathBtn'))}</button>` : ''}
             </div>
           </div>
 
@@ -299,7 +298,7 @@
               <input type="file" class="drop-zone-input" id="fontDropInput-${i}" multiple
                      accept=".ttf,.otf,.woff,.woff2,font/ttf,font/otf"
                      onchange="handleFontDropInput(event, ${i})">
-              <div class="drop-zone-icon">🔤</div>
+              <div class="drop-zone-icon"><span class="ic ic-type"></span></div>
               <div class="drop-zone-text"><strong>${PM.fns.escapeHtml(PM.fns.t('pm.card.dropzoneClick'))}</strong>${PM.fns.escapeHtml(PM.fns.t('pm.card.fontDropzone'))}</div>
               <div class="drop-zone-hint">${PM.fns.escapeHtml(PM.fns.t('pm.card.fontDropzoneHint'))}</div>
             </div>
@@ -331,7 +330,7 @@
               <input type="file" class="drop-zone-input" id="imgDropInput-${i}" multiple
                      accept="image/png,image/jpeg,image/jpg,image/gif,image/webp,.png,.jpg,.jpeg,.gif,.webp"
                      onchange="handleImgDropInput(event, ${i})">
-              <div class="drop-zone-icon">🖼</div>
+              <div class="drop-zone-icon"><span class="ic ic-image"></span></div>
               <div class="drop-zone-text"><strong>${PM.fns.escapeHtml(PM.fns.t('pm.card.dropzoneClick'))}</strong>${PM.fns.escapeHtml(PM.fns.t('pm.card.imgDropzone'))}</div>
               <div class="drop-zone-hint">${PM.fns.escapeHtml(PM.fns.t('pm.card.imgDropzoneHint'))}</div>
             </div>
@@ -377,11 +376,17 @@
     }
 
     let bp = (section && section.basePath) || (cat && cat.basePath) || 'textures/signs';
-    // 如果存在，去掉前导的 "<ns>:" 命名空间前缀
+    // 解析 "<ns>:<path>" 命名空间前缀：区块自身指定的命名空间优先，
+    // 未指定时回退到分类命名空间，从而允许资源路径脱离上游命名空间约束。
     const colon = bp.indexOf(':');
-    if (colon >= 0) bp = bp.slice(colon + 1);
+    let sectionNs = ns;
+    if (colon >= 0) {
+      const prefix = bp.slice(0, colon).trim();
+      if (prefix) sectionNs = prefix;
+      bp = bp.slice(colon + 1);
+    }
     bp = bp.replace(/^\/+|\/+$/g, '');
-    const parts = ['assets', ns, bp];
+    const parts = ['assets', sectionNs, bp];
     if (subFolderName) parts.push(subFolderName);
     return parts.join('/');
   }
@@ -501,7 +506,7 @@
         <div class="image-thumb-name">${PM.fns.escapeHtml(img.stem)}</div>
         <button type="button" class="img-filter-btn ${selected ? 'active' : ''}"
                 onclick="toggleImageFilter(${idx}, '${PM.fns.escapeAttr(img.name)}')"
-                title="${actionLabel}">${selected ? '✓ ' + actionLabel : '+ ' + actionLabel}</button>
+                title="${actionLabel}">${selected ? '<span class="ic ic-check" aria-hidden="true"></span> ' + actionLabel : '<span class="ic ic-plus" aria-hidden="true"></span> ' + actionLabel}</button>
       </div>`;
     }).join('');
     renderSubFolderTabs(idx);
@@ -530,7 +535,7 @@
       tabsEl.classList.add('expanded-images-tabs');
       tabsEl.innerHTML = `
         <div class="expanded-images-tab active" title="${PM.fns.escapeHtml(PM.fns.t('pm.subfolder.defaultFolder'))}">
-          <span class="expanded-images-tab-label">📁 ${PM.fns.escapeHtml(PM.fns.t('pm.subfolder.default'))}</span>
+          <span class="expanded-images-tab-label"><span class="ic ic-folder"></span>${PM.fns.escapeHtml(PM.fns.t('pm.subfolder.default'))}</span>
         </div>
         <button type="button" class="expanded-images-tab-add" onclick="openAddSFModal(${idx})" title="${PM.fns.escapeHtml(PM.fns.t('pm.subfolder.addTab'))}">+</button>
       `;
@@ -546,8 +551,8 @@
         ? `openFontListInline(${idx}, '${PM.fns.escapeAttr(dirName)}')`
         : `openSectionImageBrowserInline(${idx}, '${PM.fns.escapeAttr(dirName)}')`;
       return `<div class="expanded-images-tab ${isActive ? 'active' : ''}" data-dir="${PM.fns.escapeAttr(dirName)}">
-        <span class="expanded-images-tab-label" onclick="${clickFn}" title="${PM.fns.escapeHtml(dirName)}">📁 ${PM.fns.escapeHtml(display)}</span>
-        <span class="expanded-images-tab-edit" onclick="openEditSFModal(${idx}, ${k})" title="${PM.fns.escapeHtml(PM.fns.t('pm.subfolder.editTab'))}">✏</span>
+        <span class="expanded-images-tab-label" onclick="${clickFn}" title="${PM.fns.escapeHtml(dirName)}"><span class="ic ic-folder"></span>${PM.fns.escapeHtml(display)}</span>
+        <span class="expanded-images-tab-edit" onclick="openEditSFModal(${idx}, ${k})" title="${PM.fns.escapeHtml(PM.fns.t('pm.subfolder.editTab'))}"><span class="ic ic-pencil"></span></span>
         <span class="expanded-images-tab-close" onclick="removeSubFolderTab(${idx}, ${k})" title="${PM.fns.escapeHtml(PM.fns.t('pm.subfolder.removeTab'))}">×</span>
       </div>`;
     }).join('');
@@ -589,7 +594,7 @@
           const actionLabel = selected ? PM.fns.t('pm.mode.removeFrom', { label: modeLabel }) : PM.fns.t('pm.mode.addTo', { label: modeLabel });
           return `<button type="button" class="font-filter-btn ${selected ? 'active' : ''}"
                   onclick="toggleFontFilter(${idx}, '${PM.fns.escapeAttr(f.name)}')"
-                  title="${actionLabel}">${selected ? '✓ ' + actionLabel : '+ ' + actionLabel}</button>`;
+                  title="${actionLabel}">${selected ? '<span class="ic ic-check" aria-hidden="true"></span> ' + actionLabel : '<span class="ic ic-plus" aria-hidden="true"></span> ' + actionLabel}</button>`;
         })()
       : '';
 
@@ -599,7 +604,7 @@
 
     // 物理字体与仅注册项共用的三个红色操作按钮。
     const jsonBtn = f.hasFile
-      ? `<button type="button" class="font-row-btn font-row-btn-red" onclick="openFontJsonInline(${idx}, ${f._k}, '${PM.fns.escapeAttr(f.path)}')" title="编辑字体 JSON 配置">JSON</button>`
+      ? `<button type="button" class="font-row-btn font-row-btn-red" onclick="openFontJsonInline(${idx}, ${f._k}, '${PM.fns.escapeAttr(f.path)}')" title="${PM.fns.escapeAttr(PM.fns.t('pm.card.editFontJson'))}">JSON</button>`
       : `<button type="button" class="font-row-btn font-row-btn-red" onclick="openRegistryFontJsonEditor(${idx}, '${PM.fns.escapeAttr(f.fontId || f.stem)}')" title="${PM.fns.escapeHtml(PM.fns.t('pm.card.editFontJson'))}">JSON</button>`;
     const renameBtn = `<button type="button" class="font-row-btn font-row-btn-red" onclick="openRenameFontModal(${idx}, '${stemAttr}')" title="${PM.fns.escapeHtml(PM.fns.t('pm.card.renameFont'))}">${PM.fns.escapeHtml(PM.fns.t('pm.card.renameBtn'))}</button>`;
     const deleteTitle = f.hasFile ? PM.fns.t('pm.card.deleteFontFile') : PM.fns.t('pm.card.removeFontFromBlock');
@@ -614,7 +619,7 @@
           ${actionsHtml}
         </div>
         <div class="font-row-line">
-          <span class="font-row-label">路径</span>
+          <span class="font-row-label">${PM.fns.escapeHtml(PM.fns.t('pm.fontRow.pathLabel'))}</span>
           <span class="font-row-input" style="cursor:default;background:transparent;border:none;color:#79c0ff;font-family:monospace">${PM.fns.escapeHtml(f.path)}</span>
         </div>
         ${filterBtn}
@@ -964,9 +969,11 @@
       if (filterMode === 'WHITELIST' || filterMode === 'BLACKLIST') {
         const btn = card.querySelector('.img-filter-btn');
         if (btn) {
-          const modeLabel = filterMode === 'WHITELIST' ? '白名单' : '黑名单';
-          const label = nowSelected ? ('从' + modeLabel + '移除') : ('添加到' + modeLabel);
-          btn.textContent = nowSelected ? ('✓ ' + label) : ('+ ' + label);
+          const modeLabel = filterMode === 'WHITELIST' ? PM.fns.t('pm.mode.whitelist') : PM.fns.t('pm.mode.blacklist');
+          const label = nowSelected ? PM.fns.t('pm.mode.removeFrom', { label: modeLabel }) : PM.fns.t('pm.mode.addTo', { label: modeLabel });
+          btn.innerHTML = nowSelected
+            ? '<span class="ic ic-check" aria-hidden="true"></span> ' + PM.fns.escapeHtml(label)
+            : '<span class="ic ic-plus" aria-hidden="true"></span> ' + PM.fns.escapeHtml(label);
           btn.title = label;
           btn.classList.toggle('active', nowSelected);
         }
@@ -997,9 +1004,11 @@
       if (filterMode === 'WHITELIST' || filterMode === 'BLACKLIST') {
         const btn = row.querySelector('.font-filter-btn');
         if (btn) {
-          const modeLabel = filterMode === 'WHITELIST' ? '白名单' : '黑名单';
-          const label = nowSelected ? ('从' + modeLabel + '移除') : ('添加到' + modeLabel);
-          btn.textContent = nowSelected ? ('✓ ' + label) : ('+ ' + label);
+          const modeLabel = filterMode === 'WHITELIST' ? PM.fns.t('pm.mode.whitelist') : PM.fns.t('pm.mode.blacklist');
+          const label = nowSelected ? PM.fns.t('pm.mode.removeFrom', { label: modeLabel }) : PM.fns.t('pm.mode.addTo', { label: modeLabel });
+          btn.innerHTML = nowSelected
+            ? '<span class="ic ic-check" aria-hidden="true"></span> ' + PM.fns.escapeHtml(label)
+            : '<span class="ic ic-plus" aria-hidden="true"></span> ' + PM.fns.escapeHtml(label);
           btn.title = label;
           btn.classList.toggle('active', nowSelected);
         }

@@ -1,32 +1,35 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <link rel="icon" href="../../favicon.svg?v=23f63ec1" type="image/svg+xml">
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>创意广场 | 豹猫指示牌模组</title>
-    <link rel="stylesheet" href="../../css/common.css?v=20261004">
-    <link rel="stylesheet" href="../../css/layout.css?v=20261004">
-    <link rel="stylesheet" href="../../css/content.css?v=20261004">
-    <link rel="stylesheet" href="../../css/plaza.css?v=20261004">
+    <link rel="stylesheet" href="../../css/common.css?v=23f63ec1">
+    <link rel="stylesheet" href="../../css/icons.css?v=23f63ec1">
+    <link rel="stylesheet" href="../../css/layout.css?v=23f63ec1">
+    <link rel="stylesheet" href="../../css/content.css?v=23f63ec1">
+    <link rel="stylesheet" href="../../css/plaza.css?v=23f63ec1">
 </head>
 <body class="plaza-page">
     <div id="site-header"></div>
 
-    <!-- Plaza Hero -->
+    <!-- 广场首屏 -->
     <section class="plaza-hero">
-        <h1><span class="emoji-float">🎨</span> 创意广场</h1>
+        <h1>创意广场</h1>
         <p>展示社区优质资源包的精选空间，发现有趣的图案、字体与自定义模型灵感。<br>所有作品均来自社区作者投稿，经模组开发组审核后展示。</p>
-        <a class="plaza-submit-btn" href="plaza-submit.html">✉ 通过邮箱投稿资源包</a>
+        <a class="plaza-submit-btn" href="plaza-submit.html"><span class="ic ic-mail" aria-hidden="true"></span>通过邮箱投稿资源包</a>
     </section>
 
-    <!-- Plaza Body -->
+    <!-- 广场主体 -->
     <div class="plaza-body">
         <div class="plaza-coming-soon">
+            <span class="plaza-coming-soon-icon ic ic-map-pin" aria-hidden="true"></span>
             <p>这是一个展示社区优质资源包的精选空间。我们会持续关注社区动态，筛选极具巧思的图案资源入驻广场。你也可以根据本模组开发其他国家或地区的交通标志。</p>
             <p>为保证资源包符合中国大陆相关法律规范，创意广场采取"官方定向采编"模式，不开放自助上传。经模组开发组审核通过的优质资源，我们将以"作者原链接"的形式进行推介。期待看到更多优秀作品！</p>
         </div>
 
-        <!-- Tab navigation -->
+        <!-- 标签导航 -->
         <div class="plaza-tabs">
             <button class="plaza-tab active" data-tab="road-signs">道路（2）</button>
             <button class="plaza-tab" data-tab="railway">铁路与轨道交通（0）</button>
@@ -38,12 +41,12 @@
             <button class="plaza-tab" data-tab="other">其他（0）</button>
         </div>
 
-        <!-- Tab content panels -->
+        <!-- 标签内容面板 -->
         <div class="plaza-tab-content active" id="tab-road-signs">
             <div class="plaza-card-grid">
                 <a href="road/1.html" class="plaza-card">
                     <div class="plaza-card-thumb">
-                        <img class="plaza-card-thumb-image" src="../../pic/plaza/road/1/cover.webp?v=20261004" alt="中国香港交通标志封面">
+                        <img class="plaza-card-thumb-image" src="../../pic/plaza/road/1/cover.webp?v=23f63ec1" alt="中国香港交通标志封面">
                     </div>
                     <div class="plaza-card-body">
                         <h3 class="plaza-card-title">中国香港交通标志</h3>
@@ -52,7 +55,7 @@
                 </a>
                 <a href="road/2.html" class="plaza-card">
                     <div class="plaza-card-thumb">
-                        <img class="plaza-card-thumb-image" src="../../pic/plaza/road/2/cover.webp?v=20261004" alt="中国台湾交通标志封面">
+                        <img class="plaza-card-thumb-image" src="../../pic/plaza/road/2/cover.webp?v=23f63ec1" alt="中国台湾交通标志封面">
                     </div>
                     <div class="plaza-card-body">
                         <h3 class="plaza-card-title">中国台湾交通标志</h3>
@@ -63,25 +66,25 @@
         </div>
         <div class="plaza-tab-content" id="tab-railway">
             <div class="plaza-empty">
-                <div class="plaza-empty-icon">🚆</div>
+                <div class="plaza-empty-icon"><span class="ic ic-train" aria-hidden="true"></span></div>
                 <p>铁路与轨道交通类资源包正在征集中。</p>
             </div>
         </div>
         <div class="plaza-tab-content" id="tab-shipping">
             <div class="plaza-empty">
-                <div class="plaza-empty-icon">🚢</div>
+                <div class="plaza-empty-icon"><span class="ic ic-ship" aria-hidden="true"></span></div>
                 <p>航运类资源包正在征集中。</p>
             </div>
         </div>
         <div class="plaza-tab-content" id="tab-aviation">
             <div class="plaza-empty">
-                <div class="plaza-empty-icon">✈️</div>
+                <div class="plaza-empty-icon"><span class="ic ic-plane" aria-hidden="true"></span></div>
                 <p>空运类资源包正在征集中。</p>
             </div>
         </div>
         <div class="plaza-tab-content" id="tab-public-signs">
             <div class="plaza-empty">
-                <div class="plaza-empty-icon">🏷️</div>
+                <div class="plaza-empty-icon"><span class="ic ic-tag" aria-hidden="true"></span></div>
                 <p>公共标识类资源包正在征集中。</p>
             </div>
         </div>
@@ -89,7 +92,7 @@
             <div class="plaza-card-grid">
                 <a href="mod_optimization/1.html" class="plaza-card">
                     <div class="plaza-card-thumb">
-                        <img class="plaza-card-thumb-image" src="../../pic/plaza/mod_optimization/1/cover.webp?v=20261004" alt="迷上城建道路视觉优化封面">
+                        <img class="plaza-card-thumb-image" src="../../pic/plaza/mod_optimization/1/cover.webp?v=23f63ec1" alt="迷上城建道路视觉优化封面">
                     </div>
                     <div class="plaza-card-body">
                         <h3 class="plaza-card-title">迷上城建道路视觉优化</h3>
@@ -100,19 +103,19 @@
         </div>
         <div class="plaza-tab-content" id="tab-crossover">
             <div class="plaza-empty">
-                <div class="plaza-empty-icon">🔗</div>
+                <div class="plaza-empty-icon"><span class="ic ic-link" aria-hidden="true"></span></div>
                 <p>与其他模组联动的资源包正在征集中。</p>
             </div>
         </div>
         <div class="plaza-tab-content" id="tab-other">
             <div class="plaza-empty">
-                <div class="plaza-empty-icon">📦</div>
+                <div class="plaza-empty-icon"><span class="ic ic-cube" aria-hidden="true"></span></div>
                 <p>其他类型资源包正在征集中。</p>
             </div>
         </div>
     </div>
 
-    <!-- Back to Top Button -->
+    <!-- 回到顶部按钮 -->
     <div class="back-to-top" id="backToTop" title="回到顶部">
         <svg class="back-to-top-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
@@ -120,9 +123,9 @@
         <span class="back-to-top-label">顶部</span>
     </div>
 
-    <script src="../../js/components.js?v=20261004"></script>
+    <script src="../../js/components.js?v=23f63ec1"></script>
     <script>
-    // Tab switching
+    // 标签切换
     document.addEventListener('DOMContentLoaded', function() {
         const tabs = document.querySelectorAll('.plaza-tab');
         const contents = document.querySelectorAll('.plaza-tab-content');
@@ -131,11 +134,11 @@
             tab.addEventListener('click', function() {
                 const targetId = 'tab-' + this.dataset.tab;
 
-                // Switch active tab
+                // 切换当前激活的标签
                 tabs.forEach(function(t) { t.classList.remove('active'); });
                 this.classList.add('active');
 
-                // Switch active content
+                // 切换当前显示的内容
                 contents.forEach(function(c) {
                     c.classList.remove('active');
                     if (c.id === targetId) {
@@ -162,7 +165,7 @@
           segs.pop(); // components.js
           segs.pop(); // js
           return (segs.length === 0 ? '/' : '/' + segs.join('/') + '/') + 'sw.js';
-        } catch (e) { /* fall through */ }
+        } catch (e) { /* 忽略异常，继续走下一条分支 */ }
       }
     }
     return 'sw.js';

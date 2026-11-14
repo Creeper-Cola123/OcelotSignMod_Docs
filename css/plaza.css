@@ -1,7 +1,9 @@
-/* ---- 广场页面基础 ----
+/* ============================================================
+   广场页面基础
    双保险：裁剪移动端的横向溢出，避免游离的 grid/flex min-content 尺寸
    变成页面级滚动条。layout.css 中的 flex body 会把子元素的 min-content
-   向上传递，所以在窄视图下即使是后代里的小溢出也会把 body 撑得超过视口宽度。 */
+   向上传递，所以在窄视图下即使是后代里的小溢出也会把 body 撑得超过视口宽度。 
+   ============================================================ */
 body.plaza-page {
     overflow-x: hidden;
     background-color: #f5f0e6;
@@ -75,6 +77,17 @@ body.plaza-page {
 }
 
 /* 提交按钮 —— 胶囊形状、暖色渐变、柔和阴影 */
+.plaza-submit-btn .ic {
+    font-size: 1.05em;
+}
+
+.plaza-empty-icon .ic {
+    display: block;
+    margin: 0 auto;
+    width: 44px;
+    height: 44px;
+}
+
 .plaza-submit-btn {
     display: inline-flex;
     align-items: center;
@@ -132,14 +145,17 @@ body.plaza-page {
     box-shadow: 0 4px 16px rgba(240, 165, 0, 0.07);
 }
 
-.plaza-coming-soon::before {
+.plaza-coming-soon-icon {
     /* 固定图标装饰在角落 */
-    content: "📌";
     position: absolute;
     top: 22px;
     right: 28px;
-    font-size: 26px;
+    width: 26px;
+    height: 26px;
+    display: block;
     opacity: 0.4;
+    color: #b8860b;
+    pointer-events: none;
 }
 
 .plaza-coming-soon p {
@@ -164,10 +180,10 @@ body.plaza-page {
 }
 
 .plaza-empty-icon {
-    font-size: 56px;
-    opacity: 0.55;
-    margin-bottom: 14px;
-    animation: anim-bounce-soft 2.5s ease-in-out infinite;
+    font-size: 44px;
+    line-height: 1;
+    opacity: 0.5;
+    margin-bottom: 16px;
     display: inline-block;
 }
 
@@ -187,7 +203,8 @@ body.plaza-page {
 
    容器与 .plaza-coming-soon 共享 max-width，让标签和通知对齐在同一列；
    `width: 100%` 加上 `box-sizing: border-box` 保证横条
-   在中等视口下也不会超出页面宽度。 */
+   在中等视口下也不会超出页面宽度。 
+   ============================================================ */
 .plaza-tabs {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -277,7 +294,7 @@ body.plaza-page {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 22px;
-    /* 与前文相同的修复：折叠 grid 的固有 min-width，
+    /* 折叠 grid 的固有 min-width，
        防止宽封面图在窄视口上把 grid 列撑开。 */
     min-width: 0;
 }
@@ -578,19 +595,6 @@ body.plaza-page {
     margin-bottom: 0;
 }
 
-/* 画廊占位符 —— 同样是温暖的卡片外观，但使用虚线边框，
-       视觉上读作"此处为后续内容占位"。 */
-.resource-detail-gallery {
-    background: linear-gradient(135deg, #fafaf5 0%, #fff 100%);
-    border: 2px dashed rgba(212, 201, 168, 0.5);
-    border-radius: 10px;
-    padding: 56px 24px;
-    font-size: 13px;
-    color: #888;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-}
-
 /* ---- 下载列表（flex 行，而非表格） ---- */
 .resource-download-list {
     background: linear-gradient(135deg, #fff 0%, #fffaf0 100%);
@@ -677,17 +681,22 @@ body.plaza-page {
     margin-top: 18px;
     margin-bottom: 18px;
     color: #2a5a8a;
-    border-radius: 0 6px 6px 0;
+    border-radius: 0;
     font-size: 14px;
     line-height: 1.75;
     box-sizing: border-box;
 }
 
 .plaza-detail-page .info-box::before {
-    content: "ℹ️";
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
     margin-right: 8px;
-    font-size: 16px;
-    vertical-align: 2px;
+    vertical-align: -2px;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 16v-4'/%3E%3Cpath d='M12 8h.01'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 16v-4'/%3E%3Cpath d='M12 8h.01'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
 
 .plaza-detail-page .info-box p {
@@ -772,7 +781,6 @@ body.plaza-page {
 }
 
 /* 作者值末尾内联渲染的哔哩哔哩小标记（例如"AkiyamaSakaki [图标]"）。
-   替换之前宽大的"B站主页"按钮和独立行的角落标记。
    该元素承载一个内联 SVG（见 friends-links / credits-license
    中对应的 `.link-bilibili` 符号）—— 不依赖 Font Awesome，
    因此无需任何外部 CDN。 */
@@ -831,7 +839,7 @@ body.plaza-page {
 
 /* 手机 */
 @media (max-width: 600px) {
-    /* ---- Hero ---- */
+    /* ---- 首屏 ---- */
     .plaza-hero { padding: 44px 18px 36px; }
     .plaza-hero h1 { font-size: 26px; margin-bottom: 14px; letter-spacing: 1.5px; }
     .plaza-hero p { font-size: 13px; line-height: 1.75; margin-bottom: 24px; }
@@ -839,31 +847,35 @@ body.plaza-page {
         width: 100%;
         padding: 12px;
         box-sizing: border-box;
-        /* `inline-flex + width: 100%` is unusual; switch to block-level
-           flex on mobile so the button can't escape its parent through
-           inline-level width quirks. */
+        /*
+            `inline-flex + width: 100%` 属于罕见写法；在移动端切换为块级 flex，
+            避免按钮因行内级宽度怪癖而溢出父容器。
+        */
         display: flex;
     }
 
-    /* ---- Body ---- */
+    /* ---- 主体 ---- */
     .plaza-body { padding: 28px 16px 48px; }
 
-    /* ---- Coming-soon ---- */
+    /* ---- 敬请期待 ---- */
     .plaza-coming-soon {
         padding: 22px 20px;
         margin-bottom: 24px;
         border-radius: 10px;
     }
-    .plaza-coming-soon::before { display: none; }
+    /* 移动端隐藏角标图标，避免与正文重叠。 */
+    .plaza-coming-soon-icon { display: none; }
     .plaza-coming-soon p { font-size: 13px; line-height: 1.75; }
 
-    /* ---- 标签：移动端同样使用 4×2 网格（不横向滚动） ----
+    /* ============================================================
+   标签：移动端同样使用 4×2 网格（不横向滚动）
        保持与桌面端相同的 4 列网格，让所有 8 个标签始终以整洁的
        2 行 × 4 列布局排列。收紧内边距和字号，让长标签
        （"铁路与轨道交通"、"与其他模组联动"）仍在各自格子宽度内
        适应而不会横向溢出。
        如果某标签仍然太长而超出格子，它会换行到第二行 ——
-       同一行每个格子等高增长，网格因此保持视觉平衡。 */
+       同一行每个格子等高增长，网格因此保持视觉平衡。 
+   ============================================================ */
     .plaza-tabs {
         gap: 0;
         margin: 0 0 24px;
@@ -887,7 +899,7 @@ body.plaza-page {
         right: 4px;
     }
 
-    /* ---- Cards: 2-column grid ---- */
+    /* ---- 卡片：两列网格 ---- */
     .plaza-card-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
@@ -955,53 +967,10 @@ body.plaza-page {
         margin-left: auto;
     }
 
-    /* 画廊响应式 */
-    .gallery-nav {
-        width: 36px;
-        height: 36px;
-        font-size: 22px;
-    }
-    .gallery-prev { left: 8px; }
-    .gallery-next { right: 8px; }
-    .gallery-thumb {
-        width: 64px;
-        height: 40px;
-    }
-
-    /* 灯箱响应式 */
-    .lightbox {
-        padding: 60px 16px;
-    }
-    .lightbox-image {
-        max-width: min(95vw, calc(100vw - 32px));
-        max-height: min(75vh, calc(100vh - 140px));
-    }
-    .lightbox-nav {
-        width: 40px;
-        height: 40px;
-        font-size: 22px;
-        top: auto;
-        bottom: 24px;
-        transform: none;
-        z-index: 2001;
-    }
-    .lightbox-prev { left: 20px; }
-    .lightbox-next { right: 20px; }
-    .lightbox-prev:hover { transform: translateX(-3px); }
-    .lightbox-next:hover { transform: translateX(3px); }
-    .lightbox-close {
-        top: 12px;
-        right: 12px;
-        width: 38px;
-        height: 38px;
-        font-size: 22px;
-    }
-    .lightbox-counter {
-        top: 12px;
-        left: 12px;
-        right: auto;
-        font-size: 12px;
-    }
+    /* 画廊 / 灯箱的响应式覆盖规则统一放在本文件末尾的
+       §画廊（详情页）基础规则之后——媒体查询规则与基础规则
+       特异性相同，若写在基础规则之前会被后写的基础规则覆盖，
+       导致移动端实际吃到桌面端取值。 */
 }
 
 /* 超小屏手机（如 iPhone SE 第一代） */
@@ -1277,6 +1246,60 @@ body.plaza-page {
 
 .lightbox-prev { left: 20px; }
 .lightbox-next { right: 20px; }
+
+/* ============================================================
+   § 画廊 / 灯箱：手机端覆盖（必须位于上方基础规则之后，
+   否则同特异性的媒体规则会被基础规则覆盖而失效）
+   ============================================================ */
+@media (max-width: 600px) {
+    /* 画廊响应式 */
+    .gallery-nav {
+        width: 36px;
+        height: 36px;
+        font-size: 22px;
+    }
+    .gallery-prev { left: 8px; }
+    .gallery-next { right: 8px; }
+    .gallery-thumb {
+        width: 64px;
+        height: 40px;
+    }
+
+    /* 灯箱响应式 */
+    .lightbox {
+        padding: 60px 16px;
+    }
+    .lightbox-image {
+        max-width: min(95vw, calc(100vw - 32px));
+        max-height: min(75vh, calc(100vh - 140px));
+    }
+    .lightbox-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
+        top: auto;
+        bottom: 24px;
+        transform: none;
+        z-index: 2001;
+    }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+    .lightbox-prev:hover { transform: translateX(-3px); }
+    .lightbox-next:hover { transform: translateX(3px); }
+    .lightbox-close {
+        top: 12px;
+        right: 12px;
+        width: 38px;
+        height: 38px;
+        font-size: 22px;
+    }
+    .lightbox-counter {
+        top: 12px;
+        left: 12px;
+        right: auto;
+        font-size: 12px;
+    }
+}
 
 /* ============================================================
    § 入场动画（共享）

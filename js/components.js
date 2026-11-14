@@ -86,24 +86,27 @@
   // 改写为当前页面对应的等价路径（或合理的回退）。
 
   const PAGE_CATALOGUE = [
-    // 主页与工具页（站点根级别）
-    { zh: 'index.html',                en: 'en/index.html' },
-    { zh: 'download.html',             en: 'en/download.html' },
-    { zh: 'tool-packmaker.html',       en: 'en/tool-packmaker.html' },
+    // 站点根级别的页面
+    { zh: 'index.html',                          en: 'en/index.html' },
+    { zh: 'tool-packmaker.html',                 en: 'en/tool-packmaker.html' },
     // 文档页
-    { zh: 'guide/sign-usage.html',         en: 'en/guide/sign-usage.html' },
-    { zh: 'guide/sign-usage.html',           en: 'en/guide/sign-usage.html' },
-    { zh: 'guide/resource-pack.html',        en: 'en/guide/resource-pack.html' },
-    { zh: 'guide/rare-traffic-signs.html',   en: 'en/guide/rare-traffic-signs.html' },
-    { zh: 'guide/disclaimer-faq.html',       en: 'en/guide/disclaimer-faq.html' },
-    { zh: 'guide/creative-plaza.html',       en: 'en/guide/creative-plaza.html' },
-    { zh: 'guide/credits-license.html',     en: 'en/guide/credits-license.html' },
-    { zh: 'guide/plaza-submit.html',         en: 'en/guide/plaza-submit.html' },
+    { zh: 'guide/sign-usage.html',               en: 'en/guide/sign-usage.html' },
+    { zh: 'guide/resource-pack.html',            en: 'en/guide/resource-pack.html' },
+    { zh: 'guide/rare-traffic-signs.html',       en: 'en/guide/rare-traffic-signs.html' },
+    { zh: 'guide/credits-license.html',          en: 'en/guide/credits-license.html' },
+    { zh: 'guide/disclaimer-faq.html',           en: 'en/guide/disclaimer-faq.html' },
+    { zh: 'guide/friends-links.html',            en: 'en/guide/friends-links.html' },
+    // 创意广场
+    { zh: 'guide/plaza/creative-plaza.html',     en: 'en/guide/plaza/creative-plaza.html' },
+    { zh: 'guide/plaza/plaza-submit.html',       en: 'en/guide/plaza/plaza-submit.html' },
+    { zh: 'guide/plaza/road/1.html',             en: 'en/guide/plaza/road/1.html' },
+    { zh: 'guide/plaza/road/2.html',             en: 'en/guide/plaza/road/2.html' },
+    { zh: 'guide/plaza/mod_optimization/1.html', en: 'en/guide/plaza/mod_optimization/1.html' },
   ];
 
-  // 切换语言时需要保留的 hash 锚点（#download、#feedback、#faq），
+  // 切换语言时需要保留的 hash 锚点（#downloads、#feedback、#faq），
   // 确保用户落地到同一区域。
-  const ANCHOR_TARGETS = new Set(['download', 'feedback', 'faq']);
+  const ANCHOR_TARGETS = new Set(['downloads', 'feedback', 'faq']);
 
   /** 将规范化后的路径段映射为 { zh, en } 路径，若未知则返回 null。 */
   function langPathMap(path) {
@@ -157,7 +160,7 @@
         target.classList.add('site-header-load-error');
         target.innerHTML =
           '<div class="site-header-error" role="alert">' +
-          '⚠️ 顶部菜单加载失败 (' + (err && err.message ? err.message : '未知错误') + ')。' +
+          '顶部菜单加载失败 (' + (err && err.message ? err.message : '未知错误') + ')。' +
           '请刷新页面或检查网络。</div>';
         if (typeof onInjected === 'function') onInjected(target, err);
       });
@@ -294,7 +297,9 @@
   function initLangSwitcher() {
     const cur = getCurrentPath();
     const curLang = detectLang();
-    const curMap = langPathMap(cur);
+    // 当前页面的 hash 片段需要参与匹配，才能在切换语言时保留锚点。
+    const curWithHash = cur + (window.location.hash || '');
+    const curMap = langPathMap(curWithHash);
     const dir = currentDir();
 
     document.querySelectorAll('.lang-switcher .lang').forEach(link => {
@@ -392,9 +397,22 @@
   function syncHeaderHeightVar() {
     const header = document.querySelector('.site-header, .header');
     if (!header) return;
+    let last = null;
     const apply = () => {
-      const h = Math.round(header.getBoundingClientRect().height);
-      document.documentElement.style.setProperty('--site-header-height', h + 'px');
+      // 向上取整而非四舍五入：预留空间必须始终 ≥ 页头实际高度，
+      // 否则亚像素误差（如 83.4px 被舍成 83px）会让页头边缘压住内容。
+      const h = Math.ceil(header.getBoundingClientRect().height);
+      const value = h + 'px';
+      document.documentElement.style.setProperty('--site-header-height', value);
+      // 高度变化时派发事件，让依赖该值的 JS（如 js/page-toc.js
+      // 的锚点滚动与章节高亮）能立即按新高度重新计算。
+      // 仅在值真正变化时派发，避免 resize 期间的事件风暴。
+      if (value !== last) {
+        last = value;
+        document.dispatchEvent(new CustomEvent('siteheaderheightchange', {
+          detail: { height: h }
+        }));
+      }
     };
     apply();
     window.addEventListener('resize', apply, { passive: true });
@@ -410,6 +428,30 @@
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+
+  // ── 桌面侧栏视口布局 ──────────────────────────────────────────────────────
+
+  function initFixedSidebar() {
+    const container = document.getElementById('site-sidebar');
+    const main = container?.closest('.main-container');
+    if (!container || !main) return;
+
+    const apply = () => {
+      const shouldFix = window.innerWidth > 768;
+
+      if (shouldFix) {
+        // 固定定位会脱离 Flex 文档流，按当前断点的实际宽度为正文保留空间。
+        main.style.setProperty('--site-sidebar-width', container.getBoundingClientRect().width + 'px');
+      } else {
+        main.style.removeProperty('--site-sidebar-width');
+      }
+      container.classList.toggle('is-viewport-fixed', shouldFix);
+      main.classList.toggle('has-fixed-sidebar', shouldFix);
+    };
+
+    apply();
+    window.addEventListener('resize', apply, { passive: true });
   }
 
   // ── 移动端侧边栏抽屉（文档页） ────────────────────────────────────────────
@@ -476,12 +518,33 @@
 
   // ── 代码块复制按钮 ──────────────────────────────────────────────────────
 
+  // 组件脚本在多数页面上独立加载（不引入 i18n.js），
+  // 因此这里按当前页面的语言提供本地文案。
+  const COPY_LABELS = {
+    zh: { copy: '复制', copied: '已复制', copyCode: '复制代码' },
+    en: { copy: 'Copy', copied: 'Copied', copyCode: 'Copy code' }
+  };
+
+  // 灯箱控件的无障碍文案。英文页面必须使用英文标注，
+  // 否则读屏软件会在英文站点上朗读中文按钮名。
+  const LIGHTBOX_LABELS = {
+    zh: { close: '关闭', prev: '上一张', next: '下一张' },
+    en: { close: 'Close', prev: 'Previous image', next: 'Next image' }
+  };
+
   function initCopyButtons() {
+    const labels = COPY_LABELS[detectLang()] || COPY_LABELS.zh;
+
     document.querySelectorAll('.content pre').forEach(pre => {
+      // 幂等保护：页头片段加载完成时可能再次触发初始化，
+      // 已附加复制按钮的代码块不再重复添加。
+      if (pre.dataset.copyBtnReady) return;
+      pre.dataset.copyBtnReady = '1';
+
       const btn = document.createElement('button');
       btn.className = 'copy-btn';
-      btn.textContent = '复制';
-      btn.setAttribute('aria-label', '复制代码');
+      btn.textContent = labels.copy;
+      btn.setAttribute('aria-label', labels.copyCode);
 
       btn.addEventListener('click', async () => {
         const code = pre.querySelector('code');
@@ -489,10 +552,10 @@
 
         try {
           await navigator.clipboard.writeText(text);
-          btn.textContent = '已复制';
+          btn.textContent = labels.copied;
           btn.classList.add('copied');
           setTimeout(() => {
-            btn.textContent = '复制';
+            btn.textContent = labels.copy;
             btn.classList.remove('copied');
           }, 2000);
         } catch (err) {
@@ -507,17 +570,25 @@
   // ── 图片画廊灯箱 ────────────────────────────────────────────────────────────
 
   function initLightbox() {
+    if (document.querySelector('.lightbox')) return;
+
+    // 只有页面中存在图片画廊时才需要灯箱。没有画廊的页面不应注入
+    // 这套 DOM 与全局监听器。
+    if (!document.querySelector('.image-gallery figure')) return;
+
+    const labels = LIGHTBOX_LABELS[detectLang()] || LIGHTBOX_LABELS.zh;
+
     const lightbox = document.createElement('div');
     lightbox.className = 'lightbox';
     lightbox.innerHTML = `
       <span class="lightbox-counter"></span>
-      <button class="lightbox-close" aria-label="关闭">×</button>
-      <button class="lightbox-prev" aria-label="上一张">‹</button>
+      <button class="lightbox-close" aria-label="${escapeHtml(labels.close)}">×</button>
+      <button class="lightbox-prev" aria-label="${escapeHtml(labels.prev)}">‹</button>
       <div class="lightbox-content">
-        <img class="lightbox-img" src="" alt="">
+        <img class="lightbox-img" alt="">
         <p class="lightbox-caption"></p>
       </div>
-      <button class="lightbox-next" aria-label="下一张">›</button>
+      <button class="lightbox-next" aria-label="${escapeHtml(labels.next)}">›</button>
     `;
     document.body.appendChild(lightbox);
 
@@ -720,7 +791,6 @@
         // 发布真实的页头高度，让 .hero（或未来其它"全屏减去页头"布局）
         // 能精确计算自身尺寸。
         syncHeaderHeightVar();
-        initCopyButtons();
       });
     }
 
@@ -732,6 +802,7 @@
       loadFragment(src, '#site-sidebar', (target) => {
         rewriteComponentLinks(target);
         initMobileSidebar();
+        initFixedSidebar();
       });
     }
 

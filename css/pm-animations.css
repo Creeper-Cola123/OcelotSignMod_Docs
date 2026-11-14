@@ -54,13 +54,10 @@
 .welcome-container > .welcome-dropzone   { animation-delay: 0.45s; }
 .welcome-container > .welcome-features   { animation-delay: 0.55s; }
 
-/* 🎨 图标结合一次性 pop-in 入场和原有的弹跳循环，
-   通过简写 "name name" 让两者并排运行。 */
+/* 欢迎页图标结合一次性 pop-in 入场。 */
 .welcome-icon {
     opacity: 0;
-    animation:
-        pm-pop-in 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) 0.05s forwards,
-        welcome-bounce 2.5s ease-in-out 0.6s infinite;
+    animation: pm-pop-in 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) 0.05s forwards;
 }
 
 .welcome-btn {
@@ -79,7 +76,7 @@
 .welcome-feature:nth-child(3) { animation-delay: 0.78s; }
 .welcome-feature:nth-child(4) { animation-delay: 0.86s; }
 
-/* 欢迎图标悬停时的发光环（图标已有弹跳循环）。 */
+/* 欢迎图标悬停时的发光效果。 */
 .welcome-icon {
     transition: filter 0.25s ease, transform 0.25s ease;
 }
@@ -313,9 +310,11 @@ body:not(.mode-welcome) .h2-list > .h2-item:nth-child(5) { animation-delay: 0.46
 body:not(.mode-welcome) .h2-list > .h2-item:nth-child(6) { animation-delay: 0.50s; }
 body:not(.mode-welcome) .h2-list > .h2-item:nth-child(n + 7) { animation-delay: 0.54s; }
 
-/* ---------- H3 卡片：添加 .cards-anim-in 类时交错。
+/* ============================================================
+   H3 卡片：添加 .cards-anim-in 类时交错。
    DOM 结构为 #h3SectionsArea > #h3CardsList > .h3-card，
-   我们用后代选择器定位孙元素（以及用于安全的兄弟列表变体）。 ---------- */
+   我们用后代选择器定位孙元素（以及用于安全的兄弟列表变体）。 ---------- 
+   ============================================================ */
 .h3-sections-area.cards-anim-in .h3-card,
 #h3CardsList.cards-anim-in > .h3-card {
     animation: pm-fade-up 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
@@ -378,10 +377,12 @@ body:not(.mode-welcome) .h2-list > .h2-item:nth-child(n + 7) { animation-delay: 
     animation: pm-pop-in 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-/* ---------- 资源管理器项（列表/网格）：首次渲染时交错。
+/* ============================================================
+   资源管理器项（列表/网格）：首次渲染时交错。
    网格 DOM 为 #explorerContent > .explorer-grid > .explorer-item；
    列表 DOM 为 #explorerContent > table > tr。
-   后代选择器同时定位两种形状。 ---------- */
+   后代选择器同时定位两种形状。 ---------- 
+   ============================================================ */
 .explorer-content.items-anim-in .explorer-item,
 .explorer-list.items-anim-in tr,
 #explorerContent.items-anim-in .explorer-grid > .explorer-item,
@@ -588,11 +589,11 @@ body.mode-models .models-list-table tbody tr:nth-child(n + 4) { animation-delay:
 
 /* ---------- Models 标题 / pack-settings：标签切换时保持稳定 ---------- */
 
-/* ================================================================
+/* ============================================================
    减少动效：取消所有非必要动效。
    允许短于 0.01s 的纯淡入淡出，让 JS 驱动的显示/隐藏仍能工作，
    但任何可感知的内容都被禁用。
-   ================================================================ */
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

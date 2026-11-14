@@ -105,7 +105,9 @@
       }
     }
 
-    const fileNote = fontPath ? '\n文件：' + fontPath : '\n（仅删除注册表条目，无物理文件）';
+    const fileNote = fontPath
+      ? PM.fns.t('pm.fje.deleteFileNote', { path: fontPath })
+      : PM.fns.t('pm.fje.registryOnlyNote');
     if (!confirm(PM.fns.t('confirm.deleteFont', { name: displayName }) + fileNote)) return;
 
     // 1) 从 section.fontList 中移除
@@ -156,7 +158,7 @@
       }
     }
 
-    // 3) Refresh the list
+    // 3) 刷新列表
     PM.fns.openFontListInline(idx);
     PM.fns.showToast(PM.fns.t('toast.fontDeleted', { name: displayName }), 'success');
   }
@@ -433,7 +435,7 @@
       <div class="fj-card-head">
         <span class="fj-card-num">#${i + 1}</span>
         <span class="fj-type-label" style="color:#79c0ff;font-weight:bold;margin-left:8px;">${PM.fns.escapeHtml(PM.fns.t('pm.fje.ttfLabel'))}</span>
-        <button class="fj-delete-btn" onclick="removeFontJsonProvider(${i})" title="${PM.fns.escapeHtml(PM.fns.t('pm.fje.deleteProvider'))}">🗑</button>
+        <button class="fj-delete-btn" onclick="removeFontJsonProvider(${i})" title="${PM.fns.escapeHtml(PM.fns.t('pm.fje.deleteProvider'))}"><span class="ic ic-trash"></span></button>
       </div>
     `;
 
@@ -446,21 +448,21 @@
         </div>
         <div class="fj-row">
           <div class="fj-field">
-            <label class="fj-label">shift[0] <span class="fj-hint">— X 偏移</span></label>
+            <label class="fj-label">shift[0] <span class="fj-hint">${PM.fns.escapeHtml(PM.fns.t('pm.fje.shiftX'))}</span></label>
             <input class="fj-input" type="number" step="any" value="${escapeAttr(shiftArr[0] != null ? shiftArr[0] : 0)}" oninput="updateFontJsonShift(${i}, 0, Number(this.value))">
           </div>
           <div class="fj-field">
-            <label class="fj-label">shift[1] <span class="fj-hint">— Y 偏移</span></label>
+            <label class="fj-label">shift[1] <span class="fj-hint">${PM.fns.escapeHtml(PM.fns.t('pm.fje.shiftY'))}</span></label>
             <input class="fj-input" type="number" step="any" value="${escapeAttr(shiftArr[1] != null ? shiftArr[1] : 0)}" oninput="updateFontJsonShift(${i}, 1, Number(this.value))">
           </div>
         </div>
         <div class="fj-row">
           <div class="fj-field">
-            <label class="fj-label">size <span class="fj-hint">— 字号</span></label>
+            <label class="fj-label">size <span class="fj-hint">${PM.fns.escapeHtml(PM.fns.t('pm.fje.size'))}</span></label>
             <input class="fj-input" type="number" step="any" value="${escapeAttr(p.size != null ? p.size : 11.0)}" oninput="updateFontJsonProvider(${i}, 'size', Number(this.value))">
           </div>
           <div class="fj-field">
-            <label class="fj-label">oversample <span class="fj-hint">— 采样率（可选）</span></label>
+            <label class="fj-label">oversample <span class="fj-hint">${PM.fns.escapeHtml(PM.fns.t('pm.fje.oversample'))}</span></label>
             <input class="fj-input" type="number" step="any" value="${escapeAttr(p.oversample != null ? p.oversample : '')}" oninput="updateFontJsonProvider(${i}, 'oversample', this.value === '' ? undefined : Number(this.value))">
           </div>
         </div>
@@ -508,7 +510,7 @@
     if (!el) return;
     const n = PM.state.fontJsonState.providers.length;
     const types = PM.state.fontJsonState.providers.map(p => p.type || 'ttf').join(', ');
-    el.textContent = n + ' 个 provider · 类型：' + (types || '—');
+    el.textContent = PM.fns.t('fontJsonEditor.providerCount', { n: n, types: types || '—' });
   }
 
   PM.fns.updateFontJsonSummary = updateFontJsonSummary;
@@ -541,14 +543,14 @@
     })();
     const chips = fonts.map((f, k) => {
       const fontId = (f && f.fontId) || '';
-      const displayName = (f && f.displayName) || fontId || ('字体 ' + (k + 1));
+      const displayName = (f && f.displayName) || fontId || PM.fns.t('pm.fontRow.defaultName', { idx: k + 1 });
       const fNs = (f && f.ns) || ns;
-      const nsBadge = `<span class="font-chip-ns-badge" title="命名空间">${PM.fns.escapeHtml(fNs)}</span>`;
+      const nsBadge = `<span class="font-chip-ns-badge" title="${PM.fns.escapeAttr(PM.fns.t('pm.fje.nsBadgeTitle'))}">${PM.fns.escapeHtml(fNs)}</span>`;
       return `<span class="chip font-chip">
         <span class="font-chip-name">${PM.fns.escapeHtml(displayName)}</span>
         ${nsBadge}
-        <span class="font-chip-edit" onclick="openFontChipJsonEditor(${idx}, ${k})" title="图形化编辑字体 JSON (${escapeAttr(fontId || fNs)})">✏ JSON</span>
-        <span class="x" title="删除" onclick="removeFontFromSection(${idx}, ${k})">×</span>
+        <span class="font-chip-edit" onclick="openFontChipJsonEditor(${idx}, ${k})" title="${PM.fns.escapeAttr(PM.fns.t('pm.fje.editTitle', { id: fontId || fNs }))}"><span class="ic ic-pencil"></span> JSON</span>
+        <span class="x" title="${PM.fns.escapeAttr(PM.fns.t('action.delete'))}" onclick="removeFontFromSection(${idx}, ${k})">×</span>
       </span>`;
     }).join('');
     // 字体只能通过下方的上传区添加。
@@ -632,13 +634,17 @@
     const section = cats[PM.state.selectedH2].sections[idx];
     if (!section || !section.fontList || !section.fontList[k]) return;
     section.fontList[k][field] = value;
-    // 如果用户通过下拉框编辑命名空间，也要同步 chip 的显示标签（例如之后编辑 fontId 时 chip 会显示该 ID）。
+    // 重绘字体列表，让新值（显示名 / Font ID / 命名空间）立即反映到界面上。
+    refreshFontChipList(idx);
   }
 
   PM.fns.updateFontField = updateFontField;
 
+  // 重新渲染当前区块的字体列表。
+  // 字体行的 DOM 由 pm-tabs.js 的 openFontListInline() 生成，
+  // 因此这里通过它刷新，而不是直接操作已失效的旧 chip 节点。
   function refreshFontChipList(idx) {
-    // 已废弃，保留空函数以兼容旧调用者。
+    if (PM.fns.openFontListInline) PM.fns.openFontListInline(idx);
   }
 
   PM.fns.refreshFontChipList = refreshFontChipList;

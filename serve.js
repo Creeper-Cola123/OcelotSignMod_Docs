@@ -1,13 +1,13 @@
 /**
- * serve.js — Zero-dependency static file server for this project.
+ * serve.js —— 本项目零依赖的静态文件服务器。
  *
- * Usage:
- *   node serve.js              # default port 8080
- *   node serve.js 3000        # custom port
- *   node serve.js 8080 /path  # port + root directory
+ * 用法：
+ *   node serve.js              # 默认端口 8080
+ *   node serve.js 3000        # 自定义端口
+ *   node serve.js 8080 /path  # 指定端口与根目录
  *
- * Works on Windows (PowerShell/CMD) and Unix (macOS/Linux).
- * Opens http://localhost:<port>/index.html in your browser automatically.
+ * 可在 Windows（PowerShell/CMD）与 Unix（macOS/Linux）下运行。
+ * 启动后会自动在浏览器中打开 http://localhost:<port>/index.html。
  */
 
 const http = require('http');
@@ -58,7 +58,7 @@ const server = http.createServer((req, res) => {
   const parsed = url.parse(req.url, true);
   let pathname = decodeURIComponent(parsed.pathname);
 
-  // Prevent path traversal
+  // 阻止路径穿越
   if (pathname.includes('..')) {
     res.writeHead(403);
     res.end('403 Forbidden');
@@ -67,7 +67,7 @@ const server = http.createServer((req, res) => {
 
   let filePath = path.join(ROOT, pathname);
 
-  // If the path points to a directory, try index.html inside it
+  // 若路径指向目录，则尝试其中的 index.html
   if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
     filePath = path.join(filePath, INDEX);
     pathname = path.join(pathname, INDEX);
@@ -91,7 +91,7 @@ const server = http.createServer((req, res) => {
       return;
     }
 
-    // Set CORS headers so file:// access to assets works in dev
+    // 设置 CORS 响应头，使开发环境下的 file:// 访问资源可用
     res.writeHead(200, {
       'Content-Type':  mime(filePath),
       'Cache-Control': 'no-cache',
@@ -119,7 +119,7 @@ server.listen(PORT, () => {
   console.log(`GitHub Pages compatible: \x1b[2mYES\x1b[0m (all paths are relative, no base path needed)`);
   console.log(`\nPress \x1b[33mCtrl+C\x1b[0m to stop the server.\n`);
 
-  // Auto-open browser
+  // 自动打开浏览器
   const start = process.platform === 'win32' ? 'start' : process.platform === 'darwin' ? 'open' : 'xdg-open';
   require('child_process').exec(`${start} ${home}`, () => {});
 });

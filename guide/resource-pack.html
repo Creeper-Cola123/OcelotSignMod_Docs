@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <link rel="icon" href="../favicon.svg?v=23f63ec1" type="image/svg+xml">
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>制作字体图案资源包 | 豹猫指示牌模组</title>
-    <link rel="stylesheet" href="../css/common.css?v=20261004">
-    <link rel="stylesheet" href="../css/layout.css?v=20261004">
-    <link rel="stylesheet" href="../css/content.css?v=20261004">
+    <link rel="stylesheet" href="../css/common.css?v=23f63ec1">
+    <link rel="stylesheet" href="../css/icons.css?v=23f63ec1">
+    <link rel="stylesheet" href="../css/layout.css?v=23f63ec1">
+    <link rel="stylesheet" href="../css/content.css?v=23f63ec1">
 </head>
 <body>
     <div id="site-header"></div>
@@ -24,7 +26,7 @@
 </blockquote>
 
 <div class="info-box">
-  <p>💡 <strong>提示</strong>：你可以通过下方章节手写 JSON 来完成图案与字体的注册。如果你觉得手动编写比较麻烦，也可以直接使用「资源包在线编辑器」一键生成资源包，<a href="/tool-packmaker.html">前往资源包在线编辑器 →</a></p>
+  <p><span class="ic ic-bulb" aria-hidden="true"></span><strong>提示</strong>：你可以通过下方章节手写 JSON 来完成图案与字体的注册。如果你觉得手动编写比较麻烦，也可以直接使用「资源包在线编辑器」一键生成资源包，点击页面顶部的按钮即可前往。</p>
 </div>
 
 <hr>
@@ -47,7 +49,7 @@
 }</code></pre>
 
 <blockquote>
-<p>📌 <code>pack_format</code> 代表适用的游戏版本（例如 1.20.4 通常是 <code>26</code>，1.20.2 通常是 <code>18</code>，1.20~1.20.1 通常是 <code>15</code>，1.19.4 通常是 <code>22</code>，1.21 是 <code>34</code>，1.21.2 是 <code>45</code>，1.21.4 是 <code>61</code> 等）。请根据你游玩的版本修改此数值。</p>
+<p><span class="ic ic-map-pin" aria-hidden="true"></span><code>pack_format</code> 代表适用的游戏版本（例如 1.20.4 通常是 <code>26</code>，1.20.2 通常是 <code>18</code>，1.20~1.20.1 通常是 <code>15</code>，1.19.4 通常是 <code>22</code>，1.21 是 <code>34</code>，1.21.2 是 <code>45</code>，1.21.4 是 <code>61</code> 等）。请根据你游玩的版本修改此数值。</p>
 </blockquote>
 
 <h3>3. 建立 Assets 文件夹与命名空间</h3>
@@ -116,7 +118,7 @@
 <pre><code>-json {text:"这是一段测试文字", color:gold, font:"my_pack:title_style"}</code></pre>
 
 <blockquote>
-<p>⚠️ 注意：<code>font</code> 的值是 <strong>命名空间:json文件名</strong>，不要加 <code>.json</code> 后缀！</p>
+<p><span class="ic ic-alert" aria-hidden="true"></span>注意：<code>font</code> 的值是 <strong>命名空间:json文件名</strong>，不要加 <code>.json</code> 后缀！</p>
 </blockquote>
 
 <hr>
@@ -127,7 +129,7 @@
 
 <h3>1. 放置图片文件</h3>
 
-<p>假设在 <code>assets/my_pack/</code> 文件夹下，我们新建了一个 <code>icon</code> 文件夹。</p>
+<p>假设在 <code>assets/my_pack/</code> 文件夹下，我们新建了一个 <code>textures</code> 子文件夹，并在其中额外创建一个 <code>icon</code> 文件夹来分类存放图片。</p>
 
 <p>比如将你的图片（必须是 <code>.png</code> 格式，长宽比必须是 <strong>1:1</strong>）重命名，只能使用小写字母、数字、下划线，例如 <code>logo.png</code>，然后放入 <code>icon</code> 文件夹中。</p>
 
@@ -140,7 +142,7 @@
 <p>图片将会被渲染在告示牌上。你可以像调整文字一样，使用界面的按钮调整图片的 X/Y 偏移、缩放大小等。</p>
 
 <blockquote>
-<p>⚠️ 注意：这里不支持网络链接，只支持本地资源包内的路径。</p>
+<p><span class="ic ic-alert" aria-hidden="true"></span>注意：这里不支持网络链接，只支持本地资源包内的路径。</p>
 </blockquote>
 
 <hr>
@@ -150,13 +152,13 @@
 <p>豹猫的指示牌模组支持通过 JSON 配置文件将自定义的图案和字体注册到模组自带的 UI 界面中，方便玩家直接点击插入。</p>
 
 <blockquote>
-<p>⚠️ <strong>核心注意</strong>：注册列表的 JSON 文件<strong>必须放在 <code>ocelotsignmod</code> 命名空间下</strong>（以追加到模组原生列表中），但你的图片和字体本体依然可以放在自己的命名空间（如 <code>my_pack</code>）下！</p>
+<p><span class="ic ic-alert" aria-hidden="true"></span><strong>核心注意</strong>：注册列表的 JSON 文件<strong>必须放在 <code>ocelotsignmod</code> 命名空间下</strong>（以追加到模组原生列表中），但你的图片和字体本体依然可以放在自己的命名空间（如 <code>my_pack</code>）下！</p>
 </blockquote>
 
 <h3>1. 自定义图案注册</h3>
 
 <div class="warning-box">
-  <p>⚠️ <strong>警告</strong>：由于目前这个功能目前出现了极为严重的bug，因此不建议使用四、1和四、2的方法来进行注册，你可以下滑到四、3查看高级自定义UI，那个功能是比较稳定的。我们可能在未来删除四、1和四、2的注册方式，但是四、3高级自定义UI的方式我们仍然会保留，建议优先使用四、3的方法。如果你已经采用四、1 或四、2 的方式进行了注册，可以将资源包导入资源包在线编辑器，编辑器会自动把这些旧格式转换为四、3 的注册方式。</p>
+  <p><span class="ic ic-alert" aria-hidden="true"></span><strong>警告</strong>：由于目前这个功能目前出现了极为严重的bug，因此不建议使用四、1和四、2的方法来进行注册，你可以下滑到四、3查看高级自定义UI，那个功能是比较稳定的。我们可能在未来删除四、1和四、2的注册方式，但是四、3高级自定义UI的方式我们仍然会保留，建议优先使用四、3的方法。如果你已经采用四、1 或四、2 的方式进行了注册，可以将资源包导入资源包在线编辑器，编辑器会自动把这些旧格式转换为四、3 的注册方式。</p>
 </div>
 
 <p>在资源包的 <code>assets/ocelotsignmod/patterns/</code> 目录下创建 <code>custom_patterns.json</code> 文件：</p>
@@ -204,7 +206,7 @@
 <h3>2. 自定义字体注册</h3>
 
 <div class="warning-box">
-  <p>⚠️ <strong>警告</strong>：由于目前这个功能目前出现了极为严重的bug，因此不建议使用四、1和四、2的方法来进行注册，你可以下滑到四、3查看高级自定义UI，那个功能是比较稳定的。我们可能在未来删除四、1和四、2的注册方式，但是四、3高级自定义UI的方式我们仍然会保留，建议优先使用四、3的方法。如果你已经采用四、1 或四、2 的方式进行了注册，可以将资源包导入资源包在线编辑器，编辑器会自动把这些旧格式转换为四、3 的注册方式。</p>
+  <p><span class="ic ic-alert" aria-hidden="true"></span><strong>警告</strong>：由于目前这个功能目前出现了极为严重的bug，因此不建议使用四、1和四、2的方法来进行注册，你可以下滑到四、3查看高级自定义UI，那个功能是比较稳定的。我们可能在未来删除四、1和四、2的注册方式，但是四、3高级自定义UI的方式我们仍然会保留，建议优先使用四、3的方法。如果你已经采用四、1 或四、2 的方式进行了注册，可以将资源包导入资源包在线编辑器，编辑器会自动把这些旧格式转换为四、3 的注册方式。</p>
 </div>
 
 <p>在资源包的 <code>assets/ocelotsignmod/fonts/</code> 目录下创建 <code>custom_fonts.json</code> 文件：</p>
@@ -237,7 +239,7 @@
 <h3>3. 高级自定义 UI 定义（进阶功能）</h3>
 
 <div class="access-box">
-  <p>✅ <strong>推荐</strong>：此方法是目前最稳定、功能最完整的注册方式，强烈推荐使用此方法进行资源注册。</p>
+  <p><span class="ic ic-check-circle" aria-hidden="true"></span><strong>推荐</strong>：此方法是目前最稳定、功能最完整的注册方式，强烈推荐使用此方法进行资源注册。</p>
 </div>
 
 <p>除了使用默认的"自定义资源包"分类，你还可以通过编写 JSON 文件，在游戏界面的左侧边栏独立创建一个全新的、专属的分类菜单（支持多级文件夹结构、图片白名单过滤等）。</p>
@@ -360,7 +362,7 @@
 
 <h3>2. 创建模型显示定义文件（可选，推荐）</h3>
 
-<p>如果只放模型文件，它在游戏选择界面的名字会默认是文件名（如 <code>my_sign</code>）。为了给模型起一个好听的中文名，需要在 <code>assets/&lt;你的命名空间&gt;/model_definitions/</code> 目录下创建一个<strong>同名</strong>的 JSON 配置文件：</p>
+<p>如果只放模型文件，它在游戏选择界面的名字会默认是文件名（如 <code>my_sign</code>）。为了给模型起一个好听的中文名，需要创建一个<strong>同名</strong>的 JSON 配置文件，路径为 <code>assets/&lt;你的命名空间&gt;/model_definitions/my_sign.json</code>：</p>
 
 <h4>定义文件格式（<code>model_definitions/my_sign.json</code>）</h4>
 
@@ -415,23 +417,23 @@
 <ol>
 <li>双击进入 <code>MyCustomPack</code> 文件夹。</li>
 <li>同时选中里面的 <code>assets</code> 文件夹 和 <code>pack.mcmeta</code> 文件。</li>
-<li>右键点击它们 → 选择"压缩为 ZIP 文件"（或添加到压缩文件...）。</li>
+<li>右键点击它们 → 选择<strong>"压缩为 ZIP 文件"</strong>（或添加到压缩文件...）。</li>
 <li>将生成的 <code>.zip</code> 压缩包重命名为你喜欢的名字（例如 <code>MyServerPack.zip</code>）。</li>
 </ol>
 
-<p>启动 Minecraft，进入"选项"→"资源包"→"打开资源包文件夹"，将这个 <code>.zip</code> 文件放入文件夹内，并在游戏内启用它即可。</p>
+<p>启动 Minecraft，进入<strong>"选项"→"资源包"→"打开资源包文件夹"</strong>，将这个 <code>.zip</code> 文件放入文件夹内，并在游戏内启用它即可。</p>
 
         </div>
     </main>
     </div>
 
-    <!-- Right-side page TOC: auto-built from H1-H4 in the article body. -->
+    <!-- 右侧页面目录：由正文中的 H1-H4 自动生成 -->
     <aside class="page-toc" id="pageToc" aria-label="本页导航">
         <div class="page-toc-title">本页导航</div>
         <nav class="page-toc-nav" id="pageTocNav"></nav>
     </aside>
 
-    <!-- Back to Top Button -->
+    <!-- 回到顶部按钮 -->
     <div class="back-to-top" id="backToTop" title="回到顶部">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
@@ -439,120 +441,8 @@
         <span class="back-to-top-label">顶部</span>
     </div>
 
-    <script src="../js/components.js?v=20261004"></script>
-    <script>
-    (function () {
-        var nav = document.getElementById('pageTocNav');
-        var content = document.querySelector('.content-inner') || document.querySelector('.content');
-        if (!nav || !content) return;
-
-        var headings = content.querySelectorAll('h1, h2, h3');
-        if (!headings.length) return;
-
-        // Assign stable ids to headings that don't have one yet.
-        var slugify = function (s) {
-            return s.toLowerCase()
-                .replace(/[^\p{L}\p{N}\s-]/gu, '')
-                .trim()
-                .replace(/\s+/g, '-')
-                .slice(0, 60) || 'section';
-        };
-        var usedIds = {};
-        Array.prototype.forEach.call(headings, function (h) {
-            if (!h.id) {
-                var base = slugify(h.textContent);
-                var id = base;
-                var i = 2;
-                while (usedIds[id] || document.getElementById(id)) {
-                    id = base + '-' + i++;
-                }
-                h.id = id;
-            }
-            usedIds[h.id] = true;
-        });
-
-        // Build the nested list. Stack bottom is the root <ul>; every
-        // push appends a fresh child <ul> to the new <li> so deeper
-        // headings nest inside it.
-        var root = document.createElement('ul');
-        var stack = [{ level: 0, list: root }];
-
-        Array.prototype.forEach.call(headings, function (h) {
-            var level = parseInt(h.tagName.charAt(1), 10);
-            while (stack[stack.length - 1].level >= level) {
-                stack.pop();
-            }
-            var parentList = stack[stack.length - 1].list;
-            var li = document.createElement('li');
-            li.className = 'toc-h' + level;
-            var a = document.createElement('a');
-            a.href = '#' + h.id;
-            a.textContent = h.textContent;
-            a.dataset.targetId = h.id;
-            li.appendChild(a);
-            parentList.appendChild(li);
-            var childList = document.createElement('ul');
-            li.appendChild(childList);
-            stack.push({ level: level, list: childList });
-        });
-
-        nav.appendChild(root);
-
-        var links = nav.querySelectorAll('a');
-        var linkByHeading = {};
-        Array.prototype.forEach.call(headings, function (h) {
-            var link = nav.querySelector('a[data-target-id="' + h.id + '"]');
-            if (link) linkByHeading[h.id] = { link: link, heading: h };
-        });
-
-        var setActive = function (id) {
-            Array.prototype.forEach.call(links, function (a) { a.classList.remove('is-active'); });
-            if (id && linkByHeading[id]) linkByHeading[id].link.classList.add('is-active');
-        };
-
-        // Click handler — smooth-scroll, then update URL without jumping.
-        Array.prototype.forEach.call(links, function (a) {
-            a.addEventListener('click', function (e) {
-                var target = document.getElementById(a.dataset.targetId);
-                if (!target) return;
-                e.preventDefault();
-                var headerOffset = 80;
-                var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
-                window.scrollTo({ top: top, behavior: 'smooth' });
-                setActive(a.dataset.targetId);
-                history.replaceState(null, '', '#' + a.dataset.targetId);
-            });
-        });
-
-        // Highlight the heading nearest the top of the viewport.
-        var visibleHeadings = [];
-        var observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                var id = entry.target.id;
-                var idx = visibleHeadings.findIndex(function (v) { return v.id === id; });
-                if (entry.isIntersecting) {
-                    if (idx === -1) visibleHeadings.push({ id: id, top: entry.boundingClientRect.top });
-                    else visibleHeadings[idx].top = entry.boundingClientRect.top;
-                } else if (idx !== -1) {
-                    visibleHeadings.splice(idx, 1);
-                }
-            });
-            if (!visibleHeadings.length) return;
-            visibleHeadings.sort(function (a, b) { return a.top - b.top; });
-            var pick = null;
-            for (var i = 0; i < visibleHeadings.length; i++) {
-                if (visibleHeadings[i].top >= 80) { pick = visibleHeadings[i]; break; }
-            }
-            if (!pick) pick = visibleHeadings[0];
-            setActive(pick.id);
-        }, {
-            rootMargin: '-80px 0px -55% 0px',
-            threshold: 0
-        });
-
-        Array.prototype.forEach.call(headings, function (h) { observer.observe(h); });
-    })();
-    </script>
+    <script src="../js/components.js?v=23f63ec1"></script>
+    <script src="../js/page-toc.js?v=23f63ec1"></script>
 <script>
 (function() {
   if (!('serviceWorker' in navigator)) return;
@@ -569,7 +459,7 @@
           segs.pop(); // components.js
           segs.pop(); // js
           return (segs.length === 0 ? '/' : '/' + segs.join('/') + '/') + 'sw.js';
-        } catch (e) { /* fall through */ }
+        } catch (e) { /* 忽略异常，继续走下一条分支 */ }
       }
     }
     return 'sw.js';

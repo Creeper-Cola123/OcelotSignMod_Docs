@@ -1,13 +1,11 @@
 <!--
-  Shared site header (Chinese, light variant).
-  Loaded by js/components.js into <div id="site-header"></div>.
-  The hrefs on every link are real (not just "#") so navigation works
-  even if JavaScript fails to load.
-
-  All paths are root-relative (leading /), which resolves correctly from
-  any page depth (root-level pages AND guide/ subdirectory pages alike).
-  rewriteComponentLinks() further corrects them to relative paths as a
-  secondary normalisation.
+    站点公共页头（中文，浅色主题）。
+    由 js/components.js 注入到 <div id="site-header"></div> 中。
+    每个链接上的 href 都是真实地址（而非 "#"），因此即使 JavaScript
+    加载失败，导航依然可用。
+    所有路径均为根相对路径（以 / 开头），从任意页面深度解析都正确
+    （根级页面与 guide/ 子目录页面皆然）。
+    rewriteComponentLinks() 会进一步将它们规范化为相对路径。
 -->
 <header class="site-header">
 <a href="/index.html" class="logo">豹猫指示牌模组<span class="logo-badge">官方版本</span><span class="logo-badge">迷上城建版本</span></a>
@@ -20,7 +18,7 @@
     <a data-key="download" href="/index.html#downloads">下载与反馈</a>
 
     <div class="lang-switcher">
-      <!-- Inline hrefs as a fallback in case components.js fails to load. -->
+      <!-- 内联 href 作为 components.js 加载失败时的兜底。 -->
       <a href="/index.html" class="lang active" data-lang="zh">中文</a>
       <span class="lang-divider">/</span>
       <a href="/en/index.html" class="lang" data-lang="en">EN</a>

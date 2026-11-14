@@ -7,9 +7,74 @@
   if (typeof window.PM === 'undefined') {
     window.PM = { state: {}, fns: {} };
   }
+  // 分类 ID 仅允许小写字母、数字和下划线；空字符串表示交给名称自动生成。
+  const CAT_ID_REGEX = /^[a-z0-9_]*$/;
+
+  function setCatIdError(message) {
+    const input = PM.fns.$('catId');
+    const errorEl = PM.fns.$('catIdError');
+    if (!input || !errorEl) return;
+    if (message) {
+      errorEl.textContent = message;
+      errorEl.classList.add('is-visible');
+      input.classList.add('is-invalid');
+    } else {
+      errorEl.textContent = '';
+      errorEl.classList.remove('is-visible');
+      input.classList.remove('is-invalid');
+    }
+  }
+
+  function handleCatIdInput(input) {
+    const raw = input.value;
+    if (CAT_ID_REGEX.test(raw)) {
+      setCatIdError('');
+      return;
+    }
+    // 剔除非法字符，并把光标留在原位之前的合法内容之后。
+    const caret = input.selectionStart;
+    const caretOffset = caret === null ? 0 : raw.slice(0, caret).replace(/[^a-z0-9_]/g, '').length;
+    input.value = raw.replace(/[^a-z0-9_]/g, '');
+    if (caret !== null) {
+      try { input.setSelectionRange(caretOffset, caretOffset); } catch (_) {}
+    }
+    setCatIdError(PM.fns.t('pm.cat.idInvalid'));
+  }
+
+  function bindCatIdValidation() {
+    const input = PM.fns.$('catId');
+    if (!input || input.dataset.validationBound === '1') return;
+    input.dataset.validationBound = '1';
+    const handler = (e) => {
+      // 输入法组合期间先放行，等 compositionend 再统一清洗。
+      if (e.type === 'input' && e.isComposing) return;
+      handleCatIdInput(input);
+    };
+    input.addEventListener('input', handler);
+    input.addEventListener('compositionend', handler);
+  }
+
+  function validateCatId() {
+    const input = PM.fns.$('catId');
+    if (!input) return true;
+    const id = input.value.trim();
+    // 留空走自动生成逻辑，不做校验。
+    if (id && !CAT_ID_REGEX.test(id)) {
+      setCatIdError(PM.fns.t('pm.cat.idInvalid'));
+      input.focus();
+      return false;
+    }
+    setCatIdError('');
+    return true;
+  }
+
   function openCatModal(editIdx) {
-    PM.fns.$('catModalTitle').textContent = editIdx !== undefined ? '✏️ 编辑分类' : '🗂 新建分类';
-    PM.fns.$('catModalConfirmBtn').textContent = editIdx !== undefined ? '保存' : '创建分类';
+    PM.fns.$('catModalTitle').innerHTML = editIdx !== undefined
+      ? '<span class="ic ic-pencil"></span> ' + PM.fns.t('pm.cat.modalTitleEdit')
+      : '<span class="ic ic-layers"></span> ' + PM.fns.t('pm.cat.modalTitleNew');
+    PM.fns.$('catModalConfirmBtn').textContent = editIdx !== undefined
+      ? PM.fns.t('pm.cat.modalConfirmEdit')
+      : PM.fns.t('pm.cat.modalConfirmCreate');
     PM.fns.$('catModal').dataset.editIdx = editIdx !== undefined ? editIdx : '';
     const basePathGroup = PM.fns.$('catBasePathGroup');
     if (basePathGroup) basePathGroup.style.display = (PM.state.currentH1 === 'fonts') ? 'none' : '';
@@ -31,6 +96,8 @@
       PM.fns.$('catNs').value = 'my_pack';
       PM.fns.$('catBasePath').value = (PM.state.currentH1 === 'fonts') ? 'font' : 'textures/signs';
     }
+    bindCatIdValidation();
+    setCatIdError('');
     PM.fns.$('catModal').classList.add('is-open');
     setTimeout(() => PM.fns.$('catName').focus(), 30);
   }
@@ -46,6 +113,7 @@
   function confirmCatModal() {
     const name = PM.fns.$('catName').value.trim();
     if (!name) { PM.fns.showToast(PM.fns.t('toast.enterCategoryName'), 'error'); PM.fns.$('catName').focus(); return; }
+    if (!validateCatId()) { PM.fns.showToast(PM.fns.t('pm.cat.idInvalid'), 'error'); return; }
     let id = PM.fns.$('catId').value.trim();
     if (!id) id = PM.fns.slugify(name);
     const ns = PM.fns.$('catNs').value.trim() || 'my_pack';
@@ -78,14 +146,14 @@
     modal.dataset.sectionIdx = idx;
     modal.dataset.editK = '';
     modal.classList.add('is-open');
-    PM.fns.$('addSFModalTitle').textContent = '📁 添加子文件夹标签';
-    PM.fns.$('addSFConfirmBtn').textContent = '添加';
+    PM.fns.$('addSFModalTitle').innerHTML = '<span class="ic ic-folder"></span> ' + PM.fns.t('pm.sf.modal.titleAdd');
+    PM.fns.$('addSFConfirmBtn').textContent = PM.fns.t('pm.sf.modal.confirmAdd');
     // 显示候选文件夹列表和"输入新文件夹"提示——这两项只在
     // 新增子文件夹时才有意义。
     const foldersGroup = PM.fns.$('addSFFoldersListGroup');
     if (foldersGroup) foldersGroup.style.display = '';
-    PM.fns.$('addSFNewDirLabel').textContent = '或输入新子文件夹名（不存在则自动新建）';
-    PM.fns.$('addSFNewDirHint').textContent = '只能使用小写字母、数字、下划线。';
+    PM.fns.$('addSFNewDirLabel').textContent = PM.fns.t('pm.sf.modal.labelNewDirAdd');
+    PM.fns.$('addSFNewDirHint').textContent = PM.fns.t('addSF.dirHint');
     PM.fns.$('addSFNewDir').readOnly = false;
     PM.fns.$('addSFNewDir').value = '';
     PM.fns.$('addSFDisplayName').value = '';
@@ -107,16 +175,16 @@
     modal.dataset.sectionIdx = idx;
     modal.dataset.editK = String(k);
     modal.classList.add('is-open');
-    PM.fns.$('addSFModalTitle').textContent = '✏ 编辑子文件夹标签';
-    PM.fns.$('addSFConfirmBtn').textContent = '保存';
+    PM.fns.$('addSFModalTitle').innerHTML = '<span class="ic ic-pencil"></span> ' + PM.fns.t('pm.sf.modal.titleEdit');
+    PM.fns.$('addSFConfirmBtn').textContent = PM.fns.t('pm.sf.modal.confirmEdit');
     // 隐藏"从现有文件夹选择"列表——这个选择器只在新增时有用。
     // 编辑模式下用户只是重命名条目。
     const foldersGroup = PM.fns.$('addSFFoldersListGroup');
     if (foldersGroup) foldersGroup.style.display = 'none';
     // 把 dirName 字段保留为只读，让用户看清哪个目录名对应
     // 资源包里的实际文件夹。
-    PM.fns.$('addSFNewDirLabel').textContent = '子文件夹名（不可修改）';
-    PM.fns.$('addSFNewDirHint').textContent = '子文件夹名对应资源包内的物理目录，修改它会断开现有引用。如需更换目录，请先移除该标签再添加新标签。';
+    PM.fns.$('addSFNewDirLabel').textContent = PM.fns.t('pm.sf.modal.labelNewDirEdit');
+    PM.fns.$('addSFNewDirHint').textContent = PM.fns.t('pm.sf.modal.hintEdit');
     PM.fns.$('addSFNewDir').readOnly = true;
     PM.fns.$('addSFNewDir').value = sf.dirName || '';
     PM.fns.$('addSFDisplayName').value = sf.displayName || sf.dirName || '';
@@ -137,8 +205,8 @@
       dirInput.readOnly = false;
       dirInput.value = '';
     }
-    PM.fns.$('addSFNewDirLabel').textContent = '或输入新子文件夹名（不存在则自动新建）';
-    PM.fns.$('addSFNewDirHint').textContent = '只能使用小写字母、数字、下划线。';
+    PM.fns.$('addSFNewDirLabel').textContent = PM.fns.t('pm.sf.modal.labelNewDirAdd');
+    PM.fns.$('addSFNewDirHint').textContent = PM.fns.t('addSF.dirHint');
     const foldersGroup = PM.fns.$('addSFFoldersListGroup');
     if (foldersGroup) foldersGroup.style.display = '';
   }
@@ -164,11 +232,11 @@
     const list = PM.fns.$('addSFFoldersList');
     if (!list) return;
     if (candidates.length === 0) {
-      list.innerHTML = `<span style="color:#8b949e;font-size:12px">暂无未添加的子文件夹</span>`;
+      list.innerHTML = `<span style="color:#8b949e;font-size:12px">${PM.fns.t('pm.sf.modal.emptyList')}</span>`;
       return;
     }
     list.innerHTML = candidates.map(name => {
-      return `<span class="add-sf-chip" onclick="pickAddSFFolder(this, '${PM.fns.escapeAttr(name)}')">📁 ${PM.fns.escapeHtml(name)}</span>`;
+      return `<span class="add-sf-chip" onclick="pickAddSFFolder(this, '${PM.fns.escapeAttr(name)}')"><span class="ic ic-folder"></span>${PM.fns.escapeHtml(name)}</span>`;
     }).join('');
   }
 
@@ -260,9 +328,8 @@
       else { valid = false; break; }
     }
     PM.state.pickPathState.currentPath = valid ? preferred : ('assets/' + ns);
-    // 把选中默认到与当前视图同一目录，让"✓ 选择此文件夹"按钮
+    // 把选中默认到与当前视图同一目录，让"选择此文件夹"按钮
     // 一开始就是可用状态，预览也展示合理的值。
-    // 把选中默认到与当前视图同一目录，让"✓ 选择此文件夹"按钮一开始就是可用状态，预览也展示合理的值。
     PM.state.pickPathState.selectedPath = PM.state.pickPathState.currentPath;
     PM.state.pickPathState.ns = ns;
 
@@ -289,10 +356,10 @@
     const cur = PM.state.pickPathState.currentPath;
     const ns = PM.state.pickPathState.ns;
 
-    // 面包屑：📦 assets / <ns> / foo / bar …
+    // 面包屑：assets / <ns> / foo / bar …
     const bcEl = PM.fns.$('pickPathBreadcrumb');
     const crumbs = cur.split('/').filter(Boolean);
-    let bcHtml = `<span class="pick-path-crumb" data-path="" style="cursor:pointer;color:#79c0ff" onclick="pickPathGoto('')">📦 资源包根目录</span>`;
+    let bcHtml = `<span class="pick-path-crumb" data-path="" style="cursor:pointer;color:#79c0ff" onclick="pickPathGoto('')"><span class="ic ic-archive"></span> ${PM.fns.t('pm.pickPath.root')}</span>`;
     let acc = '';
     crumbs.forEach((seg, i) => {
       acc = acc ? acc + '/' + seg : seg;
@@ -304,7 +371,7 @@
 
     // 当前文件夹标签。
     const curEl = PM.fns.$('pickPathCurrent');
-    if (curEl) curEl.textContent = cur || '资源包根目录';
+    if (curEl) curEl.textContent = cur || PM.fns.t('pm.pickPath.currentRoot');
 
     // 在树里下钻到当前路径，列出其第一级子项。
     let node = tree;
@@ -317,13 +384,13 @@
     const listEl = PM.fns.$('pickPathTree');
     if (!listEl) return;
     if (!node) {
-      listEl.innerHTML = `<div style="padding:16px;color:#8b949e;font-size:12px;text-align:center">该文件夹不存在于当前资源包中</div>`;
+      listEl.innerHTML = `<div style="padding:16px;color:#8b949e;font-size:12px;text-align:center">${PM.fns.t('pm.pickPath.notInPack')}</div>`;
       updatePickPathPreview();
       return;
     }
     const folders = Object.keys(node._children || {}).sort();
     if (folders.length === 0) {
-      listEl.innerHTML = `<div style="padding:16px;color:#8b949e;font-size:12px;text-align:center">此文件夹下没有子文件夹<br><br><span style="color:#484f58;font-size:11px">点击下方「✓ 选择此文件夹」确认使用</span></div>`;
+      listEl.innerHTML = `<div style="padding:16px;color:#8b949e;font-size:12px;text-align:center">${PM.fns.t('pm.pickPath.emptyChildren')}<br><br><span style="color:#484f58;font-size:11px">${PM.fns.t('pm.pickPath.emptyHint')}</span></div>`;
       updatePickPathPreview();
       return;
     }
@@ -333,9 +400,9 @@
       // 行点击：仅选中（高亮 + 更新预览）。按钮点击：
       // 进入（往下一级，并把选中切到该目录）。
       return `<div class="tree-item${isSelected ? ' active' : ''}" onclick="pickPathSelect('${PM.fns.escapeAttr(childPath)}')" title="${PM.fns.escapeHtml(childPath)}">
-        <span class="tree-icon folder">📁</span>
+        <span class="tree-icon folder"><span class="ic ic-folder"></span></span>
         <span class="tree-label">${PM.fns.escapeHtml(name)}</span>
-        <button type="button" class="btn btn-secondary btn-xs" style="margin:0 2px" onclick="event.stopPropagation(); pickPathGoto('${PM.fns.escapeAttr(childPath)}')">进入 ❯</button>
+        <button type="button" class="btn btn-secondary btn-xs" style="margin:0 2px" onclick="event.stopPropagation(); pickPathGoto('${PM.fns.escapeAttr(childPath)}')">${PM.fns.t('pm.pickPath.enter')}<span class="ic ic-chevron-right"></span></button>
       </div>`;
     }).join('');
     updatePickPathPreview();
@@ -364,21 +431,26 @@
     if (!previewEl) return;
     const sel = PM.state.pickPathState.selectedPath;
     const ns = PM.state.pickPathState.ns;
-    const prefix = 'assets/' + ns + '/';
+    // 从所选路径解析实际命名空间与相对路径，允许任意 assets/<ns>/... 路径，
+    // 预览值不再被强制绑定到分类（上游）命名空间。
+    let pickedNs = ns;
     let relative = '';
-    if (sel && sel.indexOf(prefix) === 0) relative = sel.slice(prefix.length);
-    else if (sel === 'assets/' + ns) relative = '';
-    else if (sel && sel.indexOf('assets/') !== 0) {
-      // 用户导航到了 assets/<ns> 之外——仍然允许选中任意文件夹，
-      // 但通过预览标签来给出警告。
+    if (sel && sel.indexOf('assets/') === 0) {
+      const afterAssets = sel.slice('assets/'.length);
+      const slashIdx = afterAssets.indexOf('/');
+      if (slashIdx < 0) { pickedNs = afterAssets || ns; relative = ''; }
+      else { pickedNs = afterAssets.slice(0, slashIdx) || ns; relative = afterAssets.slice(slashIdx + 1); }
+    } else if (sel) {
+      // 所选路径不在 assets/ 之下，仍显示原值并给出警告。
       relative = sel;
     }
-    const value = ns + ':' + relative;
+    const value = pickedNs + ':' + relative;
+    const previewPrefix = PM.fns.t('pm.pickPath.previewPrefix');
     previewEl.innerHTML = sel
-      ? (sel.indexOf('assets/' + ns) === 0
-          ? '将填入：<code style="color:#79c0ff">' + PM.fns.escapeHtml(value) + '</code>'
-          : '将填入：<code style="color:#f0883e">' + PM.fns.escapeHtml(value) + '</code> （不在 assets/' + PM.fns.escapeHtml(ns) + '/ 下，可能无法被解析）')
-      : '将填入：<code style="color:#f0883e">' + PM.fns.escapeHtml(ns + ':') + '</code> （根目录，通常无效）';
+      ? (sel.indexOf('assets/' + pickedNs) === 0
+          ? previewPrefix + '<code style="color:#79c0ff">' + PM.fns.escapeHtml(value) + '</code>'
+          : previewPrefix + '<code style="color:#f0883e">' + PM.fns.escapeHtml(value) + '</code>' + PM.fns.t('pm.pickPath.previewWarnText', { ns: PM.fns.escapeHtml(pickedNs) }))
+      : previewPrefix + '<code style="color:#f0883e">' + PM.fns.escapeHtml(pickedNs + ':') + '</code>' + PM.fns.t('pm.pickPath.previewRootText');
     if (confirmBtn) confirmBtn.disabled = !sel;
   }
 
@@ -395,13 +467,18 @@
     if (!section) { closePickPathModal(); return; }
     const sel = PM.state.pickPathState.selectedPath;
     if (!sel) { PM.fns.showToast(PM.fns.t('toast.selectFolder'), 'error'); return; }
-    const ns = PM.state.pickPathState.ns;
-    const prefix = 'assets/' + ns + '/';
-    let relative = '';
-    if (sel.indexOf(prefix) === 0) relative = sel.slice(prefix.length);
-    else if (sel === 'assets/' + ns) relative = '';
-    else { PM.fns.showToast(PM.fns.t('toast.folderNotUnderAssets', { ns: ns }), 'error'); return; }
-    const value = ns + ':' + relative;
+    // 允许选中任意 assets/<namespace>/... 路径，从所选路径中解析实际命名空间，
+    // 不再将命名空间约束为分类（上游）的命名空间。
+    if (sel.indexOf('assets/') !== 0) {
+      PM.fns.showToast(PM.fns.t('toast.folderNotUnderAssets', { ns: PM.state.pickPathState.ns }), 'error');
+      return;
+    }
+    const afterAssets = sel.slice('assets/'.length);
+    const slashIdx = afterAssets.indexOf('/');
+    let pickedNs, relative;
+    if (slashIdx < 0) { pickedNs = afterAssets; relative = ''; }
+    else { pickedNs = afterAssets.slice(0, slashIdx); relative = afterAssets.slice(slashIdx + 1); }
+    const value = pickedNs + ':' + relative;
 
     section.basePath = value;
     // 更新内联输入框的值（如果仍在 DOM 中），并触发
@@ -448,8 +525,8 @@
       return `<div class="image-rename-row" data-rename-k="${k}">
         <div class="image-rename-thumb" style="${thumbStyle}"></div>
         <div class="image-rename-fields">
-          <input type="text" class="form-input image-rename-original" value="${PM.fns.escapeHtml(u.originalName)}" readonly title="原始文件名（不可修改）">
-          <input type="text" class="form-input image-rename-stem" data-original="${PM.fns.escapeAttr(u.stem)}" value="${PM.fns.escapeAttr(u.stem)}" placeholder="输入新名称（不含扩展名）">
+          <input type="text" class="form-input image-rename-original" value="${PM.fns.escapeHtml(u.originalName)}" readonly title="${PM.fns.escapeAttr(PM.fns.t('imageRename.originalTitle'))}">
+          <input type="text" class="form-input image-rename-stem" data-original="${PM.fns.escapeAttr(u.stem)}" value="${PM.fns.escapeAttr(u.stem)}" placeholder="${PM.fns.escapeAttr(PM.fns.t('imageRename.stemPlaceholder'))}">
         </div>
       </div>`;
     }).join('');
@@ -621,7 +698,9 @@
     if (PM.state.folderFileCache[folderPath] !== undefined) {
       PM.state.folderFileCache[folderPath] = undefined;
     }
-    const fixedNote = v.needsFix && v.needsFix.length > 0 ? `（已自动修正 ${v.needsFix.length} 个文件名）` : '';
+    const fixedNote = v.needsFix && v.needsFix.length > 0
+      ? PM.fns.t('pm.fixedNamesNote', { count: v.needsFix.length })
+      : '';
     PM.fns.showToast(PM.fns.t('toast.uploadedToFolder', { count: uploaded.length, folder: folderPath, note: fixedNote }), 'success');
     PM.fns.openSectionImageBrowserInline(idx, section._activeSubFolder || null);
     // 同时刷新文件浏览器/右侧面板树。
@@ -725,9 +804,10 @@
 
   function formatCorrectionList(corrections, totalCount) {
     const lines = corrections.slice(0, 8).map(c => `  • ${c.originalName}  →  ${c.fixedName}`);
-    const more = corrections.length > 8 ? `\n  … 以及其他 ${corrections.length - 8} 个` : '';
-    return `检测到 ${totalCount} 个文件名中包含非法字符（仅允许小写字母、数字、下划线）。\n\n` +
-           `是否自动修正后继续上传？\n\n` + lines.join('\n') + more;
+    const more = corrections.length > 8
+      ? PM.fns.t('pm.fixedNamesMore', { count: corrections.length - 8 })
+      : '';
+    return PM.fns.t('pm.fixedNamesList', { count: totalCount }) + '\n\n' + lines.join('\n') + more;
   }
 
   PM.fns.formatCorrectionList = formatCorrectionList;
@@ -806,7 +886,9 @@
       PM.fns.showToast(PM.fns.t('toast.noFontFiles'), 'error');
       return;
     }
-    const fixedNote = v.needsFix && v.needsFix.length > 0 ? `（已自动修正 ${v.needsFix.length} 个文件名）` : '';
+    const fixedNote = v.needsFix && v.needsFix.length > 0
+      ? PM.fns.t('pm.fixedNamesNote', { count: v.needsFix.length })
+      : '';
     PM.fns.showToast(PM.fns.t('toast.uploadedFonts', { count: savedPaths.length, note: fixedNote }), 'success');
     PM.fns.openFontListInline(idx, section._activeSubFolder || null);
     PM.fns.renderFileBrowser();
@@ -844,7 +926,7 @@
     PM.fns.$('fcNs').value = ns;
     PM.fns.$('fcFontPath').value = sourceFontPath;
 
-    PM.fns.$('fontConfigModalTitle').textContent = '🔤 配置字体 — ' + sourceFontPath.split('/').pop();
+    PM.fns.$('fontConfigModalTitle').innerHTML = '<span class="ic ic-type"></span> ' + PM.fns.t('fontConfig.title') + ' — ' + PM.fns.escapeHtml(sourceFontPath.split('/').pop());
     PM.fns.$('fontConfigModal').classList.add('is-open');
   }
 
@@ -922,8 +1004,8 @@
     }
 
     closeFontConfigModal();
+    // refreshFontChipList 内部会重绘字体列表。
     PM.fns.refreshFontChipList(idx);
-    PM.fns.openFontListInline(idx);
     PM.fns.showToast(PM.fns.t('toast.fontAdded', { name: displayName }), 'success');
   }
 

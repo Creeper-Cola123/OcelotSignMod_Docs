@@ -20,8 +20,10 @@
     background-size: cover;
     background-position: center bottom;
     background-repeat: no-repeat;
-    /* --site-header-height 由 js/components.js 在注入共享页头后设置；
-       62px 兜底值匹配吸顶页头的 15px 内边距 + 约 32px 内容 + 15px 内边距。 */
+    /* ============================================================
+   site-header-height 由 js/components.js 在注入共享页头后设置；
+       62px 兜底值匹配吸顶页头的 15px 内边距 + 约 32px 内容 + 15px 内边距。 
+   ============================================================ */
     height: calc(100vh - var(--site-header-height, 62px));
     padding: 0 0 80px;
     position: relative;
@@ -683,14 +685,14 @@ body.lightbox-open {
        两段文字凑到一起；这里重排成图 / 文成对堆叠。动画延迟也按视觉
        （重排后）顺序重写，否则 img2 / img4 会在其前面文字还没显示前
        先于空行淡入。 */
-    .mod-features-grid > :nth-child(1) { order: 0; animation-delay: 0.05s; } /* img1 → row 1 */
-    .mod-features-grid > :nth-child(2) { order: 3; animation-delay: 0.25s; } /* img2 → row 3 */
-    .mod-features-grid > :nth-child(3) { order: 2; animation-delay: 0.15s; } /* txt1 → row 2 */
-    .mod-features-grid > :nth-child(4) { order: 4; animation-delay: 0.35s; } /* txt2 → row 4 */
-    .mod-features-grid > :nth-child(5) { order: 5; animation-delay: 0.45s; } /* img3 → row 5 */
-    .mod-features-grid > :nth-child(6) { order: 7; animation-delay: 0.65s; } /* img4 → row 7 */
-    .mod-features-grid > :nth-child(7) { order: 6; animation-delay: 0.55s; } /* txt3 → row 6 */
-    .mod-features-grid > :nth-child(8) { order: 8; animation-delay: 0.75s; } /* txt4 → row 8 */
+    .mod-features-grid > :nth-child(1) { order: 0; animation-delay: 0.05s; } /* img1 → 第 1 行 */
+    .mod-features-grid > :nth-child(2) { order: 3; animation-delay: 0.25s; } /* img2 → 第 3 行 */
+    .mod-features-grid > :nth-child(3) { order: 2; animation-delay: 0.15s; } /* txt1 → 第 2 行 */
+    .mod-features-grid > :nth-child(4) { order: 4; animation-delay: 0.35s; } /* txt2 → 第 4 行 */
+    .mod-features-grid > :nth-child(5) { order: 5; animation-delay: 0.45s; } /* img3 → 第 5 行 */
+    .mod-features-grid > :nth-child(6) { order: 7; animation-delay: 0.65s; } /* img4 → 第 7 行 */
+    .mod-features-grid > :nth-child(7) { order: 6; animation-delay: 0.55s; } /* txt3 → 第 6 行 */
+    .mod-features-grid > :nth-child(8) { order: 8; animation-delay: 0.75s; } /* txt4 → 第 8 行 */
     .mod-features-img {
         aspect-ratio: 2560 / 1350;
         max-height: 280px;
@@ -714,12 +716,14 @@ body.lightbox-open {
     animation: anim-fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both;
 }
 
-/* ========== 返回顶部 ==========
+/* ============================================================
+   返回顶部
    完整的 back-to-top 样式（与 .menu-toggle 成对）位于 common.css。
    因此 landing.html 不需要本地覆盖 —— 同一个圆形按钮在 landing 与
    指南页上都一致渲染。SVG 箭头 + 可选的"顶部"标签同时匹配 index.html
    中的纯 <svg> 与 creative-plaza 上装饰更多的按钮（后者额外加上了
-   .back-to-top-arrow 类与 .back-to-top-label span）。 */
+   .back-to-top-arrow 类与 .back-to-top-label span）。 
+   ============================================================ */
 
 /* ========== 响应式 ========== */
 @media (max-width: 1024px) {
@@ -772,8 +776,10 @@ body.lightbox-open {
     }
 }
 
-/* ========== 首屏信息（vp-hero —— 仅 index.html 使用） ==========
-   从 index.html 中的内联 <style> 块抽取而来。 */
+/* ============================================================
+   首屏信息（vp-hero —— 仅 index.html 使用）
+   从 index.html 中的内联 <style> 块抽取而来。 
+   ============================================================ */
 .vp-hero-info {
     position: absolute;
     left: 0;

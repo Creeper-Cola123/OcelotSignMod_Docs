@@ -33,8 +33,8 @@
     let html = `<ul style="list-style:none;padding:6px 0">
       <li>
         <div class="tree-item" onclick="navigateExplorer('')" style="${!PM.state.explorerPath ? 'background:#1f6feb22' : ''}">
-          <span class="tree-icon folder">📦</span>
-          <span class="tree-label">资源包根目录</span>
+          <span class="tree-icon folder"><span class="ic ic-archive"></span></span>
+          <span class="tree-label">${PM.fns.t('pm.explorer.root')}</span>
         </div>
       </li>`;
     if (folders.length) {
@@ -44,7 +44,7 @@
         const isActive = PM.state.explorerPath === childPath;
         html += `<li>
           <div class="tree-item" onclick="navigateExplorer('${PM.fns.escapeHtml(childPath)}')" style="${isActive ? 'background:#1f6feb22' : ''}">
-            <span class="tree-icon folder">📁</span>
+            <span class="tree-icon folder"><span class="ic ic-folder"></span></span>
             <span class="tree-label">${PM.fns.escapeHtml(name)}</span>
           </div>
         </li>`;
@@ -169,7 +169,7 @@
     const bcEl = PM.fns.$('expAddressPath');
     // 把地址栏做成可点击的面包屑导航，用户可以直接跳到任意上级目录，
     // 不必反复点击 ◀ 一层层往上爬。
-    let bcHtml = `<span style="cursor:pointer;color:#79c0ff" onclick="navigateExplorer('')" title="返回根目录">📦 资源包</span>`;
+    let bcHtml = `<span style="cursor:pointer;color:#79c0ff" onclick="navigateExplorer('')" title="${PM.fns.escapeAttr(PM.fns.t('pm.explorer.root'))}"><span class="ic ic-archive"></span> ${PM.fns.t('pm.explorer.root')}</span>`;
     if (PM.state.explorerPath) {
       const crumbs = PM.state.explorerPath.split('/').filter(Boolean);
       let acc = '';
@@ -184,10 +184,10 @@
     const container = PM.fns.$('explorerContent');
     if (folders.length === 0 && files.length === 0) {
       container.innerHTML = `<div style="text-align:center;color:#484f58;padding:40px;font-size:13px">
-        📭 此文件夹为空<br><br>
-        <button class="btn btn-secondary btn-sm" onclick="explorerNewFolder()">📁 新建文件夹</button>
+        <span class="ic ic-inbox"></span> ${PM.fns.t('pm.explorer.emptyFolder')}<br><br>
+        <button class="btn btn-secondary btn-sm" onclick="explorerNewFolder()"><span class="ic ic-folder"></span>${PM.fns.t('pm.explorer.newFolderBtn')}</button>
       </div>`;
-      PM.fns.$('explorerStatus').textContent = '0 个项目';
+      PM.fns.$('explorerStatus').textContent = PM.fns.t('explorer.statusN', { n: 0 });
       bindExplorerContentEvents(container);
       return;
     }
@@ -201,7 +201,7 @@
           ondblclick="explorerItemDblClick('${PM.fns.escapeHtml(childPath)}', 'folder')"
           oncontextmenu="event.preventDefault(); if(!PM.state.explorerSelection.includes('${PM.fns.escapeHtml(childPath)}')){PM.state.explorerSelection=['${PM.fns.escapeHtml(childPath)}']; PM.state._explorerSelectionAnchor=null; renderExplorerContent(); updateExplorerToolbar();} showExplorerContextMenu(event.clientX, event.clientY, '${PM.fns.escapeHtml(childPath)}');">
           <input type="checkbox" class="explorer-item-check"${sel ? ' checked' : ''} onclick="event.stopPropagation(); toggleExplorerCheck(this, '${PM.fns.escapeHtml(childPath)}', event)">
-          <div class="explorer-item-icon">📁</div>
+          <div class="explorer-item-icon"><span class="ic ic-folder"></span></div>
           <div class="explorer-item-name">${PM.fns.escapeHtml(name)}</div>
         </div>`;
     }).join('');
@@ -214,9 +214,10 @@
       const isImage = PM.fns.isImageFile(name);
       const isText = !isImage && PM.fns.isTextFile(name);
       const fullPath = (PM.state.explorerPath ? PM.state.explorerPath + '/' : '') + name;
-      let icon = isImage ? '🖼' : ext === 'json' ? '📋' :
-                 ['ttf','otf','woff','woff2'].includes(ext) ? '🔤' :
-                 ext === 'mcmeta' ? '⚙' : isText ? '📝' : '📄';
+      // 文件类型对应的图标类名（配合 css/icons.css 使用）。
+      let icon = isImage ? 'ic-image' : ext === 'json' ? 'ic-file-code' :
+                 ['ttf','otf','woff','woff2'].includes(ext) ? 'ic-type' :
+                 ext === 'mcmeta' ? 'ic-settings' : isText ? 'ic-file-text' : 'ic-file';
       const kind = isImage ? 'image' : isText ? 'text' : 'null';
       const sel = PM.state.explorerSelection.includes(fullPath);
 
@@ -238,7 +239,7 @@
         if (cached) {
           thumbHtml = `<img class="explorer-thumb" src="${cached}" alt="${PM.fns.escapeHtml(name)}" onclick="event.stopPropagation(); explorerItemDblClick('${PM.fns.escapeHtml(fullPath)}', '${kind}')" ondblclick="event.stopPropagation(); explorerItemDblClick('${PM.fns.escapeHtml(fullPath)}', '${kind}')" onerror="this.remove(); this.parentElement.classList.remove('has-thumb')">`;
           thumbClass = ' has-thumb';
-          icon = ''; // 通过 has-thumb CSS 隐藏 emoji
+          icon = ''; // 通过 has-thumb CSS 隐藏图标占位
         } else {
           uncachedImages.push({ fullPath, name });
         }
@@ -248,7 +249,7 @@
           ondblclick="explorerItemDblClick('${PM.fns.escapeHtml(fullPath)}', '${kind}')"
           oncontextmenu="event.preventDefault(); if(!PM.state.explorerSelection.includes('${PM.fns.escapeHtml(fullPath)}')){PM.state.explorerSelection=['${PM.fns.escapeHtml(fullPath)}']; PM.state._explorerSelectionAnchor=null; renderExplorerContent(); updateExplorerToolbar();} showExplorerContextMenu(event.clientX, event.clientY, '${PM.fns.escapeHtml(fullPath)}');">
           <input type="checkbox" class="explorer-item-check"${sel ? ' checked' : ''} onclick="event.stopPropagation(); toggleExplorerCheck(this, '${PM.fns.escapeHtml(fullPath)}', event)">
-          <div class="explorer-item-icon">${icon}</div>
+          <div class="explorer-item-icon"><span class="ic ${icon}"></span></div>
           ${thumbHtml}
           <div class="explorer-item-name">${PM.fns.escapeHtml(name)}</div>
         </div>`;
@@ -263,11 +264,13 @@
     void container.offsetWidth;
     container.classList.add('items-anim-in');
     const total = folders.length + files.length;
-    let statusText = `${folders.length} 个文件夹, ${files.length} 个文件 (共 ${total} 项)`;
-    if (PM.state.explorerSelection.length > 0) statusText += ` · 已选中 ${PM.state.explorerSelection.length} 项`;
+    let statusText = PM.fns.t('pm.explorer.statusItems', { folders: folders.length, files: files.length, total: total });
+    if (PM.state.explorerSelection.length > 0) statusText += PM.fns.t('pm.explorer.statusSelected', { count: PM.state.explorerSelection.length });
     if (PM.state.explorerClipboard.type) {
-      const clipType = PM.state.explorerClipboard.type === 'cut' ? '已剪切' : '已复制';
-      statusText += ` · ${clipType} ${PM.state.explorerClipboard.paths.length} 个项目`;
+      const clipType = PM.state.explorerClipboard.type === 'cut'
+        ? PM.fns.t('pm.explorer.clipboardCut')
+        : PM.fns.t('pm.explorer.clipboardCopy');
+      statusText += ' · ' + clipType + ' ' + PM.state.explorerClipboard.paths.length;
     }
     PM.fns.$('explorerStatus').textContent = statusText;
 
@@ -325,7 +328,7 @@
       if (nameEl) cell.insertBefore(img, nameEl);
       else cell.appendChild(img);
       cell.classList.add('has-thumb');
-    } catch (_) { /* 保留 emoji 降级图标 */ }
+    } catch (_) { /* 保留降级图标 */ }
   }
 
   PM.fns.loadExplorerThumb = loadExplorerThumb;
@@ -396,21 +399,21 @@
     const hasClip = PM.state.explorerClipboard.type !== null;
     const hasSingle = selCount === 1;
     const items = [
-      { label: '✂ 剪切',        key: 'cut',     disabled: selCount === 0, run: () => explorerCut() },
-      { label: '📋 复制',        key: 'copy',    disabled: selCount === 0, run: () => explorerCopy() },
-      { label: '📥 粘贴',        key: 'paste',   disabled: !hasClip,       run: () => explorerPaste() },
+      { label: PM.fns.t('action.cut'),     icon: 'ic-scissors', key: 'cut',     disabled: selCount === 0, run: () => explorerCut() },
+      { label: PM.fns.t('action.copy'),    icon: 'ic-copy',     key: 'copy',    disabled: selCount === 0, run: () => explorerCopy() },
+      { label: PM.fns.t('action.paste'),   icon: 'ic-paste',    key: 'paste',   disabled: !hasClip,       run: () => explorerPaste() },
       { sep: true },
-      { label: '🗑 删除',        key: 'delete',  disabled: selCount === 0, run: () => explorerDelete() },
-      { label: '✏ 重命名',      key: 'rename',  disabled: !hasSingle,     run: () => explorerRename() },
-      { label: '⬇ 下载',         key: 'download',disabled: !hasSingle,     run: () => explorerDownload() },
+      { label: PM.fns.t('action.delete'),  icon: 'ic-trash',    key: 'delete',  disabled: selCount === 0, run: () => explorerDelete() },
+      { label: PM.fns.t('action.rename'),  icon: 'ic-pencil',   key: 'rename',  disabled: !hasSingle,     run: () => explorerRename() },
+      { label: PM.fns.t('action.downloadFile'), icon: 'ic-download', key: 'download', disabled: !hasSingle, run: () => explorerDownload() },
       { sep: true },
-      { label: '📄 新建文件',    key: 'newfile',                 run: () => explorerNewFile() },
-      { label: '📁 新建文件夹',  key: 'newfolder',               run: () => explorerNewFolder() },
-      { label: '⬆ 上传文件',     key: 'upload',                  run: () => PM.fns.$('expUploadInput').click() },
+      { label: PM.fns.t('newFile.title'),   icon: 'ic-file',     key: 'newfile',                 run: () => explorerNewFile() },
+      { label: PM.fns.t('pm.explorer.newFolderBtn'), icon: 'ic-folder', key: 'newfolder',          run: () => explorerNewFolder() },
+      { label: PM.fns.t('action.upload'),   icon: 'ic-upload',   key: 'upload',                  run: () => PM.fns.$('expUploadInput').click() },
     ];
     menu.innerHTML = items.map(it => {
       if (it.sep) return '<div class="explorer-ctx-sep"></div>';
-      return `<div class="explorer-ctx-item${it.disabled ? ' disabled' : ''}" data-ctx-key="${it.key}">${PM.fns.escapeHtml(it.label)}</div>`;
+      return `<div class="explorer-ctx-item${it.disabled ? ' disabled' : ''}" data-ctx-key="${it.key}"><span class="ic ${it.icon}"></span>${PM.fns.escapeHtml(it.label)}</div>`;
     }).join('');
     // 绑定点击
     menu.querySelectorAll('.explorer-ctx-item').forEach(el => {
@@ -554,7 +557,7 @@
     // 同步其余复选框的视觉状态，仅更新高亮行（不整页重渲染，
     // 否则用户尚未完成的点击会被丢弃）。
     document.querySelectorAll('.explorer-item-check').forEach(cb => {
-      // 从复选框自身的 onclick 属性中解析路径，例如：
+      // 从复选框自身的 onclick 属性中解析路径，形如
       // onclick="event.stopPropagation(); toggleExplorerCheck(this, 'assets/foo.png', event)"
       const m = (cb.getAttribute('onclick') || '').match(/toggleExplorerCheck\(this,\s*'((?:\\'|[^'])*)'/);
       if (!m) return;
@@ -596,10 +599,12 @@
     if (PM.fns.$('expBtnPaste')) {
       PM.fns.$('expBtnPaste').disabled = !hasClip;
       if (hasClip) {
-        const clipType = PM.state.explorerClipboard.type === 'cut' ? '剪切' : '复制';
-        PM.fns.$('expBtnPaste').title = `粘贴 ${clipType}的 ${PM.state.explorerClipboard.paths.length} 个项目 (Ctrl+V)`;
+        const clipType = PM.state.explorerClipboard.type === 'cut'
+          ? PM.fns.t('explorer.titleCut')
+          : PM.fns.t('explorer.titleCopied');
+        PM.fns.$('expBtnPaste').title = PM.fns.t('explorer.titlePaste') + ' · ' + clipType + ' ' + PM.state.explorerClipboard.paths.length;
       } else {
-        PM.fns.$('expBtnPaste').title = '粘贴 (Ctrl+V)';
+        PM.fns.$('expBtnPaste').title = PM.fns.t('explorer.titlePaste');
       }
     }
   }
@@ -781,7 +786,7 @@
   async function explorerDelete() {
     if (PM.state.explorerSelection.length === 0) return;
     const n = PM.state.explorerSelection.length;
-    if (!confirm(`确定要删除这 ${n} 个项目吗？\n此操作不可撤销。`)) return;
+    if (!confirm(PM.fns.t('confirm.deleteMultiple', { count: n }))) return;
     for (const p of PM.state.explorerSelection) {
       if (expIsFolder(p)) {
         // 删除文件夹内的所有文件。
@@ -811,7 +816,7 @@
     if (PM.state.explorerSelection.length !== 1) return;
     const oldPath = PM.state.explorerSelection[0];
     const oldName = expBasename(oldPath);
-    const newName = prompt('重命名为：', oldName);
+    const newName = prompt(PM.fns.t('explorer.rename.prompt'), oldName);
     if (!newName || newName === oldName || !newName.trim()) return;
     const dir = expDirname(oldPath);
     const newPath = dir ? dir + '/' + newName.trim() : newName.trim();
@@ -896,7 +901,7 @@
   PM.fns.explorerDownload = explorerDownload;
 
   function explorerNewFolder() {
-    const base = '新建文件夹';
+    const base = PM.fns.t('pm.explorer.newFolderDefaultName');
     const name = expUniqueName(PM.state.explorerPath, base);
     const folderPath = PM.state.explorerPath ? PM.state.explorerPath + '/' + name : name;
     PM.fns.ensureDirEntry(folderPath);

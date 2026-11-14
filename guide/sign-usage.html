@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <link rel="icon" href="../favicon.svg?v=23f63ec1" type="image/svg+xml">
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>告示牌基本使用方法 | 豹猫指示牌模组</title>
-    <link rel="stylesheet" href="../css/common.css?v=20261004">
-    <link rel="stylesheet" href="../css/layout.css?v=20261004">
-    <link rel="stylesheet" href="../css/content.css?v=20261004">
+    <link rel="stylesheet" href="../css/common.css?v=23f63ec1">
+    <link rel="stylesheet" href="../css/icons.css?v=23f63ec1">
+    <link rel="stylesheet" href="../css/layout.css?v=23f63ec1">
+    <link rel="stylesheet" href="../css/content.css?v=23f63ec1">
 </head>
 <body>
     <div id="site-header"></div>
@@ -27,24 +29,21 @@
 
 <h3>1. 悬挂的告示牌</h3>
 
-<ol>
-<li>此类告示牌应悬挂在方块下方，两侧均可输入文字。如果上方连接固体方块或告示牌杆方块，则会显示告示牌杆。</li>
-<li>告示牌的文字与放置方向绑定，暂不支持直接旋转。如果你需要放置带有 NBT 的方块，则需确保放置方向与获取方向一致，否则相应侧面将不显示文字。例如，如果你获取了朝南/北的告示牌，若放置为朝东/西，原有的南北侧文字将无法显示。</li>
-</ol>
+<p>此类告示牌应悬挂在方块下方，两侧均可输入文字。如果上方连接固体方块或告示牌杆方块，则会显示告示牌杆。</p>
+
+<p>告示牌的文字与放置方向绑定，暂不支持直接旋转。如果你需要放置带有 NBT 的方块，则需确保放置方向与获取方向一致，否则相应侧面将不显示文字。例如，如果你获取了朝南/北的告示牌，若放置为朝东/西，原有的南北侧文字将无法显示。</p>
 
 <h3>2. 墙上的告示牌</h3>
 
-<ol>
-<li>此类告示牌可放置在任何方块的任意表面（侧面、顶面、底面），只有一面可输入文字。</li>
-<li>墙上告示牌有两个特殊变种：<strong>隐形告示牌</strong>与<strong>隐形发光告示牌</strong>。这两种告示牌的模型不可见，只有文字可见。当玩家手持任一类型时，已放置的隐形告示牌会显示轮廓，便于识别。</li>
-</ol>
+<p>此类告示牌可放置在任何方块的任意表面（侧面、顶面、底面），只有一面可输入文字。</p>
+
+<p>墙上告示牌有两个特殊变种：<strong>隐形告示牌</strong>与<strong>隐形发光告示牌</strong>。这两种告示牌的模型不可见，只有文字可见。当玩家手持任一类型时，已放置的隐形告示牌会显示轮廓，便于识别。</p>
 
 <h3>3. 立式告示牌</h3>
 
-<ol>
-<li>放置于地面或悬浮在空中，支持原版的 16 个方向。与悬挂告示牌一样，两侧均可输入文字。</li>
-<li>当方块放置在下方时，会显示告示牌杆。空手时，按住 <code>Shift</code> 并点击告示牌可手动切换杆的可见性。</li>
-</ol>
+<p>放置于地面或悬浮在空中，支持原版的 16 个方向。与悬挂告示牌一样，两侧均可输入文字。</p>
+
+<p>当方块放置在下方时，会显示告示牌杆。空手时，按住 <code>Shift</code> 并点击告示牌可手动切换杆的可见性。</p>
 
 <hr>
 
@@ -64,17 +63,13 @@
 
 <p>沿三个轴调整文字偏移。</p>
 
-<blockquote>
-<p>⚠️ 请谨慎调整 Z 轴，否则可能导致文字漂浮于平面之外或被告示牌遮挡而不可见。</p>
-</blockquote>
+<p>请谨慎调整 Z 轴，否则可能导致文字漂浮于平面之外或被告示牌遮挡而不可见。</p>
 
 <h3>4. 缩放（X/Y）</h3>
 
 <p>与文字大小叠加。将缩放设置为 <code>0</code> 将隐藏文字。</p>
 
-<blockquote>
 <p>无 Z 轴缩放，因为在二维平面上没有意义。</p>
-</blockquote>
 
 <h3>5. 旋转</h3>
 
@@ -93,9 +88,7 @@
 
 <h3>8. 阴影</h3>
 
-<blockquote>
-<p>⚠️ 不推荐开启。多方向文字开启阴影可能导致渲染顺序问题。</p>
-</blockquote>
+<p>不推荐开启。多方向文字开启阴影可能导致渲染顺序问题。</p>
 
 <h3>9. 绝对模式</h3>
 
@@ -263,195 +256,139 @@
 
 <p>使用内置图案名称可避免字体或 Unicode 带来的对齐/大小不一致问题。</p>
 
-<h4>基础箭头与方向</h4>
-
-<table>
-<thead>
-<tr>
-<th>图案</th>
-<th>用法</th>
-</tr>
-</thead>
+<table class="pattern-table">
 <tbody>
 <tr>
-<td>（空）</td>
+<td>图案预览</td>
+<td class="pattern-preview"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-left.png?v=23f63ec1" alt="arrow-left 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-right.png?v=23f63ec1" alt="arrow-right 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-up.png?v=23f63ec1" alt="arrow-up 图案"></td>
+</tr>
+<tr>
+<td>在迷上城建模组中的调用方法</td>
 <td><code>-pattern empty</code></td>
-</tr>
-<tr>
-<td>←</td>
 <td><code>-pattern arrow-left</code> 或 <code>-pattern al</code></td>
-</tr>
-<tr>
-<td>→</td>
 <td><code>-pattern arrow-right</code> 或 <code>-pattern ar</code></td>
-</tr>
-<tr>
-<td>↑</td>
 <td><code>-pattern arrow-up</code> 或 <code>-pattern arrow-top</code> 或 <code>-pattern au</code> 或 <code>-pattern at</code></td>
 </tr>
 <tr>
-<td>↓</td>
+<td>图案预览</td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-down.png?v=23f63ec1" alt="arrow-down 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-left-thin.png?v=23f63ec1" alt="arrow-left-thin 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-right-thin.png?v=23f63ec1" alt="arrow-right-thin 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-up-thin.png?v=23f63ec1" alt="arrow-up-thin 图案"></td>
+</tr>
+<tr>
+<td>在迷上城建模组中的调用方法</td>
 <td><code>-pattern arrow-down</code> 或 <code>-pattern arrow-bottom</code> 或 <code>-pattern ad</code> 或 <code>-pattern ab</code></td>
-</tr>
-<tr>
-<td>←（细）</td>
 <td><code>-pattern arrow-left-thin</code></td>
-</tr>
-<tr>
-<td>→（细）</td>
 <td><code>-pattern arrow-right-thin</code></td>
-</tr>
-<tr>
-<td>↑（细）</td>
 <td><code>-pattern arrow-up-thin</code></td>
 </tr>
 <tr>
-<td>↓（细）</td>
+<td>图案预览</td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-down-thin.png?v=23f63ec1" alt="arrow-down-thin 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-left-up.png?v=23f63ec1" alt="arrow-left-up 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-right-up.png?v=23f63ec1" alt="arrow-right-up 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-left-down.png?v=23f63ec1" alt="arrow-left-down 图案"></td>
+</tr>
+<tr>
+<td>在迷上城建模组中的调用方法</td>
 <td><code>-pattern arrow-down-thin</code></td>
-</tr>
-</tbody>
-</table>
-
-<h4>斜向箭头</h4>
-
-<table>
-<thead>
-<tr>
-<th>用法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-pattern arrow-left-up</code> / <code>-pattern arrow-left-top</code> / <code>-pattern alu</code> / <code>-pattern alt</code></td>
+<td><code>-pattern arrow-left-up</code> 或 <code>-pattern arrow-left-top</code> 或 <code>-pattern alu</code> 或 <code>-pattern alt</code></td>
+<td><code>-pattern arrow-right-up</code> 或 <code>-pattern arrow-right-top</code> 或 <code>-pattern aru</code> 或 <code>-pattern art</code></td>
+<td><code>-pattern arrow-left-down</code> 或 <code>-pattern arrow-left-bottom</code> 或 <code>-pattern ald</code> 或 <code>-pattern alb</code></td>
 </tr>
 <tr>
-<td><code>-pattern arrow-right-up</code> / <code>-pattern arrow-right-top</code> / <code>-pattern aru</code> / <code>-pattern art</code></td>
+<td>图案预览</td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-right-down.png?v=23f63ec1" alt="arrow-right-down 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-left-turn-up.png?v=23f63ec1" alt="arrow-left-turn-up 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-right-turn-up.png?v=23f63ec1" alt="arrow-right-turn-up 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-left-turn-down.png?v=23f63ec1" alt="arrow-left-turn-down 图案"></td>
 </tr>
 <tr>
-<td><code>-pattern arrow-left-down</code> / <code>-pattern arrow-left-bottom</code> / <code>-pattern ald</code> / <code>-pattern alb</code></td>
+<td>在迷上城建模组中的调用方法</td>
+<td><code>-pattern arrow-right-down</code> 或 <code>-pattern arrow-right-bottom</code> 或 <code>-pattern ard</code> 或 <code>-pattern arb</code></td>
+<td><code>-pattern arrow-left-turn-up</code> 或 <code>-pattern altu</code></td>
+<td><code>-pattern arrow-right-turn-up</code> 或 <code>-pattern artu</code></td>
+<td><code>-pattern arrow-left-turn-down</code> 或 <code>-pattern altd</code></td>
 </tr>
 <tr>
-<td><code>-pattern arrow-right-down</code> / <code>-pattern arrow-right-bottom</code> / <code>-pattern ard</code> / <code>-pattern arb</code></td>
-</tr>
-</tbody>
-</table>
-
-<h4>转向箭头</h4>
-
-<table>
-<thead>
-<tr>
-<th>用法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-pattern arrow-left-turn-up</code> / <code>-pattern altu</code></td>
+<td>图案预览</td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-right-turn-down.png?v=23f63ec1" alt="arrow-right-turn-down 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-left-right.png?v=23f63ec1" alt="arrow-left-right 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/arrow-up-down.png?v=23f63ec1" alt="arrow-up-down 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/circle-small.png?v=23f63ec1" alt="circle-small 图案"></td>
 </tr>
 <tr>
-<td><code>-pattern arrow-right-turn-up</code> / <code>-pattern artu</code></td>
+<td>在迷上城建模组中的调用方法</td>
+<td><code>-pattern arrow-right-turn-down</code> 或 <code>-pattern artd</code></td>
+<td><code>-pattern arrow-left-right</code> 或 <code>-pattern alr</code></td>
+<td><code>-pattern arrow-up-down</code> 或 <code>-pattern aud</code></td>
+<td><code>-pattern circle-small</code> 或 <code>-pattern small-circle</code></td>
 </tr>
 <tr>
-<td><code>-pattern arrow-left-turn-down</code> / <code>-pattern altd</code></td>
+<td>图案预览</td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/circle-medium.png?v=23f63ec1" alt="circle-medium 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/ban.png?v=23f63ec1" alt="ban 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/u-turn-left-down.png?v=23f63ec1" alt="u-turn-left-down 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/u-turn-right-down.png?v=23f63ec1" alt="u-turn-right-down 图案"></td>
 </tr>
 <tr>
-<td><code>-pattern arrow-right-turn-down</code> / <code>-pattern artd</code></td>
-</tr>
-</tbody>
-</table>
-
-<h4>双向箭头与圆形</h4>
-
-<table>
-<thead>
-<tr>
-<th>用法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-pattern arrow-left-right</code> / <code>-pattern alr</code></td>
-</tr>
-<tr>
-<td><code>-pattern arrow-up-down</code> / <code>-pattern aud</code></td>
-</tr>
-<tr>
-<td><code>-pattern circle-small</code> / <code>-pattern small-circle</code></td>
-</tr>
-<tr>
-<td><code>-pattern circle-medium</code> / <code>-pattern medium-circle</code> / <code>-pattern circle</code> / <code>-pattern O</code></td>
-</tr>
-</tbody>
-</table>
-
-<h4>禁止与掉头</h4>
-
-<table>
-<thead>
-<tr>
-<th>用法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
+<td>在迷上城建模组中的调用方法</td>
+<td><code>-pattern circle-medium</code> 或 <code>-pattern medium-circle</code> 或 <code>-pattern circle</code> 或 <code>-pattern O</code></td>
 <td><code>-pattern ban</code></td>
+<td><code>-pattern u-turn-left-down</code> 或 <code>-pattern u-turn-left-bottom</code> 或 <code>-pattern uld</code> 或 <code>-pattern ulb</code></td>
+<td><code>-pattern u-turn-right-down</code> 或 <code>-pattern u-turn-right-bottom</code> 或 <code>-pattern urd</code> 或 <code>-pattern urb</code></td>
 </tr>
 <tr>
-<td><code>-pattern u-turn-left-down</code> / <code>-pattern u-turn-left-bottom</code> / <code>-pattern uld</code> / <code>-pattern ulb</code></td>
+<td>图案预览</td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/u-turn-left-up.png?v=23f63ec1" alt="u-turn-left-up 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/u-turn-right-up.png?v=23f63ec1" alt="u-turn-right-up 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/cross-small.png?v=23f63ec1" alt="cross-small 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/cross-medium.png?v=23f63ec1" alt="cross-medium 图案"></td>
 </tr>
 <tr>
-<td><code>-pattern u-turn-right-down</code> / <code>-pattern u-turn-right-bottom</code> / <code>-pattern urd</code> / <code>-pattern urb</code></td>
+<td>在迷上城建模组中的调用方法</td>
+<td><code>-pattern u-turn-left-up</code> 或 <code>-pattern u-turn-right-top</code> 或 <code>-pattern ulu</code> 或 <code>-pattern ult</code></td>
+<td><code>-pattern u-turn-right-up</code> 或 <code>-pattern u-turn-right-top</code> 或 <code>-pattern uru</code> 或 <code>-pattern urt</code></td>
+<td><code>-pattern cross-small</code> 或 <code>-pattern small-scross</code></td>
+<td><code>-pattern cross-medium</code> 或 <code>-pattern medium-cross</code> 或 <code>-pattern cross</code> 或 <code>-pattern X</code></td>
 </tr>
 <tr>
-<td><code>-pattern u-turn-left-up</code> / <code>-pattern u-turn-right-top</code> / <code>-pattern ulu</code> / <code>-pattern ult</code></td>
+<td>图案预览</td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/cross-large.png?v=23f63ec1" alt="cross-large 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/square-small.png?v=23f63ec1" alt="square-small 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/square-medium.png?v=23f63ec1" alt="square-medium 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/square-large.png?v=23f63ec1" alt="square-large 图案"></td>
 </tr>
 <tr>
-<td><code>-pattern u-turn-right-up</code> / <code>-pattern u-turn-right-top</code> / <code>-pattern uru</code> / <code>-pattern urt</code></td>
-</tr>
-</tbody>
-</table>
-
-<h4>十字与方块</h4>
-
-<table>
-<thead>
-<tr>
-<th>用法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-pattern cross-small</code> / <code>-pattern small-scross</code></td>
+<td>在迷上城建模组中的调用方法</td>
+<td><code>-pattern cross-large</code> 或 <code>-pattern large-cross</code></td>
+<td><code>-pattern square-small</code> 或 <code>-pattern small-square</code></td>
+<td><code>-pattern square-medium</code> 或 <code>-pattern medium-square</code> 或 <code>-pattern square</code></td>
+<td><code>-pattern square-large</code> 或 <code>-pattern large-square</code></td>
 </tr>
 <tr>
-<td><code>-pattern cross-medium</code> / <code>-pattern medium-cross</code> / <code>-pattern cross</code> / <code>-pattern X</code></td>
+<td>图案预览</td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/square-slant-small.png?v=23f63ec1" alt="square-slant-small 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/square-slant-medium.png?v=23f63ec1" alt="square-slant-medium 图案"></td>
+<td class="pattern-preview"><img src="../pic/mishanguc_patterns/square-slant-large.png?v=23f63ec1" alt="square-slant-large 图案"></td>
+<td class="pattern-preview"></td>
 </tr>
 <tr>
-<td><code>-pattern cross-large</code> / <code>-pattern large-cross</code></td>
-</tr>
-<tr>
-<td><code>-pattern square-small</code> / <code>-pattern small-square</code></td>
-</tr>
-<tr>
-<td><code>-pattern square-medium</code> / <code>-pattern medium-square</code> / <code>-pattern square</code></td>
-</tr>
-<tr>
-<td><code>-pattern square-large</code> / <code>-pattern large-square</code></td>
-</tr>
-<tr>
-<td><code>-pattern square-slant-small</code> / <code>-pattern small-slant-square</code></td>
-</tr>
-<tr>
-<td><code>-pattern square-slant-medium</code> / <code>-pattern medium-slant-square</code></td>
-</tr>
-<tr>
-<td><code>-pattern square-slant-large</code> / <code>-pattern large-slant-square</code></td>
+<td>在迷上城建模组中的调用方法</td>
+<td><code>-pattern square-slant-small</code> 或 <code>-pattern small-slant-square</code></td>
+<td><code>-pattern square-slant-medium</code> 或 <code>-pattern medium-slant-square</code></td>
+<td><code>-pattern square-slant-large</code> 或 <code>-pattern large-slant-square</code></td>
+<td></td>
 </tr>
 </tbody>
 </table>
 
 <blockquote>
-<p>⚠️ 注意：图案不支持自定义样式。如需复杂样式，请使用 <code>-texture</code> 或原版 sprite 组件（例如 <code>-nbt {sprite: xxx}</code>）。</p>
+<p><span class="ic ic-alert" aria-hidden="true"></span>注意：图案不支持自定义样式。如需复杂样式，请使用 <code>-texture</code> 或原版 sprite 组件（例如 <code>-nbt {sprite: xxx}</code>）。</p>
 </blockquote>
 
 <hr>
@@ -479,13 +416,13 @@
     </main>
     </div>
 
-    <!-- Right-side page TOC: auto-built from H1-H4 in the article body. -->
+    <!-- 右侧页面目录：由正文中的 H1-H4 自动生成 -->
     <aside class="page-toc" id="pageToc" aria-label="本页导航">
         <div class="page-toc-title">本页导航</div>
         <nav class="page-toc-nav" id="pageTocNav"></nav>
     </aside>
 
-    <!-- Back to Top Button -->
+    <!-- 回到顶部按钮 -->
     <div class="back-to-top" id="backToTop" title="返回顶部">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
@@ -493,139 +430,8 @@
         <span class="back-to-top-label">顶部</span>
     </div>
 
-    <script src="../js/components.js?v=20261004"></script>
-    <script>
-    (function () {
-        // Wrap each table in .content-inner with a `.table-scroll`
-        // container so wide tables can scroll horizontally on narrow
-        // screens instead of stretching the whole page. Idempotent — it
-        // skips any table that is already inside such a wrapper.
-        var tables = document.querySelectorAll('.content-inner > table');
-        Array.prototype.forEach.call(tables, function (table) {
-            var parent = table.parentNode;
-            if (parent && parent.classList && parent.classList.contains('table-scroll')) return;
-            var wrapper = document.createElement('div');
-            wrapper.className = 'table-scroll';
-            parent.insertBefore(wrapper, table);
-            wrapper.appendChild(table);
-        });
-
-        var nav = document.getElementById('pageTocNav');
-        var content = document.querySelector('.content-inner') || document.querySelector('.content');
-        if (!nav || !content) return;
-
-        var headings = content.querySelectorAll('h1, h2, h3');
-        if (!headings.length) return;
-
-        // Assign stable ids to headings that don't have one yet.
-        var slugify = function (s) {
-            return s.toLowerCase()
-                .replace(/[^\p{L}\p{N}\s-]/gu, '')
-                .trim()
-                .replace(/\s+/g, '-')
-                .slice(0, 60) || 'section';
-        };
-        var usedIds = {};
-        Array.prototype.forEach.call(headings, function (h) {
-            if (!h.id) {
-                var base = slugify(h.textContent);
-                var id = base;
-                var i = 2;
-                while (usedIds[id] || document.getElementById(id)) {
-                    id = base + '-' + i++;
-                }
-                h.id = id;
-            }
-            usedIds[h.id] = true;
-        });
-
-        // Build the nested list. The stack's bottom frame is always the
-        // root <ul>; every push appends a fresh child <ul> to the new
-        // <li> so deeper headings nest inside it.
-        var root = document.createElement('ul');
-        var stack = [{ level: 0, list: root }];
-
-        Array.prototype.forEach.call(headings, function (h) {
-            var level = parseInt(h.tagName.charAt(1), 10);
-            // Pop frames whose level is >= the current heading's level so
-            // we return to the right ancestor. Stack bottom (level 0) is
-            // never popped because 0 < any heading level.
-            while (stack[stack.length - 1].level >= level) {
-                stack.pop();
-            }
-            var parentList = stack[stack.length - 1].list;
-            var li = document.createElement('li');
-            li.className = 'toc-h' + level;
-            var a = document.createElement('a');
-            a.href = '#' + h.id;
-            a.textContent = h.textContent;
-            a.dataset.targetId = h.id;
-            li.appendChild(a);
-            parentList.appendChild(li);
-            // Each li gets its own child list for nested headings.
-            var childList = document.createElement('ul');
-            li.appendChild(childList);
-            stack.push({ level: level, list: childList });
-        });
-
-        nav.appendChild(root);
-
-        var links = nav.querySelectorAll('a');
-        var linkByHeading = {};
-        Array.prototype.forEach.call(headings, function (h) {
-            var link = nav.querySelector('a[data-target-id="' + h.id + '"]');
-            if (link) linkByHeading[h.id] = { link: link, heading: h };
-        });
-
-        var setActive = function (id) {
-            Array.prototype.forEach.call(links, function (a) { a.classList.remove('is-active'); });
-            if (id && linkByHeading[id]) linkByHeading[id].link.classList.add('is-active');
-        };
-
-        // Click handler — smooth-scroll, then update URL without jumping.
-        Array.prototype.forEach.call(links, function (a) {
-            a.addEventListener('click', function (e) {
-                var target = document.getElementById(a.dataset.targetId);
-                if (!target) return;
-                e.preventDefault();
-                var headerOffset = 80;
-                var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
-                window.scrollTo({ top: top, behavior: 'smooth' });
-                setActive(a.dataset.targetId);
-                history.replaceState(null, '', '#' + a.dataset.targetId);
-            });
-        });
-
-        // Highlight the heading nearest the top of the viewport.
-        var visibleHeadings = [];
-        var observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                var id = entry.target.id;
-                var idx = visibleHeadings.findIndex(function (v) { return v.id === id; });
-                if (entry.isIntersecting) {
-                    if (idx === -1) visibleHeadings.push({ id: id, top: entry.boundingClientRect.top });
-                    else visibleHeadings[idx].top = entry.boundingClientRect.top;
-                } else if (idx !== -1) {
-                    visibleHeadings.splice(idx, 1);
-                }
-            });
-            if (!visibleHeadings.length) return;
-            visibleHeadings.sort(function (a, b) { return a.top - b.top; });
-            // Prefer the topmost one that's still below the header line.
-            var pick = null;
-            for (var i = 0; i < visibleHeadings.length; i++) {
-                if (visibleHeadings[i].top >= 80) { pick = visibleHeadings[i]; break; }
-            }
-            if (!pick) pick = visibleHeadings[0];
-            setActive(pick.id);
-        }, {
-            rootMargin: '-80px 0px -55% 0px',
-            threshold: 0
-        });
-
-        Array.prototype.forEach.call(headings, function (h) { observer.observe(h); });
-    })();
-    </script>
+    <script src="../js/components.js?v=23f63ec1"></script>
+    <script src="../js/page-toc.js?v=23f63ec1"></script>
 <script>
 (function() {
   if (!('serviceWorker' in navigator)) return;
@@ -642,7 +448,7 @@
           segs.pop(); // components.js
           segs.pop(); // js
           return (segs.length === 0 ? '/' : '/' + segs.join('/') + '/') + 'sw.js';
-        } catch (e) { /* fall through */ }
+        } catch (e) { /* 忽略异常，继续走下一条分支 */ }
       }
     }
     return 'sw.js';

@@ -12,6 +12,13 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    padding-top: 0;
+}
+
+#site-header {
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
 }
 
 a { color: #58a6ff; text-decoration: none; }
@@ -93,7 +100,7 @@ a:hover { text-decoration: underline; }
 .btn-xs { padding: 2px 7px; font-size: 11px; }
 .btn-icon { padding: 5px 8px; font-size: 14px; }
 
-/* ---- Main Layout ---- */
+/* ---- 主体布局 ---- */
 .maker-body {
     flex: 1;
     display: flex;
@@ -587,20 +594,29 @@ a:hover { text-decoration: underline; }
     background-color: #1f6feb22;
 }
 .image-thumb.selected::after {
-    content: '✓';
+    content: "";
     position: absolute;
     top: 4px;
     right: 6px;
     width: 18px;
     height: 18px;
     background-color: #1f6feb;
-    color: #fff;
     border-radius: 50%;
-    font-size: 11px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
+}
+.image-thumb.selected::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    right: 11px;
+    width: 8px;
+    height: 8px;
+    background-color: #fff;
+    z-index: 1;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
 .image-thumb img {
     width: 100%;
@@ -621,12 +637,12 @@ a:hover { text-decoration: underline; }
     text-overflow: ellipsis;
 }
 
-/* ================================================================
+/* ============================================================
    过滤器模式行为
    当 filterMode === 'NONE' 时，缩略图是纯预览（无复选框）。
    当 filterMode 为 WHITELIST / BLACKLIST 时，一个按钮覆盖在
    缩略图右上角，带有模式专属的标签和颜色。
-   ================================================================ */
+   ============================================================ */
 .image-thumb.filter-mode {
     cursor: default;
 }
@@ -1184,12 +1200,11 @@ a:hover { text-decoration: underline; }
     align-items: stretch;
     justify-content: center;
     flex-direction: column;
+    backdrop-filter: blur(8px);
 }
 .pick-path-crumb:hover { text-decoration: underline; }
 .pick-path-tree .tree-item { padding: 6px 10px; }
 .pick-path-tree .tree-item:hover { background-color: #1f6feb22; color: #e6edf3; }
-    backdrop-filter: blur(8px);
-}
 .img-preview-overlay.is-open { display: flex; }
 
 .img-preview-toolbar {
@@ -1333,11 +1348,18 @@ a:hover { text-decoration: underline; }
     justify-content: center;
     flex-direction: column;
 }
+/* 图片按原始像素尺寸布局，实际显示大小完全由 JS 的 transform 缩放决定。
+   若此处再限制 max-width/max-height，CSS 约束与 JS 缩放会叠加，
+   导致图片被缩小两次。
+   flex: none 用于阻止 flex 容器把图片压缩到可用宽度以内，
+   否则图片会被静默缩小而不受缩放状态控制。 */
 .lightbox-image {
-    max-width: min(90vw, calc(100vw - 160px));
-    max-height: min(80vh, calc(100vh - 160px));
+    flex: none;
+    max-width: none;
+    max-height: none;
     width: auto;
     height: auto;
+    transform-origin: center center;
     object-fit: contain;
     border-radius: 8px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
@@ -1475,6 +1497,10 @@ body.lightbox-open { overflow: hidden; }
     transition: border-color 0.15s;
 }
 .form-input:focus { border-color: #388bfd; }
+.form-input.is-invalid { border-color: #f85149; }
+.form-input.is-invalid:focus { border-color: #f85149; }
+.form-error { display: none; font-size: 10px; color: #f85149; margin-top: 3px; line-height: 1.5; }
+.form-error.is-visible { display: block; }
 
 .add-sf-chip {
     display: inline-flex; align-items: center; gap: 4px;
@@ -1956,11 +1982,11 @@ body.lightbox-open { overflow: hidden; }
     overflow-y: auto;
     padding: 12px;
     position: relative;
-    /* Bug 2B：允许内部子元素作为拖拽框选的命中目标 */
+    /* 允许内部子元素作为拖拽框选的命中目标 */
     user-select: none;
 }
 
-/* Bug 2B：拖拽框选矩形 */
+/* 拖拽框选矩形 */
 .selection-rect {
     position: fixed;
     border: 1px solid #58a6ff;
@@ -1970,7 +1996,7 @@ body.lightbox-open { overflow: hidden; }
     border-radius: 2px;
 }
 
-/* Bug 2A：右键上下文菜单 */
+/* 右键上下文菜单 */
 .explorer-ctx-menu {
     position: fixed;
     min-width: 180px;
@@ -2213,7 +2239,14 @@ body.mode-pack-settings .h2-add-btn { display: none; }
 .welcome-screen {
     display: none;
     align-items: center;
-    justify-content: center;
+    /* 不要用 justify-content: center。欢迎页内容高度可能超过可视区
+       （常见于 700px 左右的窗口或英文长文案），center 会把溢出的
+       那一半推到容器上边界之外，而 overflow-y 又把它裁掉——表现为
+       图标消失、标题上半截被页头/警示横幅盖住，且无法滚动回去。
+       改为 flex-start 并由 .welcome-container 的 auto 外边距负责居中：
+       空间充足时上下 auto 外边距均分实现居中，空间不足时归零，
+       内容从顶部开始并正常滚动。 */
+    justify-content: flex-start;
     flex-direction: column;
     padding: 40px 20px;
     overflow-y: auto;
@@ -2228,18 +2261,19 @@ body.mode-pack-settings .h2-add-btn { display: none; }
 .welcome-container {
     max-width: 720px;
     width: 100%;
+    margin: auto 0;
     text-align: center;
 }
 
 .welcome-icon {
-    font-size: 96px;
+    font-size: 56px;
+    line-height: 1;
     margin-bottom: 20px;
-    opacity: 0.9;
-    animation: welcome-bounce 2.5s ease-in-out infinite;
+    opacity: 0.85;
 }
-@keyframes welcome-bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+.welcome-icon .ic {
+    width: 1em;
+    height: 1em;
 }
 
 .welcome-title {
@@ -3011,9 +3045,9 @@ body:not(.mode-models) .models-view { display: none; }
 .explorer-list tr.text-row.selected-row td { background-color: #1f6feb30 !important; }
 .explorer-item.text-item .explorer-item-name { color: #79c0ff; }
 
-/* ================================================================
+/* ============================================================
    移动端 / 响应式
-   ================================================================ */
+   ============================================================ */
 @media (max-width: 1024px) {
     .h2-sidebar { width: 180px; }
     .right-panel { width: 220px; }
@@ -3055,9 +3089,9 @@ body:not(.mode-models) .models-view { display: none; }
     .text-editor-toolbar .te-path { display: none; }
 }
 
-/* ================================================================
+/* ============================================================
    拖放区域（H3 卡片内的拖放图片 / 字体上传）
-   ================================================================ */
+   ============================================================ */
 .drop-zone {
     position: relative;
     margin-top: 10px;
@@ -3106,11 +3140,11 @@ body:not(.mode-models) .models-view { display: none; }
     z-index: 10;
 }
 
-/* ================================================================
+/* ============================================================
    展开图片标签 —— 为 H3 卡片内部使用而重新调整（深色主题）。
    原始的 .expanded-images-tabs 使用略带紫色的调色板，与编辑器的
    其余部分不太协调；下方规则覆盖了边框颜色，让标签与深色编辑器外观融为一体。
-   ================================================================ */
+   ============================================================ */
 .expanded-images-tabs {
     border-bottom-color: #30363d;
 }
@@ -3139,26 +3173,25 @@ body:not(.mode-models) .models-view { display: none; }
 }
 
 /* 当 expanded-images-tabs 用于卡片主体内（不是欢迎页图片预览浮层）时，
-   image preview overlay), reduce its size slightly so it lines up with
-   the other form rows. */
+   略微缩小其尺寸，使其与其它表单行的排版对齐。 */
 .card-form-row-with-btn ~ .expanded-images-tabs,
 .image-browser-wrap > .expanded-images-tabs,
 .h3-card-body > .expanded-images-tabs {
     margin-top: 4px;
 }
 
-/* ================================================================
+/* ============================================================
    字体列表行 —— 用于字体模式区块主体内
-   ================================================================ */
+   ============================================================ */
 .font-row .font-row-action {
     cursor: pointer;
     user-select: none;
 }
 
-/* ================================================================
+/* ============================================================
    图片浏览器包装层微调 —— 拖放区域现在始终可见于包装层内，
    让用户可以拖放/上传而无需打开模态框。
-   ================================================================ */
+   ============================================================ */
 .image-browser-wrap {
     max-height: none;
     padding: 10px;
@@ -3171,6 +3204,6 @@ body:not(.mode-models) .models-view { display: none; }
     margin-top: 8px;
 }
 
-/* ================================================================
+/* ============================================================
    22. 动画与微交互
-   ================================================================ */
+   ============================================================ */

@@ -10,7 +10,6 @@ ehthumbs.db
 # Editor / IDE state
 .vscode/
 .idea/
-.cursor/
 *.swp
 *.swo
 
@@ -31,7 +30,3 @@ build/
 # Misc
 *.tmp
 *.bak
-
-# Local server scripts
-start.bat
-start.ps1

@@ -34,17 +34,17 @@
     });
     if (modelCards.length === 0) {
       area.innerHTML = `<div class="models-empty-state">
-          <div class="models-empty-icon">🎲</div>
-          <div class="models-empty-title">暂未注册任何自定义模型</div>
+          <div class="models-empty-icon"><span class="ic ic-cube"></span></div>
+          <div class="models-empty-title">${PM.fns.t('pm.models.emptyTitle')}</div>
           <div class="models-empty-desc">
-            在 <code>assets/&lt;命名空间&gt;/models/custom_models/</code> 目录下放置 BlockBench 导出的 JSON 模型文件。
+            ${PM.fns.t('pm.models.descLine')}
           </div>
         </div>`;
       return;
     }
     
     area.innerHTML = `<table class="models-list-table">
-        <thead><tr><th style="width: 80px;">缩略图</th><th>名称</th><th>命名空间</th><th>模型路径</th><th style="text-align:right">操作</th></tr></thead>
+        <thead><tr><th style="width: 80px;">${PM.fns.t('pm.models.table.thumb')}</th><th>${PM.fns.t('pm.models.table.name')}</th><th>${PM.fns.t('pm.models.table.ns')}</th><th>${PM.fns.t('pm.models.table.path')}</th><th style="text-align:right">${PM.fns.t('pm.models.table.actions')}</th></tr></thead>
         <tbody>
           ${modelCards.map((m, i) => `<tr>
             <td style="padding: 4px;">
@@ -54,8 +54,8 @@
             <td><span class="ml-ns">${PM.fns.escapeHtml(m.ns)}</span></td>
             <td class="ml-path"><code>${PM.fns.escapeHtml(m.path)}</code></td>
             <td class="ml-actions">
-                <button class="btn btn-secondary btn-xs ml-edit-btn" onclick="editModelInList('${PM.fns.escapeAttr(m.path)}')">✏️ 编辑</button>
-                <button class="btn btn-secondary btn-xs ml-edit-btn danger" style="color:#f85149;border-color:rgba(248,81,73,0.4);" onclick="deleteModelInList('${PM.fns.escapeAttr(m.path)}')">🗑 删除</button>
+                <button class="btn btn-secondary btn-xs ml-edit-btn" onclick="editModelInList('${PM.fns.escapeAttr(m.path)}')"><span class="ic ic-pencil"></span>${PM.fns.t('pm.models.edit')}</button>
+                <button class="btn btn-secondary btn-xs ml-edit-btn danger" style="color:#f85149;border-color:rgba(248,81,73,0.4);" onclick="deleteModelInList('${PM.fns.escapeAttr(m.path)}')"><span class="ic ic-trash"></span>${PM.fns.t('pm.models.delete')}</button>
             </td>
           </tr>`).join('')}
         </tbody>
@@ -73,7 +73,7 @@
             const json = JSON.parse(text);
             renderMinecraftModel(thumbContainer, json, true); // 第二个参数为 true 表示静态不可交互
         } catch (e) {
-            thumbContainer.innerHTML = '<div style="color:#f85149;text-align:center;line-height:64px;font-size:10px;">读取失败</div>';
+            thumbContainer.innerHTML = '<div style="color:#f85149;text-align:center;line-height:64px;font-size:10px;">' + PM.fns.t('pm.models.readFailed') + '</div>';
         }
     });
   }
@@ -85,7 +85,7 @@
           const text = await PM.state.zip.file(path).async('string');
           const json = JSON.parse(text);
           const match = path.match(/^assets\/([^/]+)\/models\/custom_models\/(.+)\.json$/);
-          if (!match) throw new Error("无法解析该路径的模型");
+          if (!match) throw new Error(PM.fns.t('pm.models.cannotParse'));
           
           openNewModelDialog({
               path: path,
@@ -122,11 +122,11 @@
       container.style.background = 'transparent';
 
       if (!json || (!json.elements && json.parent)) {
-          container.innerHTML = '<div style="text-align:center;color:#8b949e;height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;">含 parent 无法预览</div>';
+          container.innerHTML = '<div style="text-align:center;color:#8b949e;height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;">' + PM.fns.t('pm.models.cannotRenderParent') + '</div>';
           return;
       }
       if (!json || !json.elements || json.elements.length === 0) {
-          container.innerHTML = '<div style="text-align:center;color:#8b949e;height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;">无 elements</div>';
+          container.innerHTML = '<div style="text-align:center;color:#8b949e;height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;">' + PM.fns.t('pm.models.noElements') + '</div>';
           return;
       }
 
@@ -310,7 +310,7 @@
           }
       });
 
-      // --- 添加鼠标互动支持（拖拽旋转，滚轮缩放）---
+      // --- 添加鼠标互动支持（拖拽旋转，滚轮缩放） ---
       if (!isStatic) {
           let isDragging = false;
           let lastX, lastY;
@@ -372,7 +372,7 @@
           overlay.innerHTML = `
               <div class="modal" style="width:400px">
                   <div class="modal-header">
-                      <span class="modal-title">👀 3D 模型预览 (拖拽旋转/滚轮缩放)</span>
+                      <span class="modal-title"><span class="ic ic-eye"></span> ${PM.fns.t('nm.previewTitle')}</span>
                       <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">×</button>
                   </div>
                   <div class="modal-body" style="text-align:center; padding: 20px;">
@@ -429,13 +429,13 @@
             <div style="display:flex; flex-direction:row; gap:16px; width:100%; height:100%;">
                 <div style="flex:1; border:1px solid #30363d; border-radius:6px; background:#0d1117; display:flex; flex-direction:column;">
                     <div style="padding:8px; border-bottom:1px solid #30363d; font-size:12px; color:#8b949e; text-align:center; background:#161b22; border-radius:6px 6px 0 0;">
-                        模型预览 (拖拽旋转/滚轮缩放)
+                        ${PM.fns.t('nm.previewTitle')}
                     </div>
                     <div id="nmPreview2" style="flex:1; min-height:260px; cursor:grab; position:relative; overflow:hidden;"></div>
                 </div>
                 <div style="flex:1.2; display:flex; flex-direction:column; overflow:hidden;">
                     <div style="font-size:12px; color:#c9d1d9; margin-bottom:12px; font-weight:500;">
-                        检测到以下贴图，请确认路径并上传文件：
+                        ${PM.fns.t('pm.model.texListHeader')}
                     </div>
                     <div id="nmTexList" style="overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:8px; padding-right:6px;"></div>
                 </div>
@@ -451,7 +451,7 @@
             <div style="display:flex; flex-direction:row; gap:16px; width:100%; height:100%;">
                 <div style="flex:1; border:1px solid #30363d; border-radius:6px; background:#0d1117; display:flex; flex-direction:column;">
                     <div style="padding:8px; border-bottom:1px solid #30363d; font-size:12px; color:#8b949e; text-align:center; background:#161b22; border-radius:6px 6px 0 0;">
-                        模型预览 (拖拽旋转/滚轮缩放)
+                        ${PM.fns.t('nm.previewTitle')}
                     </div>
                     <div id="nmPreview3" style="flex:1; min-height:260px; cursor:grab; position:relative; overflow:hidden;"></div>
                 </div>
@@ -484,7 +484,9 @@
 
     const headerTitle = PM.fns.$('newModelDialog').querySelector('.nm-header-title');
     if (headerTitle) {
-        headerTitle.textContent = isEdit ? '✏️ 编辑模型及贴图 - ' + PM.state.nmState.modelId : '🎲 新建自定义模型';
+        headerTitle.innerHTML = isEdit
+          ? '<span class="ic ic-pencil"></span> ' + PM.fns.t('nm.editTitleFull', { id: PM.fns.escapeHtml(PM.state.nmState.modelId) })
+          : '<span class="ic ic-cube"></span> ' + PM.fns.t('nm.editTitleNew');
     }
 
     updateNmStepsVisibility();
@@ -559,7 +561,7 @@
     const list = PM.fns.$('nmTexList');
     if (!list) return;
     if (PM.state.nmState.textures.length === 0) {
-        list.innerHTML = '<div style="color:#8b949e;font-size:12px;padding:10px;text-align:center;">此模型没有检测到任何贴图引用。</div>';
+        list.innerHTML = '<div style="color:#8b949e;font-size:12px;padding:10px;text-align:center;">' + PM.fns.t('pm.models.noTexRefs') + '</div>';
         return;
     }
     
@@ -577,14 +579,14 @@
             <div style="display:flex;align-items:center;gap:8px;">
                 <span style="font-size:11px;color:#8b949e;background:#21262d;padding:2px 6px;border-radius:4px;white-space:nowrap;font-weight:bold;">#${PM.fns.escapeHtml(tex.key)}</span>
                 <div style="display:flex;align-items:center;gap:4px;flex:1;">
-                    <input type="text" value="${PM.fns.escapeAttr(ns)}" onchange="updateNmTexPath(${i}, 'ns', this.value)" style="width:75px;background:#0d1117;border:1px solid #30363d;color:#79c0ff;font-size:11px;padding:5px;border-radius:4px;outline:none;" placeholder="命名空间">
+                    <input type="text" value="${PM.fns.escapeAttr(ns)}" onchange="updateNmTexPath(${i}, 'ns', this.value)" style="width:75px;background:#0d1117;border:1px solid #30363d;color:#79c0ff;font-size:11px;padding:5px;border-radius:4px;outline:none;" placeholder="${PM.fns.escapeAttr(PM.fns.t('nm.texNsPlaceholder'))}">
                     <span style="color:#484f58;">:</span>
-                    <input type="text" value="${PM.fns.escapeAttr(path)}" onchange="updateNmTexPath(${i}, 'path', this.value)" style="flex:1;background:#0d1117;border:1px solid #30363d;color:#79c0ff;font-size:11px;padding:5px;border-radius:4px;outline:none;" placeholder="路径 (如 block/stone)">
+                    <input type="text" value="${PM.fns.escapeAttr(path)}" onchange="updateNmTexPath(${i}, 'path', this.value)" style="flex:1;background:#0d1117;border:1px solid #30363d;color:#79c0ff;font-size:11px;padding:5px;border-radius:4px;outline:none;" placeholder="${PM.fns.escapeAttr(PM.fns.t('nm.texPathPlaceholder'))}">
                 </div>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;">
-                <span id="nmTexStatus_${i}" style="font-size:11px;color:#8b949e;">检查中...</span>
-                <button class="btn btn-primary btn-xs" onclick="document.getElementById('nmTexFile_${i}').click()">📤 上传文件</button>
+                <span id="nmTexStatus_${i}" style="font-size:11px;color:#8b949e;">${PM.fns.t('pm.models.checking')}</span>
+                <button class="btn btn-primary btn-xs" onclick="document.getElementById('nmTexFile_${i}').click()"><span class="ic ic-upload"></span>${PM.fns.t('pm.model.uploadFile')}</button>
                 <input type="file" id="nmTexFile_${i}" accept="image/png" style="display:none;" onchange="uploadNmTexFile(${i}, this)">
             </div>
         </div>
@@ -694,10 +696,10 @@
     if (!statusEl) return;
     
     if (PM.state.fileMap[zipPath] || PM.state.imageUrlCache.has(zipPath)) {
-        statusEl.textContent = '✅ 已就绪 (内存中)';
+        statusEl.innerHTML = '<span class="ic ic-check-circle"></span> ' + PM.fns.t('nm.statusReady');
         statusEl.style.color = '#3fb950';
     } else {
-        statusEl.textContent = '❌ 未上传/路径缺失';
+        statusEl.innerHTML = '<span class="ic ic-x-circle"></span> ' + PM.fns.t('nm.statusMissing');
         statusEl.style.color = '#f85149';
     }
   }
@@ -727,13 +729,15 @@
 
     const nextBtn = PM.fns.$('nmNextBtn');
     if (nextBtn) {
-        nextBtn.textContent = PM.state.nmState.step === 3 ? '保存并完成 ✓' : '下一步 →';
+        nextBtn.innerHTML = PM.state.nmState.step === 3
+          ? PM.fns.t('nm.save') + ' <span class="ic ic-check"></span>'
+          : PM.fns.t('nm.next') + ' <span class="ic ic-arrow-right"></span>';
         nextBtn.disabled = PM.state.nmState.step === 1; // 只有新建向导第1步必须强制等待 JSON
     }
     
-    if (PM.state.nmState.step === 2) PM.fns.$('nmHint').textContent = '请确认左侧预览，并上传所有缺失的贴图';
-    else if (PM.state.nmState.step === 3) PM.fns.$('nmHint').textContent = '请确认模型标识符、命名空间等最终注册信息';
-    else PM.fns.$('nmHint').textContent = '请先上传模型 JSON 文件';
+    if (PM.state.nmState.step === 2) PM.fns.$('nmHint').textContent = PM.fns.t('nm.hint.step2');
+    else if (PM.state.nmState.step === 3) PM.fns.$('nmHint').textContent = PM.fns.t('nm.hint.step3');
+    else PM.fns.$('nmHint').textContent = PM.fns.t('nm.hint.step1');
     
     for (let i = 1; i <= 3; i++) {
         const el = PM.fns.$('nmStep' + i);

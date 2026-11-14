@@ -70,9 +70,22 @@
 
   PM.fns.getFileType = getFileType;
 
+  /**
+   * 返回某个资源类型的图标类名（配合 css/icons.css 使用）。
+   * @param {string} type 资源类型：folder / uidf / fontreg / json / image / font / plain
+   * @returns {string} 图标类名，例如 "ic-folder"
+   */
   function getTypeIcon(type) {
-    const map = { folder:'📁', uidf:'🗂', fontreg:'📑', json:'📄', image:'🖼', font:'🔤', plain:'📄' };
-    return map[type] || '📄';
+    const map = {
+      folder: 'ic-folder',
+      uidf: 'ic-layers',
+      fontreg: 'ic-book',
+      json: 'ic-file-code',
+      image: 'ic-image',
+      font: 'ic-type',
+      plain: 'ic-file'
+    };
+    return map[type] || 'ic-file';
   }
 
   PM.fns.getTypeIcon = getTypeIcon;

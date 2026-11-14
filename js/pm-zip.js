@@ -20,6 +20,13 @@
     const rightPanel = PM.fns.$('rightPanel');
     if (rightPanel) rightPanel.style.display = 'none';
 
+    // 灯箱控件的文案写在 HTML 里，这里按当前语言重写一次。
+    if (PM.fns.localizeLightboxChrome) PM.fns.localizeLightboxChrome();
+    // 语言切换时同步更新，避免残留旧语言。
+    document.addEventListener('langChange', () => {
+      if (PM.fns.localizeLightboxChrome) PM.fns.localizeLightboxChrome();
+    });
+
     // 屏蔽整个窗口上浏览器默认的拖放行为。
     // 否则用户把文件拖到任何非交互区域时，
     // 浏览器都会提示"打开"该文件；
@@ -84,7 +91,7 @@
       PM.state.zip = loaded;
       PM.state.fileMap = {};
       PM.state.zip.forEach((path, entry) => { PM.state.fileMap[path] = entry; });
-      PM.state.packMeta = { pack_format: 34, description: '豹猫指示牌模组的自定义资源包' };
+      PM.state.packMeta = { pack_format: 34, description: PM.fns.t('pm.pack.defaultDescription') };
       PM.state.packFileName = '';
       PM.fns.snapshotPreExistingUiDefinitions();
       // 字符串/对象/数组 description）
@@ -125,7 +132,7 @@
     PM.fns.revokeAndClearAllCache();
     PM.state.zip = new JSZip();
     PM.state.fileMap = {};
-    PM.state.packMeta = { pack_format: 34, description: '豹猫指示牌模组的自定义资源包' };
+    PM.state.packMeta = { pack_format: 34, description: PM.fns.t('pm.pack.defaultDescription') };
     PM.state.packFileName = '';
     PM.state.packImageBlob = null;
     PM.fns.snapshotPreExistingUiDefinitions();
@@ -352,7 +359,10 @@
         if (!data || !Array.isArray(data)) continue;
         const nsMatch = p.match(/^assets\/([^/]+)\/fonts\//);
         const ns = nsMatch ? nsMatch[1] : 'ocelotsignmod';
-        const catName = data.category_name || (ns === 'ocelotsignmod' ? '自定义字体' : (ns + ' 字体'));
+        const catName = data.category_name
+        || (ns === 'ocelotsignmod'
+          ? PM.fns.t('pm.pack.defaultCategoryName')
+          : (ns + ' ' + PM.fns.t('pm.pack.categorySuffix')));
         const catId = PM.fns.slugify('cf_' + ns);
         const cat = upsertCategory(
           PM.state.fontsCategories,
@@ -495,7 +505,6 @@
     try {
       // 跟踪本次保存中接触到的所有 ui_definitions 路径，
       // 这样冲突检测同时针对原包内容与本次写入过程中产生的文件。
-      // 这样冲突检测同时针对原包内容与本次写入过程中产生的文件。
       const claimedPaths = new Set(PM.state.preExistingUiDefinitionsPaths);
 
       // 挑选一个未被占用的 ui_definitions 路径。如果 targetPath 已经被占用，
@@ -514,7 +523,7 @@
           const candidate = `${dir}${stem}_${i}${ext}`;
           if (!claimedPaths.has(candidate)) return candidate;
         }
-        throw new Error('找不到可用的 ui_definitions 文件名：' + targetPath);
+        throw new Error(PM.fns.t('pm.pack.uiDefsNotFound', { path: targetPath }));
       }
 
       // 根据内部分类构造 ui_definitions 格式的 JSON 文档。
@@ -550,9 +559,8 @@
         };
       }
 
-      // ── 1) Save PM.state.patternsCategories as ui_definitions JSON files ──
+      // ── 1) 将 PM.state.patternsCategories 导出为 ui_definitions JSON 文件 ──
       // _sourceKind === 'ui_definitions' 的分类是用户直接管理的，保存时写回原路径，使编辑可往返。
-      // 保存时写回原路径，使编辑可往返。
       // 其他分类（旧 custom_patterns.json 转换的，或用户在编辑器中新增的）
       // 分配到一个新的 ui_definitions 路径，
       // 与已有文件冲突时追加 _1 / _2 / _3 后缀。
@@ -581,7 +589,7 @@
         cat._sourcePath = filePath;
       }
 
-      // ── 2) Save PM.state.fontsCategories as ui_definitions JSON files (tab=fonts) ──
+      // ── 2) 将 PM.state.fontsCategories 导出为 ui_definitions JSON 文件（tab=fonts） ──
       // 与 patterns 同样的路由规则：ui_definitions 来源的分类
       // 写回原路径；旧 custom_fonts.json 转换或新增的分类
       // 分配到一个新的路径并带后缀。
@@ -609,7 +617,7 @@
         cat._sourcePath = filePath;
       }
 
-      // ── 3) Delete legacy ocelotsignmod/patterns/ and ocelotsignmod/fonts/ folders ──
+      // ── 3) 删除遗留的 ocelotsignmod/patterns/ 与 ocelotsignmod/fonts/ 目录 ──
       // JSON 配置文件（custom_patterns.json / custom_fonts.json）
       // 已经在上面转成了 ui_definitions 文件，但
       // 旧文件夹本身——以及里面残留的素材——
@@ -629,7 +637,7 @@
         try {
           PM.state.zip.remove(p);
           delete PM.state.fileMap[p];
-        } catch (_) { /* ignore individual removal errors */ }
+        } catch (_) { /* 忽略单个文件的删除失败 */ }
       }
 
       // 刷新右侧面板的文件浏览器，让用户立刻看到 patterns / fonts

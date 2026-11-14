@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" href="../../favicon.svg?v=23f63ec1" type="image/svg+xml">
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Font & Texture Resource Pack | Ocelot Sign Mod</title>
-    <link rel="stylesheet" href="../../css/common.css?v=20261004">
-    <link rel="stylesheet" href="../../css/layout.css?v=20261004">
-    <link rel="stylesheet" href="../../css/content.css?v=20261004">
+    <title>Custom Font &amp; Texture Resource Pack | Ocelot Sign Mod</title>
+    <link rel="stylesheet" href="../../css/common.css?v=23f63ec1">
+    <link rel="stylesheet" href="../../css/icons.css?v=23f63ec1">
+    <link rel="stylesheet" href="../../css/layout.css?v=23f63ec1">
+    <link rel="stylesheet" href="../../css/content.css?v=23f63ec1">
 </head>
 <body>
     <div id="site-header"></div>
@@ -24,7 +26,7 @@
 </blockquote>
 
 <div class="info-box">
-  <p>💡 <strong>Tip</strong>: You can register textures and fonts by writing the JSON manually using the methods described in the sections below. If hand-writing feels too tedious, you can also use the Resource Pack Maker to generate a complete resource pack in one click — <a href="../tool-packmaker.html">Open the Resource Pack Maker →</a></p>
+  <p><span class="ic ic-bulb" aria-hidden="true"></span><strong>Tip</strong>: You can register textures and fonts by writing the JSON manually using the methods described in the sections below. If hand-writing feels too tedious, you can also use the Resource Pack Maker to generate a complete resource pack in one click — just click the button at the top of the page to get there.</p>
 </div>
 
 <hr>
@@ -42,12 +44,12 @@
 <pre><code>{
   "pack": {
     "pack_format": 34,
-    "description": "Custom Font & Texture Resource Pack for Signs"
+    "description": "Custom Font &amp; Texture Resource Pack for Signs"
   }
 }</code></pre>
 
 <blockquote>
-<p>📌 Note: <code>pack_format</code> indicates the compatible Minecraft game version. Common values: <code>15</code> for 1.20~1.20.1, <code>18</code> for 1.20.2, <code>22</code> for 1.19.4, <code>26</code> for 1.20.4, <code>34</code> for 1.21, <code>45</code> for 1.21.2, <code>61</code> for 1.21.4, etc. Modify this value according to your installed game version.</p>
+<p><span class="ic ic-map-pin" aria-hidden="true"></span>Note: <code>pack_format</code> indicates the compatible Minecraft game version. Common values: <code>15</code> for 1.20~1.20.1, <code>18</code> for 1.20.2, <code>22</code> for 1.19.4, <code>26</code> for 1.20.4, <code>34</code> for 1.21, <code>45</code> for 1.21.2, <code>61</code> for 1.21.4, etc. Modify this value according to your installed game version.</p>
 </blockquote>
 
 <h3>3. Set Up the Assets Folder and Namespace</h3>
@@ -103,7 +105,7 @@
 <tr><td><code>"file": "my_pack:custom_font.ttf"</code></td><td>Defines the file path for the font, referencing your custom namespace folder <code>my_pack</code>.</td></tr>
 <tr><td><code>"size": 12.0</code></td><td>Base render size of the font in-game.</td></tr>
 <tr><td><code>"oversample": 8.0</code></td><td>Supersampling multiplier that improves font clarity and edge smoothness when zoomed in or rendered at high resolutions; higher values consume more video memory.</td></tr>
-<tr><td><code>legacy_unicode</code></td><td>If your custom TTF font lacks rare characters or special symbols, this segment fills missing glyphs with vanilla Minecraft characters to prevent garbled text or missing-block placeholders.</td></tr>
+<tr><td><code>legacy_unicode</code></td><td>If your custom <code>.ttf</code> font lacks rare characters or special symbols, this segment fills missing glyphs with vanilla Minecraft characters to prevent garbled text or missing-block placeholders.</td></tr>
 </tbody>
 </table>
 
@@ -116,7 +118,7 @@
 <pre><code>-json {text:"Sample Text Display", color:gold, font:"my_pack:title_style"}</code></pre>
 
 <blockquote>
-<p>⚠️ Important Note: The font value follows the format <code>namespace:json_filename</code>, do <strong>NOT</strong> append the <code>.json</code> file extension!</p>
+<p><span class="ic ic-alert" aria-hidden="true"></span>Important Note: The font value follows the format <code>namespace:json_filename</code>, do <strong>NOT</strong> append the <code>.json</code> file extension!</p>
 </blockquote>
 
 <hr>
@@ -140,7 +142,7 @@
 <p>The image will render directly on the sign. You may adjust its X/Y offset, scaling factor and other parameters via the in-game UI buttons, just like editing regular text.</p>
 
 <blockquote>
-<p>⚠️ Caution: External web links are unsupported; only local file paths within the resource pack work.</p>
+<p><span class="ic ic-alert" aria-hidden="true"></span>Caution: External web links are unsupported; only local file paths within the resource pack work.</p>
 </blockquote>
 
 <hr>
@@ -150,13 +152,13 @@
 <p>The Ocelot Sign Mod supports registering custom textures and fonts to its native UI panel via JSON configuration files, enabling one-click insertion for players.</p>
 
 <blockquote>
-<p>⚠️ <strong>Critical Reminder</strong>: The registration JSON files <strong>must be placed under the <code>ocelotsignmod</code> namespace</strong> to append entries to the mod's built-in list. Your actual texture and font assets can remain stored under your personal namespace (e.g., <code>my_pack</code>).</p>
+<p><span class="ic ic-alert" aria-hidden="true"></span><strong>Critical Reminder</strong>: The registration JSON files <strong>must be placed under the <code>ocelotsignmod</code> namespace</strong> to append entries to the mod's built-in list. Your actual texture and font assets can remain stored under your personal namespace (e.g., <code>my_pack</code>).</p>
 </blockquote>
 
 <h3>1. Register Custom Textures</h3>
 
 <div class="warning-box">
-  <p>⚠️ <strong>Warning</strong>: This feature currently has a critical bug. The methods described in sections IV.1 and IV.2 are not recommended. Please scroll down to section IV.3 — Advanced Custom UI Definition — which is more stable. The IV.1 and IV.2 registration methods may be removed in the future, but the IV.3 Advanced Custom UI Definition method will remain supported, so using the method in IV.3 is strongly advised. If you have already registered assets using the IV.1 or IV.2 methods, you can import your resource pack into the Resource Pack Maker — it will automatically convert these legacy formats into the IV.3 registration.</p>
+  <p><span class="ic ic-alert" aria-hidden="true"></span><strong>Warning</strong>: This feature currently has a critical bug. The methods described in sections IV.1 and IV.2 are not recommended. Please scroll down to section IV.3 — Advanced Custom UI Definition — which is more stable. The IV.1 and IV.2 registration methods may be removed in the future, but the IV.3 Advanced Custom UI Definition method will remain supported, so using the method in IV.3 is strongly advised. If you have already registered assets using the IV.1 or IV.2 methods, you can import your resource pack into the Resource Pack Maker — it will automatically convert these legacy formats into the IV.3 registration.</p>
 </div>
 
 <p>Create the file <code>custom_patterns.json</code> under the path <code>assets/ocelotsignmod/patterns/</code>:</p>
@@ -204,7 +206,7 @@
 <h3>2. Register Custom Fonts</h3>
 
 <div class="warning-box">
-  <p>⚠️ <strong>Warning</strong>: This feature currently has a critical bug. The methods described in sections IV.1 and IV.2 are not recommended. Please scroll down to section IV.3 — Advanced Custom UI Definition — which is more stable. The IV.1 and IV.2 registration methods may be removed in the future, but the IV.3 Advanced Custom UI Definition method will remain supported, so using the method in IV.3 is strongly advised. If you have already registered assets using the IV.1 or IV.2 methods, you can import your resource pack into the Resource Pack Maker — it will automatically convert these legacy formats into the IV.3 registration.</p>
+  <p><span class="ic ic-alert" aria-hidden="true"></span><strong>Warning</strong>: This feature currently has a critical bug. The methods described in sections IV.1 and IV.2 are not recommended. Please scroll down to section IV.3 — Advanced Custom UI Definition — which is more stable. The IV.1 and IV.2 registration methods may be removed in the future, but the IV.3 Advanced Custom UI Definition method will remain supported, so using the method in IV.3 is strongly advised. If you have already registered assets using the IV.1 or IV.2 methods, you can import your resource pack into the Resource Pack Maker — it will automatically convert these legacy formats into the IV.3 registration.</p>
 </div>
 
 <p>Create the file <code>custom_fonts.json</code> under <code>assets/ocelotsignmod/fonts/</code>:</p>
@@ -229,7 +231,7 @@
 <tr><td><code>"tab"</code></td><td>Set to <code>"fonts"</code> to indicate this is a font list.</td></tr>
 <tr><td><code>"isFontMode"</code></td><td>Must be set to <code>true</code> to render the font list (not image grid).</td></tr>
 <tr><td><code>"fontList"</code></td><td>Array of fonts. Each entry corresponds to one row in the UI.</td></tr>
-<tr><td><code>"fontId"</code></td><td>Font ID following the format <strong>namespace:json_filename</strong> (do <em>not</em> append the <code>.json</code> extension).</td></tr>
+<tr><td><code>"fontId"</code></td><td>Font ID following the format <strong>namespace:json_filename</strong> (do not append the <code>.json</code> extension).</td></tr>
 <tr><td><code>"displayName"</code></td><td>Friendly visible name shown in the mod's UI font list.</td></tr>
 </tbody>
 </table>
@@ -237,7 +239,7 @@
 <h3>3. Advanced Custom UI Definition (Advanced Feature)</h3>
 
 <div class="access-box">
-  <p>✅ <strong>Recommended</strong>: This method is currently the most stable and feature-complete way to register resources. It is strongly recommended to use this method for resource registration.</p>
+  <p><span class="ic ic-check-circle" aria-hidden="true"></span><strong>Recommended</strong>: This method is currently the most stable and feature-complete way to register resources. It is strongly recommended to use this method for resource registration.</p>
 </div>
 
 <p>Beyond using the default "Custom Resource Pack" category, you can write JSON files to create an independent dedicated menu tab on the left sidebar of the in-game UI. Multi-level folder structures and texture whitelist filtering are fully supported.</p>
@@ -360,7 +362,9 @@
 
 <h3>2. Create Optional Model Definition File (Recommended)</h3>
 
-<p>Without a definition file, the model will use its raw filename as the display name in the selection menu. To assign a custom friendly name, create a matching JSON definition file at <code>assets/&lt;your_namespace&gt;/model_definitions/my_sign.json</code>:</p>
+<p>Without a definition file, the model will use its raw filename as the display name in the selection menu (e.g. <code>my_sign</code>). To assign a custom friendly name, create a <strong>matching</strong> JSON definition file at <code>assets/&lt;your_namespace&gt;/model_definitions/my_sign.json</code>:</p>
+
+<h4>Definition File Format (<code>model_definitions/my_sign.json</code>)</h4>
 
 <pre><code>{
   "model_id": "my_sign",
@@ -423,13 +427,13 @@
     </main>
     </div>
 
-    <!-- Right-side page TOC: auto-built from H1-H4 in the article body. -->
+    <!-- 右侧页面目录：由正文中的 H1-H4 自动生成 -->
     <aside class="page-toc" id="pageToc" aria-label="On this page">
         <div class="page-toc-title">On this page</div>
         <nav class="page-toc-nav" id="pageTocNav"></nav>
     </aside>
 
-    <!-- Back to Top Button -->
+    <!-- 回到顶部按钮 -->
     <div class="back-to-top" id="backToTop" title="Back to Top">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
@@ -437,131 +441,14 @@
         <span class="back-to-top-label">Top</span>
     </div>
 
-    <script src="../../js/components.js?v=20261004"></script>
-    <script>
-    (function () {
-        var nav = document.getElementById('pageTocNav');
-        var content = document.querySelector('.content-inner') || document.querySelector('.content');
-        if (!nav || !content) return;
-
-        var headings = content.querySelectorAll('h1, h2, h3');
-        if (!headings.length) return;
-
-        // Assign stable ids to headings that don't have one yet.
-        var slugify = function (s) {
-            return s.toLowerCase()
-                .replace(/[^\p{L}\p{N}\s-]/gu, '')
-                .trim()
-                .replace(/\s+/g, '-')
-                .slice(0, 60) || 'section';
-        };
-        var usedIds = {};
-        Array.prototype.forEach.call(headings, function (h) {
-            if (!h.id) {
-                var base = slugify(h.textContent);
-                var id = base;
-                var i = 2;
-                while (usedIds[id] || document.getElementById(id)) {
-                    id = base + '-' + i++;
-                }
-                h.id = id;
-            }
-            usedIds[h.id] = true;
-        });
-
-        // Build the nested list. The stack's bottom frame is always the
-        // root <ul>; every push appends a fresh child <ul> to the new
-        // <li> so deeper headings nest inside it.
-        var root = document.createElement('ul');
-        var stack = [{ level: 0, list: root }];
-
-        Array.prototype.forEach.call(headings, function (h) {
-            var level = parseInt(h.tagName.charAt(1), 10);
-            // Pop frames whose level is >= the current heading's level so
-            // we return to the right ancestor. Stack bottom (level 0) is
-            // never popped because 0 < any heading level.
-            while (stack[stack.length - 1].level >= level) {
-                stack.pop();
-            }
-            var parentList = stack[stack.length - 1].list;
-            var li = document.createElement('li');
-            li.className = 'toc-h' + level;
-            var a = document.createElement('a');
-            a.href = '#' + h.id;
-            a.textContent = h.textContent;
-            a.dataset.targetId = h.id;
-            li.appendChild(a);
-            parentList.appendChild(li);
-            // Each li gets its own child list for nested headings.
-            var childList = document.createElement('ul');
-            li.appendChild(childList);
-            stack.push({ level: level, list: childList });
-        });
-
-        nav.appendChild(root);
-
-        var links = nav.querySelectorAll('a');
-        var linkByHeading = {};
-        Array.prototype.forEach.call(headings, function (h) {
-            var link = nav.querySelector('a[data-target-id="' + h.id + '"]');
-            if (link) linkByHeading[h.id] = { link: link, heading: h };
-        });
-
-        var setActive = function (id) {
-            Array.prototype.forEach.call(links, function (a) { a.classList.remove('is-active'); });
-            if (id && linkByHeading[id]) linkByHeading[id].link.classList.add('is-active');
-        };
-
-        // Click handler — smooth-scroll, then update URL without jumping.
-        Array.prototype.forEach.call(links, function (a) {
-            a.addEventListener('click', function (e) {
-                var target = document.getElementById(a.dataset.targetId);
-                if (!target) return;
-                e.preventDefault();
-                var headerOffset = 80;
-                var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
-                window.scrollTo({ top: top, behavior: 'smooth' });
-                setActive(a.dataset.targetId);
-                history.replaceState(null, '', '#' + a.dataset.targetId);
-            });
-        });
-
-        // Highlight the heading nearest the top of the viewport.
-        var visibleHeadings = [];
-        var observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                var id = entry.target.id;
-                var idx = visibleHeadings.findIndex(function (v) { return v.id === id; });
-                if (entry.isIntersecting) {
-                    if (idx === -1) visibleHeadings.push({ id: id, top: entry.boundingClientRect.top });
-                    else visibleHeadings[idx].top = entry.boundingClientRect.top;
-                } else if (idx !== -1) {
-                    visibleHeadings.splice(idx, 1);
-                }
-            });
-            if (!visibleHeadings.length) return;
-            visibleHeadings.sort(function (a, b) { return a.top - b.top; });
-            // Prefer the topmost one that's still below the header line.
-            var pick = null;
-            for (var i = 0; i < visibleHeadings.length; i++) {
-                if (visibleHeadings[i].top >= 80) { pick = visibleHeadings[i]; break; }
-            }
-            if (!pick) pick = visibleHeadings[0];
-            setActive(pick.id);
-        }, {
-            rootMargin: '-80px 0px -55% 0px',
-            threshold: 0
-        });
-
-        Array.prototype.forEach.call(headings, function (h) { observer.observe(h); });
-    })();
-    </script>
+    <script src="../../js/components.js?v=23f63ec1"></script>
+    <script src="../../js/page-toc.js?v=23f63ec1"></script>
 <script>
 (function() {
   if (!('serviceWorker' in navigator)) return;
 
   function detectSwPath() {
-    // 通过 components.js 的 src 推算站点根
+    // 通过 components.js 的脚本地址推导站点根路径。
     var scripts = document.getElementsByTagName('script');
     for (var i = 0; i < scripts.length; i++) {
       var src = scripts[i].src || '';
@@ -572,7 +459,7 @@
           segs.pop(); // components.js
           segs.pop(); // js
           return (segs.length === 0 ? '/' : '/' + segs.join('/') + '/') + 'sw.js';
-        } catch (e) { /* fall through */ }
+        } catch (e) { /* 忽略异常，继续走下一条分支 */ }
       }
     }
     return 'sw.js';
@@ -580,9 +467,9 @@
 
   function register() {
     navigator.serviceWorker.register(detectSwPath()).then(function(reg) {
-      // 定时检查更新（30 分钟），用户长时间停留时也能拉到新版
+      // 每 30 分钟轮询一次更新，使长时间停留的标签页也能获取新版本。
       setInterval(function() { reg.update().catch(function() {}); }, 30 * 60 * 1000);
-      // 切回标签页时也检查一次
+      // 标签页重新可见时再检查一次。
       document.addEventListener('visibilitychange', function() {
         if (!document.hidden) reg.update().catch(function() {});
       });

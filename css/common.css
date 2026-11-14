@@ -10,7 +10,21 @@ body {
     font-family: "Microsoft YaHei", "PingFang SC", -apple-system, BlinkMacSystemFont, sans-serif;
     color: #333;
     line-height: 1.6;
-    padding-top: 62px;
+    /* ============================================================
+       为固定页头预留空间。
+
+       共享页头（#site-header）是 position: fixed，会浮在内容之上，
+       因此 body 必须让出它的高度，否则顶部内容会被页头盖住。
+
+       这里读取 js/components.js 测得的真实高度（--site-header-height），
+       而非硬编码的固定值：页头高度随视口宽度变化 —— 导航链接在窄屏
+       会换行，页头随之变高（实测 1600px → 63px，1100px → 83px，
+       900px → 107px），固定值会低估并让页头压住下方内容。
+
+       变量在 resize 时重新测量，窄屏换行也能跟随。
+       62px 兜底值匹配桌面端页头的常规高度。
+       ============================================================ */
+    padding-top: var(--site-header-height, 62px);
 }
 
 /* ========== 页头 / 导航（共享 site-header） ========== */
@@ -306,13 +320,15 @@ body {
     transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* ========== 浮动操作按钮（成对设计） ==========
+/* ============================================================
+   浮动操作按钮（成对设计）
    .menu-toggle（指南页左下）与 .back-to-top（所有页面右下）共用同一套样式。
    两者都是正圆，尺寸、阴影、悬停效果、层级一致 —— 让视口两角的按钮读作一对
    协调的设计，而不是恰好出现在同一块屏幕上的两个无关按钮。
 
    下方每个按钮的覆盖样式只处理真正不同的部分：位置（左 / 右）、
-   生命周期（始终可见 / 滚动触发）以及图标。 */
+   生命周期（始终可见 / 滚动触发）以及图标。 
+   ============================================================ */
 .menu-toggle,
 .back-to-top {
     position: fixed;
@@ -438,7 +454,10 @@ body {
 /* 手机 */
 @media (max-width: 768px) {
     body {
-        padding-top: 56px;
+        /* 移动端页头更紧凑，但英文页的徽章会换行，实际高度可能明显超过
+           56px。这里同样跟随实测值（--site-header-height），
+           56px 仅作为变量尚未就绪时的兜底。 */
+        padding-top: var(--site-header-height, 56px);
     }
 
     .site-header,
@@ -553,7 +572,7 @@ body {
    以及严格的 `prefers-reduced-motion` 关闭选项。
    ============================================================ */
 
-/* --- 关键帧 --- */
+/* ========== 关键帧 ========== */
 @keyframes anim-fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -644,7 +663,7 @@ body {
   50.01%, 100% { opacity: 0; }
 }
 
-/* --- 入场工具类 --- */
+/* ========== 入场工具类 ========== */
 .anim-fade-in       { animation: anim-fade-in   0.6s ease both; }
 .anim-fade-up       { animation: anim-fade-up   0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 .anim-fade-down     { animation: anim-fade-down 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
@@ -668,9 +687,11 @@ body {
 .tap-feedback        { transition: transform 0.12s ease, box-shadow 0.2s ease; }
 .tap-feedback:active { transform: scale(0.97); }
 
-/* --- 减弱动效：全局尊重该设置 ---
+/* ============================================================
+   减弱动效：全局尊重该设置
    装饰性动画被关闭；功能性状态变化（可见性 / 颜色）仍然生效，
-   只是瞬间切换。 */
+   只是瞬间切换。 
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

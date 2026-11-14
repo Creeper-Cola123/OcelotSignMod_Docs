@@ -1,28 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" href="../../../favicon.svg?v=23f63ec1" type="image/svg+xml">
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Resource Pack Submission Guide | Ocelot Sign Mod</title>
-    <link rel="stylesheet" href="../../../css/common.css?v=20261004">
-    <link rel="stylesheet" href="../../../css/plaza.css?v=20261004">
+    <link rel="stylesheet" href="../../../css/common.css?v=23f63ec1">
+    <link rel="stylesheet" href="../../../css/icons.css?v=23f63ec1">
+    <link rel="stylesheet" href="../../../css/plaza.css?v=23f63ec1">
     <style>
-    /* ================================================================
-       plaza-submit.html — dedicated guide styles (plaza aesthetic)
-
-       All colors / gradients / accents mirror guide/plaza/creative-plaza.html
-       (defined in css/plaza.css) so the two pages read as one continuous
-       surface: navy gradient hero with dot grid, warm cream card surface,
-       yellow/blue brand accents.
-       ================================================================ */
+    /*
+        plaza-submit.html —— 投稿指南专用样式
+    */
 
     body.plaza-page {
         background-color: #f5f0e6;
         background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4c9a8' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
 
-    /* ---- Plaza hero strip — same layered gradient + glows + dot grid
-           as the creative-plaza hero (defined in .plaza-hero, plaza.css) ---- */
+    /*
+        ---- 广场首屏条带 —— 与创意广场首屏相同的分层渐变 + 光晕 + 点阵网格
+        （定义见 .plaza-hero，plaza.css） ----
+    */
     .plaza-hero-submit {
         position: relative;
         overflow: hidden;
@@ -36,7 +35,7 @@
         isolation: isolate;
     }
     .plaza-hero-submit::before {
-        /* Same fine dot grid as .plaza-hero for premium texture */
+        /* 与 .plaza-hero 相同的细腻点阵网格，营造高级质感 */
         content: "";
         position: absolute;
         inset: 0;
@@ -66,14 +65,14 @@
         line-height: 1.85;
     }
 
-    /* ---- Plaza body ---- */
+    /* ---- 广场主体 ---- */
     .plaza-body {
         padding: 48px 60px 72px;
         max-width: 1100px;
         margin: 0 auto;
     }
 
-    /* ---- Section card — matches plaza's warm card surface ---- */
+    /* ---- 分区卡片 —— 与广场的暖色卡片表面保持一致 ---- */
     .plaza-section-card {
         position: relative;
         background: linear-gradient(135deg, #fafaf5 0%, #fff 100%);
@@ -82,6 +81,7 @@
         padding: 28px 32px;
         margin-bottom: 24px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        counter-reset: plaza-subsection;
     }
     .plaza-section-card h2 {
         font-size: 20px;
@@ -96,8 +96,10 @@
         gap: 10px;
     }
     .plaza-section-card h2::before {
-        /* Vertical yellow gradient accent bar — same as
-           .resource-detail-section-title::before in plaza.css */
+        /*
+            竖向黄色渐变装饰条 —— 与 plaza.css 中的
+            .resource-detail-section-title::before 相同
+        */
         content: "";
         width: 4px;
         height: 18px;
@@ -110,8 +112,21 @@
         color: #1a1a2e;
         margin: 20px 0 10px;
         font-weight: 700;
+        position: relative;
+        padding-left: 22px;
+        counter-increment: plaza-subsection;
     }
     .plaza-section-card h3:first-child { margin-top: 0; }
+    /* ---- 小节标题纯文本序号（无底色徽章，与标题同字号） ---- */
+    .plaza-section-card h3::before {
+        content: counter(plaza-subsection) ".";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #1a1a2e;
+        font-size: 15px;
+        font-weight: 700;
+    }
     .plaza-section-card p {
         font-size: 14px;
         color: #444;
@@ -120,14 +135,14 @@
     }
     .plaza-section-card p:last-child { margin-bottom: 0; }
 
-    /* ---- Prohibited-content variant: red tinted background + red title ---- */
+    /* ---- 禁止内容变体：红色背景 + 红色标题 ---- */
     .plaza-section-card.plaza-section-prohibited {
         background: linear-gradient(135deg, #fff8f8 0%, #fff 100%);
         border-color: rgba(192, 57, 43, 0.18);
     }
     .plaza-section-card.plaza-section-prohibited h2 { color: #c0392b; }
 
-    /* ---- Email highlight card — same warm gradient as .plaza-coming-soon ---- */
+    /* ---- 邮箱高亮卡片 —— 与 .plaza-coming-soon 相同的暖色渐变 ---- */
     .plaza-email-card {
         display: flex;
         align-items: center;
@@ -141,7 +156,8 @@
         flex-wrap: wrap;
         box-shadow: 0 4px 16px rgba(240, 165, 0, 0.07);
     }
-    .plaza-email-card .plaza-email-icon { font-size: 28px; flex-shrink: 0; }
+    .plaza-email-card .plaza-email-icon { font-size: 28px; flex-shrink: 0; color: #f0a500; }
+    .plaza-email-card .plaza-email-icon .ic { width: 28px; height: 28px; }
     .plaza-email-card .plaza-email-text { flex: 1; min-width: 200px; }
     .plaza-email-card .plaza-email-text strong {
         display: block;
@@ -162,8 +178,10 @@
         box-shadow: 0 2px 6px rgba(74, 144, 217, 0.25);
     }
 
-    /* Hero-context email card — overlaid on the navy hero, so use
-       translucent white to stay readable on the dark gradient. */
+    /*
+        位于首屏语境中的邮箱卡片——叠加在深蓝色首屏之上，
+        因此使用半透明白色以保证在深色渐变上的可读性。
+    */
     .plaza-hero-submit .plaza-email-card {
         background: rgba(255, 255, 255, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.15);
@@ -180,7 +198,7 @@
         box-shadow: none;
     }
 
-    /* ---- Info list (inside cards) ---- */
+    /* ---- 信息列表（位于卡片内部） ---- */
     .plaza-info-list {
         list-style: none;
         padding: 0;
@@ -205,9 +223,10 @@
         font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     }
 
-    /* ---- Prohibited list (red, kept for warning semantic) ---- */
+    /* ---- 禁止内容列表（红色纯文本序号，保留警示语义） ---- */
     .plaza-prohibited-list {
         list-style: none;
+        counter-reset: plaza-prohibited;
         padding: 0;
         margin: 0;
         display: flex;
@@ -215,27 +234,25 @@
         gap: 10px;
     }
     .plaza-prohibited-list li {
+        position: relative;
+        counter-increment: plaza-prohibited;
+        padding-left: 22px;
         font-size: 14px;
         line-height: 1.7;
         color: #333;
     }
-    .plaza-prohibited-list li strong { color: #c0392b; }
-
-    /* ---- Normative examples — blue accent matches plaza brand ---- */
-    .plaza-norm-example {
-        background: rgba(74, 144, 217, 0.06);
-        border: 1px solid rgba(74, 144, 217, 0.2);
-        border-radius: 10px;
-        padding: 14px 18px;
-        margin: 10px 0;
+    .plaza-prohibited-list li::before {
+        content: counter(plaza-prohibited) ".";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #c0392b;
         font-size: 14px;
-        line-height: 1.85;
-        box-shadow: 0 2px 8px rgba(74, 144, 217, 0.05);
+        font-weight: 700;
+        line-height: 1.7;
     }
-    .plaza-norm-example strong { color: #4a90d9; }
-    .plaza-norm-example em { color: #666; font-style: normal; }
 
-    /* ---- Email template ---- */
+    /* ---- 邮件模板 ---- */
     .plaza-email-template {
         background: linear-gradient(135deg, #fff 0%, #fffaf0 100%);
         border: 1px solid rgba(212, 201, 168, 0.4);
@@ -249,7 +266,7 @@
     .plaza-email-template p { margin: 0 0 8px; color: #444; }
     .plaza-email-template p:last-child { margin-bottom: 0; }
     .plaza-email-template hr {
-        margin: 14px 0; border: none; border-top: 1px dashed rgba(212, 201, 168, 0.5);
+        width: 100%; margin: 14px auto; border: none; border-top: 1px dashed rgba(212, 201, 168, 0.5);
     }
     .plaza-email-template .plaza-field {
         display: flex; gap: 8px; flex-wrap: wrap;
@@ -261,7 +278,7 @@
     }
     .plaza-email-template .plaza-field-content { flex: 1; color: #333; min-width: 200px; }
 
-    /* ---- Responsive ---- */
+    /* ---- 响应式 ---- */
     @media (max-width: 900px) {
         .plaza-hero-submit { padding: 40px 24px 36px; }
         .plaza-body { padding: 32px 24px 56px; }
@@ -273,11 +290,11 @@
         .plaza-back-btn-wrap { top: 32px; left: 16px; }
     }
 
-    /* ---- Entrance animations ---- */
+    /* ---- 入场动画 ---- */
     .plaza-hero-submit h1 { animation: anim-pop-in 0.7s cubic-bezier(0.2, 0.8, 0.3, 1.3) 0.2s both; }
     .plaza-hero-submit p  { animation: anim-fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.35s both; }
 
-    /* ---- Back link (floats at h1's vertical level, left of body edge) ---- */
+    /* ---- 返回链接（浮动在与 h1 同高的位置、正文左缘） ---- */
     .plaza-back-btn-wrap {
         position: absolute;
         top: 56px;
@@ -310,14 +327,16 @@
         flex-shrink: 0;
     }
 
-    /* h1 sits in the centred flow; no special margin override needed
-       because the back link is absolutely positioned (out of flow). */
+    /*
+        h1 处于居中流内；返回链接采用绝对定位（脱离文档流），
+        因此无需额外的外边距覆盖。
+    */
     </style>
 </head>
 <body class="plaza-page">
     <div id="site-header"></div>
 
-    <!-- Plaza Hero -->
+    <!-- 广场首屏 -->
     <section class="plaza-hero-submit">
         <div class="plaza-back-btn-wrap">
             <a class="plaza-back-btn" href="creative-plaza.html">
@@ -327,10 +346,10 @@
                 Back
             </a>
         </div>
-        <h1>📧 Sign Resource Pack Submission Guide</h1>
+        <h1>Sign Resource Pack Submission Guide</h1>
         <p>Welcome! We invite all city-building enthusiasts and mod players to submit your crafted sign resource packs to the <em>Ocelot Creeper Cola Development Group</em>.<br>Please read the guidelines below carefully before submitting:</p>
         <div class="plaza-email-card">
-            <div class="plaza-email-icon">📬</div>
+            <div class="plaza-email-icon"><span class="ic ic-mail" aria-hidden="true"></span></div>
             <div class="plaza-email-text">
                 <strong>Submission Email</strong>
                 <span>ocelot.moddev@outlook.com</span>
@@ -338,71 +357,63 @@
         </div>
     </section>
 
-    <!-- Plaza Body -->
+    <!-- 广场主体 -->
     <div class="plaza-body">
 
-        <!-- Section 1: Requirements -->
+        <!-- 第 1 节：投稿要求 -->
         <div class="plaza-section-card">
             <h2>1. Resource Pack Creation &amp; Quality Requirements</h2>
 
-            <h3>1.1 Naming Conventions</h3>
+            <h3>Naming Conventions</h3>
             <ol class="plaza-info-list">
-                <li><strong>All contents must be placed under the <code>ocelotsignmod</code> namespace</strong> — file paths must start with <code>assets/ocelotsignmod/</code>.</li>
                 <li>All folder and file names may <strong>only use lowercase letters, numbers, and underscores</strong> (e.g., <code>my_custom_sign.png</code>). Spaces, Chinese characters, or uppercase letters are prohibited.</li>
             </ol>
 
-            <h3>1.2 Image &amp; Model Specifications</h3>
+            <h3>Image &amp; Model Specifications</h3>
             <ol class="plaza-info-list">
                 <li>Texture files must be <strong>.png</strong> format with strict <strong>1:1</strong> aspect ratio. Recommended resolution: <strong>512×512</strong> or <strong>256×256</strong>.</li>
-                <li>Custom 3D models must follow the vanilla 16×16×16 block proportions. Naming convention: "<strong>[Resource Pack Name] Model Name</strong>", e.g., <code>[Hong Kong, China] Linear Delineator A</code>.</li>
+                <li>Naming convention: "<strong>[Resource Pack Name] Model Name</strong>", e.g., <code>[Hong Kong, China] Linear Delineator A</code>.</li>
             </ol>
 
-            <h3>1.3 Advanced Custom UI Categorization</h3>
+            <h3>Advanced Custom UI Categorization</h3>
             <ol class="plaza-info-list">
                 <li><strong>Use "Advanced Custom UI" to create your own categories</strong> — do not dump all textures into the mod's default categories.</li>
                 <li>Create a UI config file under <code>ui_definitions</code> (e.g., <code>my_road_signs.json</code>). Use <code>"useSubfolders"</code> and <code>"filterMode"</code> for detailed organization.</li>
                 <li><strong>All category names and code must use English</strong>; the actual textures may include Chinese or other languages.</li>
             </ol>
 
-            <h3>1.4 Copyright &amp; Open Source</h3>
+            <h3>Copyright &amp; Open Source</h3>
             <ol class="plaza-info-list">
                 <li>Please observe font and texture copyright. Seek <strong>free open-source alternatives</strong> (e.g., Source Han Sans, LXGW WenKai) if there is infringement risk.</li>
                 <li>Choose a license: <strong>CC BY-NC-SA 4.0, MIT, GPLv3</strong>, or "<strong>All Rights Reserved</strong>".</li>
             </ol>
 
-            <h3>1.5 Sensitive Content Guidelines</h3>
+            <h3>Sensitive Content Guidelines</h3>
             <ol class="plaza-info-list">
-                <li>Ensure correct use of Chinese sovereignty terminology. Standard examples:</li>
-            </ol>
-            <div class="plaza-norm-example">
-                <strong>Chinese Mainland</strong> — 中国大陆<br>
-                <strong>Hong Kong, China</strong> — 中国香港<br>
-                <strong>Taiwan, a province of China</strong> — 中国台湾
-            </div>
-            <ol class="plaza-info-list" start="2">
+                <li>Ensure correct use of Chinese sovereignty terminology.</li>
                 <li><strong>Do not include any national or regional flags/banners</strong> in your textures or models.</li>
             </ol>
         </div>
 
-        <!-- Section 2: Prohibited -->
+        <!-- 第 2 节：禁止内容 -->
         <div class="plaza-section-card plaza-section-prohibited">
-            <h2>🚫 2. Prohibited Content (Immediate &amp; Permanent Rejection)</h2>
+            <h2>2. Prohibited Content (Immediate &amp; Permanent Rejection)</h2>
             <p>The following is <strong>strictly prohibited</strong> in your resource pack and any accompanying files:</p>
-            <ul class="plaza-prohibited-list">
-                <li><strong>Reactionary or sensitive topics:</strong> Recent or historical sensitive social events of any country.</li>
-                <li><strong>Political content:</strong> Politicians, political party symbols, slogans, or any political content.</li>
-                <li><strong>National division:</strong> Any content implying or supporting division or undermining of territorial integrity.</li>
-                <li><strong>Pornography:</strong> Any explicit, R18, or sexually suggestive images or text.</li>
-                <li><strong>Vulgarity &amp; violence:</strong> Bloody, disturbing, or violent imagery or vulgar memes.</li>
-                <li><strong>Copyright infringement:</strong> Unauthorized use of resources from other games, mods, or paid asset libraries.</li>
-                <li><strong>Malicious code or extraneous files:</strong> Advertisements, referral links, or malicious/destructive scripts.</li>
-            </ul>
+            <ol class="plaza-prohibited-list">
+                <li>Recent or historical sensitive social events of any country.</li>
+                <li>Politicians, political party symbols, slogans, or any political content.</li>
+                <li>Any content implying or supporting division or undermining of territorial integrity.</li>
+                <li>Any explicit, R18, or sexually suggestive images or text.</li>
+                <li>Bloody, disturbing, or violent imagery or vulgar memes.</li>
+                <li>Unauthorized use of resources from other games, mods, or paid asset libraries.</li>
+                <li>Advertisements, referral links, or malicious/destructive scripts.</li>
+            </ol>
         </div>
 
-        <!-- Section 3: Email Template -->
+        <!-- 第 3 节：邮件模板 -->
         <div class="plaza-section-card">
-            <h2>📬 3. Submission Email Template</h2>
-            <p>Send your email to <strong>ocelot.moddev@outlook.com</strong> using the template below:</p>
+            <h2>3. Submission Email Template</h2>
+            <p>Once your <code>.zip</code> resource pack is ready, send your email to <strong>ocelot.moddev@outlook.com</strong> using the template below:</p>
             <div class="plaza-email-template">
                 <p><strong>To:</strong> ocelot.moddev@outlook.com</p>
                 <p><strong>Subject:</strong> [Submission] [Your Resource Pack Name] — e.g.: [Submission] Hong Kong Traffic Resource Pack</p>
@@ -420,13 +431,13 @@
                     <span class="plaza-field-content">___________________________________________ (e.g., CC BY-NC-SA 4.0)</span>
                 </div>
                 <hr>
-                <p><strong>Attachment:</strong> Attach your <code>.zip</code> resource pack; if too large, include a permanent cloud storage link.</p>
+                <p><strong>Attachment:</strong> Attach your <code>.zip</code> resource pack; if too large, include a permanent cloud storage link. You may also upload the pack to <strong>Modrinth</strong> or similar hosting platforms and submit the link afterwards.</p>
             </div>
         </div>
 
-        <!-- Section 4: Review -->
+        <!-- 第 4 节：审核流程 -->
         <div class="plaza-section-card">
-            <h2>⏳ 4. Review &amp; Curation Policy</h2>
+            <h2>4. Review &amp; Curation Policy</h2>
             <ol class="plaza-info-list">
                 <li>Not all submissions are guaranteed to be officially curated. Reviews are typically conducted once every <strong>1–2 months</strong>.</li>
                 <li>If your pack passes review and is selected, we will send a formal notification by email. If not selected, no reply will be sent — thank you for your understanding.</li>
@@ -437,9 +448,9 @@
 
         <p style="text-align:center;color:#888;font-size:13px;margin-top:12px;">Thank you for your support and contributions to the Ocelot Sign Mod!</p>
 
-    </div><!-- .plaza-body -->
+    </div><!-- .plaza-body 结束 -->
 
-    <!-- Back to Top Button -->
+    <!-- 回到顶部按钮 -->
     <div class="back-to-top" id="backToTop" title="Back to Top">
         <svg class="back-to-top-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
@@ -447,13 +458,13 @@
         <span class="back-to-top-label">TOP</span>
     </div>
 
-    <script src="../../../js/components.js?v=20261004"></script>
+    <script src="../../../js/components.js?v=23f63ec1"></script>
 <script>
 (function() {
   if (!('serviceWorker' in navigator)) return;
 
   function detectSwPath() {
-    // 通过 components.js 的 src 推算站点根
+    // 通过 components.js 的脚本地址推导站点根路径。
     var scripts = document.getElementsByTagName('script');
     for (var i = 0; i < scripts.length; i++) {
       var src = scripts[i].src || '';
@@ -464,7 +475,7 @@
           segs.pop(); // components.js
           segs.pop(); // js
           return (segs.length === 0 ? '/' : '/' + segs.join('/') + '/') + 'sw.js';
-        } catch (e) { /* fall through */ }
+        } catch (e) { /* 忽略异常，继续走下一条分支 */ }
       }
     }
     return 'sw.js';
@@ -472,9 +483,9 @@
 
   function register() {
     navigator.serviceWorker.register(detectSwPath()).then(function(reg) {
-      // 定时检查更新（30 分钟），用户长时间停留时也能拉到新版
+      // 每 30 分钟轮询一次更新，使长时间停留的标签页也能获取新版本。
       setInterval(function() { reg.update().catch(function() {}); }, 30 * 60 * 1000);
-      // 切回标签页时也检查一次
+      // 标签页重新可见时再检查一次。
       document.addEventListener('visibilitychange', function() {
         if (!document.hidden) reg.update().catch(function() {});
       });

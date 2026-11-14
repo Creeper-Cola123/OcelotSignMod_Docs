@@ -158,9 +158,9 @@
   window.clearExplorerSelection = function() {};
   window.openSectionPath = function() {};
 
-  // ================================================================
+  // ============================================================
   // 启动项
-  // ================================================================
+  // ============================================================
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', PM.fns.initPackMaker);

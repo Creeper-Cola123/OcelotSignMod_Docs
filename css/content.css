@@ -183,14 +183,12 @@
     padding: 15px 20px;
     margin-bottom: 20px;
     color: #666;
-    border-radius: 0 6px 6px 0;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-left-width 0.25s ease;
+    border-radius: 0;
+    transition: none;
 }
 
-.content blockquote:hover {
-    transform: translateX(4px);
-    box-shadow: 0 4px 14px rgba(240, 165, 0, 0.18);
-    border-left-width: 6px;
+.content blockquote p:last-child {
+    margin-bottom: 0;
 }
 
 /* 警告框 —— 视觉上比黄色 blockquote "notice" 更强。
@@ -255,16 +253,10 @@
     padding: 14px 20px;
     margin-bottom: 20px;
     color: #2a4d7a;
-    border-radius: 0 6px 6px 0;
+    border-radius: 0;
     font-size: 14px;
     line-height: 1.7;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-left-width 0.25s ease;
-}
-
-.content .info-box:hover {
-    transform: translateX(4px);
-    box-shadow: 0 4px 14px rgba(74, 144, 217, 0.18);
-    border-left-width: 6px;
+    transition: none;
 }
 
 .content .info-box p {
@@ -292,10 +284,22 @@
     border-bottom-color: #4a90d9;
 }
 
+/* 提示框 / 警示框内的行内图标 —— 统一与文字基线对齐。 */
+.content .info-box .ic,
+.content .warning-box .ic,
+.content .access-box .ic,
+.content blockquote .ic {
+    font-size: 1.05em;
+    vertical-align: -0.16em;
+    margin-right: 4px;
+    opacity: 0.75;
+}
+
 .content hr {
+    width: 100%;
     border: none;
     border-top: 1px solid #d4c9a8;
-    margin: 30px 0;
+    margin: 30px auto;
 }
 
 .content img {
@@ -341,6 +345,46 @@
 
 .content tr:nth-child(even) {
     background-color: rgba(212, 201, 168, 0.1);
+}
+
+/* 内置图案表格（sign-usage.html） */
+.pattern-table {
+    table-layout: fixed;
+}
+
+.pattern-table th,
+.pattern-table td {
+    text-align: center;
+}
+
+.pattern-table td:first-child {
+    width: 130px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.pattern-table td.pattern-preview {
+    padding: 8px;
+    vertical-align: middle;
+}
+
+.pattern-table img {
+    display: block;
+    width: 96px;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 0;
+    box-shadow: none;
+    image-rendering: pixelated;
+}
+
+.pattern-table img:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.pattern-table code {
+    overflow-wrap: anywhere;
 }
 
 /* ========== 内容头（docs.html） ========== */
@@ -473,8 +517,10 @@
 .image-gallery {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    justify-content: center;
+    width: 100%;
     gap: 25px;
-    margin: 25px 0;
+    margin: 25px auto;
 }
 
 .image-gallery figure {
@@ -555,6 +601,14 @@
 
     .faq-item {
         padding: 15px;
+    }
+
+    .pattern-table td:first-child {
+        width: 76px;
+    }
+
+    .pattern-table img {
+        width: 56px;
     }
 
     .image-gallery {

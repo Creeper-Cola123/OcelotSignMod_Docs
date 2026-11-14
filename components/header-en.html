@@ -1,10 +1,9 @@
 <!--
-  Shared site header (English, light variant).
-  Loaded by js/components.js for /en/* pages when data-theme is not "dark".
-
-  All hrefs below are written as depth-2-relative paths (prefixed with `../../`),
-  which are also valid for depth-1 pages (the extra `../` resolves to project root
-  and the path is still correct). rewriteComponentLinks() further corrects them.
+    站点公共页头（英文，浅色主题）。
+    当 data-theme 不是 "dark" 时，由 js/components.js 为 /en/* 页面加载。
+    下方所有 href 均写作深度 2 的相对路径（前缀 `../../`），
+    同样适用于深度 1 的页面（多出的 `../` 会解析到项目根目录，路径依然正确）。
+    rewriteComponentLinks() 会进一步修正它们。
 -->
 <header class="site-header">
 <a href="../../en/index.html" class="logo">Ocelot Sign Mod<span class="logo-badge">Official Version</span><span class="logo-badge">MishangUC Version</span></a>
@@ -17,7 +16,7 @@
     <a data-key="download" href="../../en/index.html#downloads">Download &amp; Feedback</a>
 
     <div class="lang-switcher">
-      <!-- Inline hrefs are placeholders; initLangSwitcher() rewrites them via PAGE_CATALOGUE. -->
+      <!-- 内联 href 仅为占位值，initLangSwitcher() 会依据 PAGE_CATALOGUE 重写它们。 -->
       <a href="../../index.html" class="lang" data-lang="zh">中文</a>
       <span class="lang-divider">/</span>
       <a href="../../en/index.html" class="lang active" data-lang="en">EN</a>

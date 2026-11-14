@@ -50,6 +50,29 @@
 
   PM.fns.buildPreviewList = buildPreviewList;
 
+  // 灯箱的静态文案写在 HTML 里，语言切换后需要按当前语言重写，
+  // 否则英文版会残留中文（aria-label / title 属性）。
+  function localizeLightboxChrome() {
+    const setText = (id, text) => {
+      const el = PM.fns.$(id);
+      if (el) el.textContent = text;
+    };
+    const setAttr = (id, name, value) => {
+      const el = PM.fns.$(id);
+      if (el) el.setAttribute(name, value);
+    };
+    setText('imgPreviewLoadingText', PM.fns.t('pm.imgPreview.loading'));
+    setText('imgPreviewErrorText', PM.fns.t('pm.imgPreview.errorFallback'));
+    setAttr('imgPreviewPrev', 'aria-label', PM.fns.t('pm.imgPreview.prevLabel'));
+    setAttr('imgPreviewNext', 'aria-label', PM.fns.t('pm.imgPreview.nextLabel'));
+    setAttr('imgPreviewClose', 'aria-label', PM.fns.t('pm.imgPreview.closeLabel'));
+    setAttr('imgPreviewZoomLevel', 'title', PM.fns.t('pm.imgPreview.zoomResetTitle'));
+    setAttr('imgPreviewZoomOut', 'title', PM.fns.t('pm.imgPreview.zoomOutTitle'));
+    setAttr('imgPreviewZoomIn', 'title', PM.fns.t('pm.imgPreview.zoomInTitle'));
+  }
+
+  PM.fns.localizeLightboxChrome = localizeLightboxChrome;
+
   function showImageInLightbox(path) {
     const img = PM.fns.$('imgPreviewImg');
     const counter = PM.fns.$('imgPreviewCounter');
@@ -88,7 +111,7 @@
         if (error) {
           error.style.display = '';
           const et = PM.fns.$('imgPreviewErrorText');
-          if (et) et.textContent = '文件不存在：' + path;
+          if (et) et.textContent = PM.fns.t('toast.fileMissing') + ': ' + path;
         }
         return;
       }
@@ -104,7 +127,7 @@
         if (error) {
           error.style.display = '';
           const et = PM.fns.$('imgPreviewErrorText');
-          if (et) et.textContent = '无法加载图片：' + (err && err.message ? err.message : '');
+          if (et) et.textContent = PM.fns.t('pm.imgPreview.cannotLoad', { msg: err && err.message ? err.message : '' });
         }
       });
       return;
@@ -137,7 +160,7 @@
       if (error) {
         error.style.display = '';
         const et = PM.fns.$('imgPreviewErrorText');
-        if (et) et.textContent = '图片加载失败：' + path;
+        if (et) et.textContent = PM.fns.t('pm.imgPreview.failed') + ': ' + path;
       }
     };
     img.addEventListener('load', onLoad);

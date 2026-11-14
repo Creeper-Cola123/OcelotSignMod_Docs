@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" href="../../favicon.svg?v=23f63ec1" type="image/svg+xml">
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Basic Usage of Signs | Ocelot Sign Mod</title>
-    <link rel="stylesheet" href="../../css/common.css?v=20261004">
-    <link rel="stylesheet" href="../../css/layout.css?v=20261004">
-    <link rel="stylesheet" href="../../css/content.css?v=20261004">
+    <link rel="stylesheet" href="../../css/common.css?v=23f63ec1">
+    <link rel="stylesheet" href="../../css/icons.css?v=23f63ec1">
+    <link rel="stylesheet" href="../../css/layout.css?v=23f63ec1">
+    <link rel="stylesheet" href="../../css/content.css?v=23f63ec1">
 </head>
 <body>
     <div id="site-header"></div>
@@ -27,24 +29,21 @@
 
 <h3>1. Hanging Signs</h3>
 
-<ol>
-<li>This type of sign should be hung below a block, and text can be entered on both sides. If a solid block or a sign pole block is connected above, a sign pole will be displayed.</li>
-<li>The text on the sign is bound to its placement direction; direct rotation is not currently supported. If you need to place a block with NBT data, ensure the placement direction matches the direction it was obtained in; otherwise, text will not appear on the corresponding side. For example, if you obtain a sign facing north/south and place it facing east/west, the original text on the north/south sides will not display.</li>
-</ol>
+<p>This type of sign should be hung below a block, and text can be entered on both sides. If a solid block or a sign pole block is connected above, a sign pole will be displayed.</p>
+
+<p>The text on the sign is bound to its placement direction; direct rotation is not currently supported. If you need to place a block with NBT data, ensure the placement direction matches the direction it was obtained in; otherwise, text will not appear on the corresponding side. For example, if you obtain a sign facing north/south and place it facing east/west, the original text on the north/south sides will not display.</p>
 
 <h3>2. Wall Signs</h3>
 
-<ol>
-<li>This type of sign can be placed on any surface of a block (side, top, bottom), with only one writable face.</li>
-<li>Wall signs have two special variants: <strong>Invisible Sign</strong> and <strong>Invisible Glow Sign</strong>. The models of these two sign types are invisible, with only text visible. When a player holds either type, placed invisible signs will show an outline for easy identification.</li>
-</ol>
+<p>This type of sign can be placed on any surface of a block (side, top, bottom), with only one writable face.</p>
+
+<p>Wall signs have two special variants: <strong>Invisible Sign</strong> and <strong>Invisible Glow Sign</strong>. The models of these two sign types are invisible, with only text visible. When a player holds either type, placed invisible signs will show an outline for easy identification.</p>
 
 <h3>3. Standing Signs</h3>
 
-<ol>
-<li>Placed on the ground or floating, supporting the original 16 directions. Like hanging signs, both sides can have text input.</li>
-<li>A pole will appear when a block is placed underneath. While empty-handed, hold <code>Shift</code> and click the sign to manually toggle the pole visibility.</li>
-</ol>
+<p>Placed on the ground or floating, supporting the original 16 directions. Like hanging signs, both sides can have text input.</p>
+
+<p>A pole will appear when a block is placed underneath. While empty-handed, hold <code>Shift</code> and click the sign to manually toggle the pole visibility.</p>
 
 <hr>
 
@@ -64,17 +63,13 @@
 
 <p>Adjusts text offset along the three axes.</p>
 
-<blockquote>
-<p>⚠️ Adjust the Z-axis carefully, as it may cause text to float off the plane or clip behind the sign and become invisible.</p>
-</blockquote>
+<p>Adjust the Z-axis carefully, as it may cause text to float off the plane or clip behind the sign and become invisible.</p>
 
 <h3>4. Scale (X/Y)</h3>
 
 <p>Stacks with text size. Setting scale to <code>0</code> will hide the text.</p>
 
-<blockquote>
 <p>There is no Z-axis scaling, as it serves no purpose on a 2D plane.</p>
-</blockquote>
 
 <h3>5. Rotation</h3>
 
@@ -93,9 +88,7 @@
 
 <h3>8. Shadow</h3>
 
-<blockquote>
-<p>⚠️ Not recommended. Enabling shadows for multi-directional text may cause rendering order issues.</p>
-</blockquote>
+<p>Not recommended. Enabling shadows for multi-directional text may cause rendering order issues.</p>
 
 <h3>9. Absolute Mode</h3>
 
@@ -263,195 +256,139 @@
 
 <p>Using built-in pattern names avoids alignment/size inconsistencies from fonts or Unicode.</p>
 
-<h4>Basic Arrows &amp; Directions</h4>
-
-<table>
-<thead>
-<tr>
-<th>Pattern</th>
-<th>Usage</th>
-</tr>
-</thead>
+<table class="pattern-table">
 <tbody>
 <tr>
-<td>(empty)</td>
+<td>Pattern preview</td>
+<td class="pattern-preview"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-left.png?v=23f63ec1" alt="arrow-left pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-right.png?v=23f63ec1" alt="arrow-right pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-up.png?v=23f63ec1" alt="arrow-up pattern"></td>
+</tr>
+<tr>
+<td>Usage in MishangUC</td>
 <td><code>-pattern empty</code></td>
-</tr>
-<tr>
-<td>←</td>
 <td><code>-pattern arrow-left</code> or <code>-pattern al</code></td>
-</tr>
-<tr>
-<td>→</td>
 <td><code>-pattern arrow-right</code> or <code>-pattern ar</code></td>
-</tr>
-<tr>
-<td>↑</td>
 <td><code>-pattern arrow-up</code> or <code>-pattern arrow-top</code> or <code>-pattern au</code> or <code>-pattern at</code></td>
 </tr>
 <tr>
-<td>↓</td>
+<td>Pattern preview</td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-down.png?v=23f63ec1" alt="arrow-down pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-left-thin.png?v=23f63ec1" alt="arrow-left-thin pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-right-thin.png?v=23f63ec1" alt="arrow-right-thin pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-up-thin.png?v=23f63ec1" alt="arrow-up-thin pattern"></td>
+</tr>
+<tr>
+<td>Usage in MishangUC</td>
 <td><code>-pattern arrow-down</code> or <code>-pattern arrow-bottom</code> or <code>-pattern ad</code> or <code>-pattern ab</code></td>
-</tr>
-<tr>
-<td>← (thin)</td>
 <td><code>-pattern arrow-left-thin</code></td>
-</tr>
-<tr>
-<td>→ (thin)</td>
 <td><code>-pattern arrow-right-thin</code></td>
-</tr>
-<tr>
-<td>↑ (thin)</td>
 <td><code>-pattern arrow-up-thin</code></td>
 </tr>
 <tr>
-<td>↓ (thin)</td>
+<td>Pattern preview</td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-down-thin.png?v=23f63ec1" alt="arrow-down-thin pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-left-up.png?v=23f63ec1" alt="arrow-left-up pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-right-up.png?v=23f63ec1" alt="arrow-right-up pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-left-down.png?v=23f63ec1" alt="arrow-left-down pattern"></td>
+</tr>
+<tr>
+<td>Usage in MishangUC</td>
 <td><code>-pattern arrow-down-thin</code></td>
-</tr>
-</tbody>
-</table>
-
-<h4>Diagonal Arrows</h4>
-
-<table>
-<thead>
-<tr>
-<th>Usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-pattern arrow-left-up</code> / <code>-pattern arrow-left-top</code> / <code>-pattern alu</code> / <code>-pattern alt</code></td>
+<td><code>-pattern arrow-left-up</code> or <code>-pattern arrow-left-top</code> or <code>-pattern alu</code> or <code>-pattern alt</code></td>
+<td><code>-pattern arrow-right-up</code> or <code>-pattern arrow-right-top</code> or <code>-pattern aru</code> or <code>-pattern art</code></td>
+<td><code>-pattern arrow-left-down</code> or <code>-pattern arrow-left-bottom</code> or <code>-pattern ald</code> or <code>-pattern alb</code></td>
 </tr>
 <tr>
-<td><code>-pattern arrow-right-up</code> / <code>-pattern arrow-right-top</code> / <code>-pattern aru</code> / <code>-pattern art</code></td>
+<td>Pattern preview</td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-right-down.png?v=23f63ec1" alt="arrow-right-down pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-left-turn-up.png?v=23f63ec1" alt="arrow-left-turn-up pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-right-turn-up.png?v=23f63ec1" alt="arrow-right-turn-up pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-left-turn-down.png?v=23f63ec1" alt="arrow-left-turn-down pattern"></td>
 </tr>
 <tr>
-<td><code>-pattern arrow-left-down</code> / <code>-pattern arrow-left-bottom</code> / <code>-pattern ald</code> / <code>-pattern alb</code></td>
+<td>Usage in MishangUC</td>
+<td><code>-pattern arrow-right-down</code> or <code>-pattern arrow-right-bottom</code> or <code>-pattern ard</code> or <code>-pattern arb</code></td>
+<td><code>-pattern arrow-left-turn-up</code> or <code>-pattern altu</code></td>
+<td><code>-pattern arrow-right-turn-up</code> or <code>-pattern artu</code></td>
+<td><code>-pattern arrow-left-turn-down</code> or <code>-pattern altd</code></td>
 </tr>
 <tr>
-<td><code>-pattern arrow-right-down</code> / <code>-pattern arrow-right-bottom</code> / <code>-pattern ard</code> / <code>-pattern arb</code></td>
-</tr>
-</tbody>
-</table>
-
-<h4>Turn Arrows</h4>
-
-<table>
-<thead>
-<tr>
-<th>Usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-pattern arrow-left-turn-up</code> / <code>-pattern altu</code></td>
+<td>Pattern preview</td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-right-turn-down.png?v=23f63ec1" alt="arrow-right-turn-down pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-left-right.png?v=23f63ec1" alt="arrow-left-right pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/arrow-up-down.png?v=23f63ec1" alt="arrow-up-down pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/circle-small.png?v=23f63ec1" alt="circle-small pattern"></td>
 </tr>
 <tr>
-<td><code>-pattern arrow-right-turn-up</code> / <code>-pattern artu</code></td>
+<td>Usage in MishangUC</td>
+<td><code>-pattern arrow-right-turn-down</code> or <code>-pattern artd</code></td>
+<td><code>-pattern arrow-left-right</code> or <code>-pattern alr</code></td>
+<td><code>-pattern arrow-up-down</code> or <code>-pattern aud</code></td>
+<td><code>-pattern circle-small</code> or <code>-pattern small-circle</code></td>
 </tr>
 <tr>
-<td><code>-pattern arrow-left-turn-down</code> / <code>-pattern altd</code></td>
+<td>Pattern preview</td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/circle-medium.png?v=23f63ec1" alt="circle-medium pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/ban.png?v=23f63ec1" alt="ban pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/u-turn-left-down.png?v=23f63ec1" alt="u-turn-left-down pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/u-turn-right-down.png?v=23f63ec1" alt="u-turn-right-down pattern"></td>
 </tr>
 <tr>
-<td><code>-pattern arrow-right-turn-down</code> / <code>-pattern artd</code></td>
-</tr>
-</tbody>
-</table>
-
-<h4>Bidirectional Arrows &amp; Circles</h4>
-
-<table>
-<thead>
-<tr>
-<th>Usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-pattern arrow-left-right</code> / <code>-pattern alr</code></td>
-</tr>
-<tr>
-<td><code>-pattern arrow-up-down</code> / <code>-pattern aud</code></td>
-</tr>
-<tr>
-<td><code>-pattern circle-small</code> / <code>-pattern small-circle</code></td>
-</tr>
-<tr>
-<td><code>-pattern circle-medium</code> / <code>-pattern medium-circle</code> / <code>-pattern circle</code> / <code>-pattern O</code></td>
-</tr>
-</tbody>
-</table>
-
-<h4>Prohibition &amp; U-Turn</h4>
-
-<table>
-<thead>
-<tr>
-<th>Usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
+<td>Usage in MishangUC</td>
+<td><code>-pattern circle-medium</code> or <code>-pattern medium-circle</code> or <code>-pattern circle</code> or <code>-pattern O</code></td>
 <td><code>-pattern ban</code></td>
+<td><code>-pattern u-turn-left-down</code> or <code>-pattern u-turn-left-bottom</code> or <code>-pattern uld</code> or <code>-pattern ulb</code></td>
+<td><code>-pattern u-turn-right-down</code> or <code>-pattern u-turn-right-bottom</code> or <code>-pattern urd</code> or <code>-pattern urb</code></td>
 </tr>
 <tr>
-<td><code>-pattern u-turn-left-down</code> / <code>-pattern u-turn-left-bottom</code> / <code>-pattern uld</code> / <code>-pattern ulb</code></td>
+<td>Pattern preview</td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/u-turn-left-up.png?v=23f63ec1" alt="u-turn-left-up pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/u-turn-right-up.png?v=23f63ec1" alt="u-turn-right-up pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/cross-small.png?v=23f63ec1" alt="cross-small pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/cross-medium.png?v=23f63ec1" alt="cross-medium pattern"></td>
 </tr>
 <tr>
-<td><code>-pattern u-turn-right-down</code> / <code>-pattern u-turn-right-bottom</code> / <code>-pattern urd</code> / <code>-pattern urb</code></td>
+<td>Usage in MishangUC</td>
+<td><code>-pattern u-turn-left-up</code> or <code>-pattern u-turn-right-top</code> or <code>-pattern ulu</code> or <code>-pattern ult</code></td>
+<td><code>-pattern u-turn-right-up</code> or <code>-pattern u-turn-right-top</code> or <code>-pattern uru</code> or <code>-pattern urt</code></td>
+<td><code>-pattern cross-small</code> or <code>-pattern small-scross</code></td>
+<td><code>-pattern cross-medium</code> or <code>-pattern medium-cross</code> or <code>-pattern cross</code> or <code>-pattern X</code></td>
 </tr>
 <tr>
-<td><code>-pattern u-turn-left-up</code> / <code>-pattern u-turn-right-top</code> / <code>-pattern ulu</code> / <code>-pattern ult</code></td>
+<td>Pattern preview</td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/cross-large.png?v=23f63ec1" alt="cross-large pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/square-small.png?v=23f63ec1" alt="square-small pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/square-medium.png?v=23f63ec1" alt="square-medium pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/square-large.png?v=23f63ec1" alt="square-large pattern"></td>
 </tr>
 <tr>
-<td><code>-pattern u-turn-right-up</code> / <code>-pattern u-turn-right-top</code> / <code>-pattern uru</code> / <code>-pattern urt</code></td>
-</tr>
-</tbody>
-</table>
-
-<h4>Crosses &amp; Squares</h4>
-
-<table>
-<thead>
-<tr>
-<th>Usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-pattern cross-small</code> / <code>-pattern small-scross</code></td>
+<td>Usage in MishangUC</td>
+<td><code>-pattern cross-large</code> or <code>-pattern large-cross</code></td>
+<td><code>-pattern square-small</code> or <code>-pattern small-square</code></td>
+<td><code>-pattern square-medium</code> or <code>-pattern medium-square</code> or <code>-pattern square</code></td>
+<td><code>-pattern square-large</code> or <code>-pattern large-square</code></td>
 </tr>
 <tr>
-<td><code>-pattern cross-medium</code> / <code>-pattern medium-cross</code> / <code>-pattern cross</code> / <code>-pattern X</code></td>
+<td>Pattern preview</td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/square-slant-small.png?v=23f63ec1" alt="square-slant-small pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/square-slant-medium.png?v=23f63ec1" alt="square-slant-medium pattern"></td>
+<td class="pattern-preview"><img src="../../pic/mishanguc_patterns/square-slant-large.png?v=23f63ec1" alt="square-slant-large pattern"></td>
+<td class="pattern-preview"></td>
 </tr>
 <tr>
-<td><code>-pattern cross-large</code> / <code>-pattern large-cross</code></td>
-</tr>
-<tr>
-<td><code>-pattern square-small</code> / <code>-pattern small-square</code></td>
-</tr>
-<tr>
-<td><code>-pattern square-medium</code> / <code>-pattern medium-square</code> / <code>-pattern square</code></td>
-</tr>
-<tr>
-<td><code>-pattern square-large</code> / <code>-pattern large-square</code></td>
-</tr>
-<tr>
-<td><code>-pattern square-slant-small</code> / <code>-pattern small-slant-square</code></td>
-</tr>
-<tr>
-<td><code>-pattern square-slant-medium</code> / <code>-pattern medium-slant-square</code></td>
-</tr>
-<tr>
-<td><code>-pattern square-slant-large</code> / <code>-pattern large-slant-square</code></td>
+<td>Usage in MishangUC</td>
+<td><code>-pattern square-slant-small</code> or <code>-pattern small-slant-square</code></td>
+<td><code>-pattern square-slant-medium</code> or <code>-pattern medium-slant-square</code></td>
+<td><code>-pattern square-slant-large</code> or <code>-pattern large-slant-square</code></td>
+<td></td>
 </tr>
 </tbody>
 </table>
 
 <blockquote>
-<p>⚠️ Note: Custom styles are not supported for patterns. For complex styling, use the <code>-texture</code> format or vanilla sprite components (example: <code>-nbt {sprite: xxx}</code>).</p>
+<p><span class="ic ic-alert" aria-hidden="true"></span>Note: Custom styles are not supported for patterns. For complex styling, use the <code>-texture</code> format or vanilla sprite components (example: <code>-nbt {sprite: xxx}</code>).</p>
 </blockquote>
 
 <hr>
@@ -479,13 +416,13 @@
     </main>
     </div>
 
-    <!-- Right-side page TOC: auto-built from H1-H4 in the article body. -->
+    <!-- 右侧页面目录：由正文中的 H1-H4 自动生成 -->
     <aside class="page-toc" id="pageToc" aria-label="On this page">
         <div class="page-toc-title">On this page</div>
         <nav class="page-toc-nav" id="pageTocNav"></nav>
     </aside>
 
-    <!-- Back to Top Button -->
+    <!-- 回到顶部按钮 -->
     <div class="back-to-top" id="backToTop" title="Back to Top">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
@@ -493,145 +430,14 @@
         <span class="back-to-top-label">Top</span>
     </div>
 
-    <script src="../../js/components.js?v=20261004"></script>
-    <script>
-    (function () {
-        // Wrap each table in .content-inner with a `.table-scroll`
-        // container so wide tables can scroll horizontally on narrow
-        // screens instead of stretching the whole page. Idempotent — it
-        // skips any table that is already inside such a wrapper.
-        var tables = document.querySelectorAll('.content-inner > table');
-        Array.prototype.forEach.call(tables, function (table) {
-            var parent = table.parentNode;
-            if (parent && parent.classList && parent.classList.contains('table-scroll')) return;
-            var wrapper = document.createElement('div');
-            wrapper.className = 'table-scroll';
-            parent.insertBefore(wrapper, table);
-            wrapper.appendChild(table);
-        });
-
-        var nav = document.getElementById('pageTocNav');
-        var content = document.querySelector('.content-inner') || document.querySelector('.content');
-        if (!nav || !content) return;
-
-        var headings = content.querySelectorAll('h1, h2, h3');
-        if (!headings.length) return;
-
-        // Assign stable ids to headings that don't have one yet.
-        var slugify = function (s) {
-            return s.toLowerCase()
-                .replace(/[^\p{L}\p{N}\s-]/gu, '')
-                .trim()
-                .replace(/\s+/g, '-')
-                .slice(0, 60) || 'section';
-        };
-        var usedIds = {};
-        Array.prototype.forEach.call(headings, function (h) {
-            if (!h.id) {
-                var base = slugify(h.textContent);
-                var id = base;
-                var i = 2;
-                while (usedIds[id] || document.getElementById(id)) {
-                    id = base + '-' + i++;
-                }
-                h.id = id;
-            }
-            usedIds[h.id] = true;
-        });
-
-        // Build the nested list. The stack's bottom frame is always the
-        // root <ul>; every push appends a fresh child <ul> to the new
-        // <li> so deeper headings nest inside it.
-        var root = document.createElement('ul');
-        var stack = [{ level: 0, list: root }];
-
-        Array.prototype.forEach.call(headings, function (h) {
-            var level = parseInt(h.tagName.charAt(1), 10);
-            // Pop frames whose level is >= the current heading's level so
-            // we return to the right ancestor. Stack bottom (level 0) is
-            // never popped because 0 < any heading level.
-            while (stack[stack.length - 1].level >= level) {
-                stack.pop();
-            }
-            var parentList = stack[stack.length - 1].list;
-            var li = document.createElement('li');
-            li.className = 'toc-h' + level;
-            var a = document.createElement('a');
-            a.href = '#' + h.id;
-            a.textContent = h.textContent;
-            a.dataset.targetId = h.id;
-            li.appendChild(a);
-            parentList.appendChild(li);
-            // Each li gets its own child list for nested headings.
-            var childList = document.createElement('ul');
-            li.appendChild(childList);
-            stack.push({ level: level, list: childList });
-        });
-
-        nav.appendChild(root);
-
-        var links = nav.querySelectorAll('a');
-        var linkByHeading = {};
-        Array.prototype.forEach.call(headings, function (h) {
-            var link = nav.querySelector('a[data-target-id="' + h.id + '"]');
-            if (link) linkByHeading[h.id] = { link: link, heading: h };
-        });
-
-        var setActive = function (id) {
-            Array.prototype.forEach.call(links, function (a) { a.classList.remove('is-active'); });
-            if (id && linkByHeading[id]) linkByHeading[id].link.classList.add('is-active');
-        };
-
-        // Click handler — smooth-scroll, then update URL without jumping.
-        Array.prototype.forEach.call(links, function (a) {
-            a.addEventListener('click', function (e) {
-                var target = document.getElementById(a.dataset.targetId);
-                if (!target) return;
-                e.preventDefault();
-                var headerOffset = 80;
-                var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
-                window.scrollTo({ top: top, behavior: 'smooth' });
-                setActive(a.dataset.targetId);
-                history.replaceState(null, '', '#' + a.dataset.targetId);
-            });
-        });
-
-        // Highlight the heading nearest the top of the viewport.
-        var visibleHeadings = [];
-        var observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                var id = entry.target.id;
-                var idx = visibleHeadings.findIndex(function (v) { return v.id === id; });
-                if (entry.isIntersecting) {
-                    if (idx === -1) visibleHeadings.push({ id: id, top: entry.boundingClientRect.top });
-                    else visibleHeadings[idx].top = entry.boundingClientRect.top;
-                } else if (idx !== -1) {
-                    visibleHeadings.splice(idx, 1);
-                }
-            });
-            if (!visibleHeadings.length) return;
-            visibleHeadings.sort(function (a, b) { return a.top - b.top; });
-            // Prefer the topmost one that's still below the header line.
-            var pick = null;
-            for (var i = 0; i < visibleHeadings.length; i++) {
-                if (visibleHeadings[i].top >= 80) { pick = visibleHeadings[i]; break; }
-            }
-            if (!pick) pick = visibleHeadings[0];
-            setActive(pick.id);
-        }, {
-            rootMargin: '-80px 0px -55% 0px',
-            threshold: 0
-        });
-
-        Array.prototype.forEach.call(headings, function (h) { observer.observe(h); });
-    })();
-    </script>
+    <script src="../../js/components.js?v=23f63ec1"></script>
+    <script src="../../js/page-toc.js?v=23f63ec1"></script>
 <script>
 (function() {
   if (!('serviceWorker' in navigator)) return;
 
   function detectSwPath() {
-    // 通过 components.js 的 src 推算站点根
+    // 通过 components.js 的脚本地址推导站点根路径。
     var scripts = document.getElementsByTagName('script');
     for (var i = 0; i < scripts.length; i++) {
       var src = scripts[i].src || '';
@@ -642,7 +448,7 @@
           segs.pop(); // components.js
           segs.pop(); // js
           return (segs.length === 0 ? '/' : '/' + segs.join('/') + '/') + 'sw.js';
-        } catch (e) { /* fall through */ }
+        } catch (e) { /* 忽略异常，继续走下一条分支 */ }
       }
     }
     return 'sw.js';
@@ -650,9 +456,9 @@
 
   function register() {
     navigator.serviceWorker.register(detectSwPath()).then(function(reg) {
-      // 定时检查更新（30 分钟），用户长时间停留时也能拉到新版
+      // 每 30 分钟轮询一次更新，使长时间停留的标签页也能获取新版本。
       setInterval(function() { reg.update().catch(function() {}); }, 30 * 60 * 1000);
-      // 切回标签页时也检查一次
+      // 标签页重新可见时再检查一次。
       document.addEventListener('visibilitychange', function() {
         if (!document.hidden) reg.update().catch(function() {});
       });

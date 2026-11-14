@@ -10,7 +10,7 @@
   // 所有可变状态集中在 PM.state 命名空间下，方便跨模块共享。
   PM.state.zip = null;
   PM.state.fileMap = {};
-  PM.state.packMeta = { pack_format: 34, description: '豹猫指示牌模组的自定义资源包' };
+  PM.state.packMeta = null;
   PM.state.packFileName = '';
   PM.state.packImageBlob = null;
   PM.state.currentH1 = 'patterns';
@@ -94,4 +94,11 @@
     );
   }
   PM.fns.snapshotPreExistingUiDefinitions = snapshotPreExistingUiDefinitions;
+
+  // 默认的 pack.mcmeta 元数据在 PM.fns.t 就绪之后才初始化，
+  // 避免在 i18n.js 尚未加载时取不到当前语言的描述文案。
+  PM.state.packMeta = {
+    pack_format: 34,
+    description: PM.fns.t('pm.pack.defaultDescription')
+  };
 })();

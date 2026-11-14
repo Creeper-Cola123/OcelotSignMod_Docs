@@ -67,7 +67,7 @@
     const area = PM.fns.$('psImgArea');
     if (!area) return;
     if (!PM.state.packImageBlob) {
-      area.innerHTML = `<div class="ps-img-placeholder">暂无封面图片<br>点击下方「上传封面」添加 pack.png</div>`;
+      area.innerHTML = `<div class="ps-img-placeholder">${PM.fns.t('pm.ps.noCover')}<br>${PM.fns.t('pm.ps.noCoverHint')}</div>`;
       return;
     }
     const url = URL.createObjectURL(PM.state.packImageBlob);
