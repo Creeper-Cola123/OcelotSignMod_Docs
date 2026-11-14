@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="../../../favicon.svg?v=c147b60a" type="image/svg+xml">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Agreement | Ocelot Sign Mod</title>
+    <link rel="stylesheet" href="../../../css/common.css?v=c147b60a">
+    <link rel="stylesheet" href="../../../css/icons.css?v=c147b60a">
+    <link rel="stylesheet" href="../../../css/plaza.css?v=c147b60a">
+    <style>
+    /*
+        plaza-terms.html —— 用户投稿协议专用样式
+        首屏与条款卡片复用举报指南（plaza-report.html）的视觉规范。
+    */
+
+    /* ---- 广场首屏条带 —— 与创意广场首屏相同的分层渐变 + 光晕 + 点阵网格 ---- */
+    .plaza-hero-submit {
+        position: relative;
+        overflow: hidden;
+        padding: 56px 60px 44px;
+        text-align: center;
+        color: #fff;
+        background:
+            radial-gradient(circle at 18% 28%, rgba(74, 144, 217, 0.32), transparent 55%),
+            radial-gradient(circle at 82% 78%, rgba(240, 165, 0, 0.22), transparent 60%),
+            linear-gradient(135deg, #15152b 0%, #1f1f3d 55%, #15152b 100%);
+        isolation: isolate;
+    }
+    .plaza-hero-submit::before {
+        /* 与 .plaza-hero 相同的细腻点阵网格，营造高级质感 */
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+        background-size: 22px 22px;
+        background-position: 0 0;
+        z-index: 0;
+        pointer-events: none;
+    }
+    .plaza-hero-submit > * {
+        position: relative;
+        z-index: 1;
+    }
+    .plaza-hero-submit h1 {
+        font-size: 32px;
+        color: #fff;
+        margin-bottom: 14px;
+        letter-spacing: 2px;
+        font-weight: 700;
+        text-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    }
+    .plaza-hero-submit p {
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.78);
+        max-width: 720px;
+        margin: 0 auto 20px;
+        line-height: 1.85;
+    }
+    .plaza-terms-meta {
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px 20px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.6);
+        letter-spacing: 0.3px;
+    }
+
+    /* ---- 正文 ---- */
+    .plaza-body {
+        padding: 48px 60px 72px;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .plaza-section-card {
+        position: relative;
+        background: linear-gradient(135deg, #fafaf5 0%, #fff 100%);
+        border: 1px solid rgba(212, 201, 168, 0.3);
+        border-radius: 12px;
+        padding: 28px 32px;
+        margin-bottom: 24px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+    .plaza-section-card h2 {
+        font-size: 20px;
+        color: #1a1a2e;
+        margin: 0 0 20px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid rgba(212, 201, 168, 0.4);
+        letter-spacing: 0.5px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .plaza-section-card h2::before {
+        /* 竖向黄色渐变装饰条，与其他广场页的区块标题保持一致 */
+        content: "";
+        width: 4px;
+        height: 18px;
+        background: linear-gradient(180deg, #f0a500, #ffc233);
+        border-radius: 2px;
+        flex-shrink: 0;
+    }
+    .plaza-section-card p {
+        font-size: 14px;
+        color: #444;
+        line-height: 1.9;
+        margin: 0 0 12px;
+    }
+    .plaza-section-card p:last-child { margin-bottom: 0; }
+    .plaza-section-card a {
+        color: #b8790a;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(240, 165, 0, 0.45);
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .plaza-section-card a:hover {
+        color: #8f5f05;
+        border-bottom-color: #8f5f05;
+        text-decoration: none;
+    }
+
+    /* ---- 条款清单（红色序号，与严禁内容清单的警示语义一致） ---- */
+    .plaza-terms-list {
+        list-style: none;
+        counter-reset: plaza-terms;
+        padding: 0;
+        margin: 16px 0 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .plaza-terms-list li {
+        position: relative;
+        counter-increment: plaza-terms;
+        padding-left: 26px;
+        font-size: 14px;
+        line-height: 1.85;
+        color: #333;
+    }
+    .plaza-terms-list li::before {
+        content: counter(plaza-terms) ".";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #c0392b;
+        font-weight: 700;
+        line-height: 1.85;
+    }
+
+    /* ---- 联系信息行 ---- */
+    .plaza-terms-contact {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 8px;
+        font-size: 14px;
+        line-height: 1.85;
+        color: #333;
+    }
+    .plaza-terms-contact strong {
+        display: inline-block;
+        min-width: 132px;
+        color: #1a1a2e;
+    }
+
+    /* ---- 响应式 ---- */
+    @media (max-width: 900px) {
+        .plaza-hero-submit { padding: 40px 24px 36px; }
+        .plaza-body { padding: 32px 24px 56px; }
+        .plaza-back-btn-wrap { top: 40px; left: 24px; }
+    }
+    @media (max-width: 600px) {
+        .plaza-section-card { padding: 20px 18px; }
+        .plaza-hero-submit h1 { font-size: 24px; letter-spacing: 1px; }
+        .plaza-back-btn-wrap { top: 32px; left: 16px; }
+        .plaza-section-card h2 { font-size: 17px; }
+        .plaza-terms-contact strong { min-width: 0; }
+    }
+
+    /* ---- 入场动画 ---- */
+    .plaza-hero-submit h1 { animation: anim-pop-in 0.7s cubic-bezier(0.2, 0.8, 0.3, 1.3) 0.2s both; }
+    .plaza-hero-submit p  { animation: anim-fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.35s both; }
+
+    /* ---- 返回链接（浮动在与 h1 同高的位置、正文左缘） ---- */
+    .plaza-back-btn-wrap {
+        position: absolute;
+        top: 56px;
+        left: 60px;
+        z-index: 2;
+        text-align: left;
+        animation: anim-fade-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+    .plaza-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: color 0.2s;
+        letter-spacing: 0.3px;
+    }
+    .plaza-back-btn:hover {
+        color: #fff;
+        text-decoration: none;
+    }
+    .plaza-back-btn-arrow {
+        width: 14px;
+        height: 14px;
+        fill: currentColor;
+        display: block;
+        flex-shrink: 0;
+    }
+    </style>
+</head>
+<body class="plaza-page">
+    <div id="site-header"></div>
+
+    <!-- 协议首屏 -->
+    <section class="plaza-hero-submit">
+        <div class="plaza-back-btn-wrap">
+            <a class="plaza-back-btn" href="creative-plaza.html">
+                <svg class="plaza-back-btn-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+                Back
+            </a>
+        </div>
+        <h1>Submission Agreement</h1>
+        <p>Ocelot Sign Mod · Creative Plaza Submission Agreement<br>Please read and fully understand this agreement before submitting content.</p>
+        <div class="plaza-terms-meta">
+            <span>Last updated: November 15, 2026</span>
+            <span>Effective: November 15, 2026</span>
+        </div>
+    </section>
+
+    <!-- 协议正文 -->
+    <div class="plaza-body">
+
+        <!-- 1. 导言 -->
+        <div class="plaza-section-card">
+            <h2>1. Introduction</h2>
+            <p>1.1 Welcome to the "Ocelot Sign Mod · Creative Plaza" (hereinafter "the Platform" or "we"). The Platform is dedicated to collecting, displaying, and sharing player-made resource packs for Minecraft《Ocelot Sign Mod》and《Mishang Urban Construction》(MishangUC), including but not limited to custom sign pattern packs, font packs, resource packs, and related configuration files, as well as related tutorials, gameplay notes, and mod introduction articles.</p>
+            <p>1.2 The "Ocelot Sign Mod · Creative Plaza Submission Agreement" (hereinafter "this Agreement") is entered into between you (hereinafter "the submitter" or "you") and the Platform regarding the submission, review, display, updating, and sharing of resource pack and article submissions.</p>
+            <p>1.3 Please read and fully understand all provisions of this Agreement before submitting. Once you submit a resource pack or article by email or any other official channel, or provide any file or information to the Platform, you are deemed to have read, understood, and agreed to be bound by this Agreement.</p>
+        </div>
+
+        <!-- 2. 资源包投稿基本规范 -->
+        <div class="plaza-section-card">
+            <h2>2. General Requirements for Resource Packs and Articles</h2>
+            <p>To protect the gaming experience, device security, and reading experience of all players, the resource packs, articles, and accompanying information you submit must meet the following requirements:</p>
+            <p>2.1 Submissions must be directly related to Minecraft,《Ocelot Sign Mod》, or《Mishang Urban Construction》(or the ecosystem of their dependency mods). Unrelated files or purely promotional content are not allowed.</p>
+            <p>2.2 It is strictly prohibited to bundle any virus, trojan, malicious script, backdoor, or executable file unrelated to the resource pack in the archive (e.g. .zip).</p>
+            <p>2.3 The resource pack name, supported game versions, compatible mod versions, feature descriptions, and preview images must match the actual contents of the archive. False advertising or misleading titles intended to trick users into downloading are prohibited.</p>
+            <p>2.4 Articles must be your own original work or submitted with the original author's permission for reposting or adaptation. Plagiarism, rewriting, or stitching together others' content is prohibited; when quoting others' opinions, data, or images, cite the source in the article.</p>
+        </div>
+
+        <!-- 3. 信息内容发布规范 -->
+        <div class="plaza-section-card">
+            <h2>3. Content Publishing Rules</h2>
+            <p>You represent and warrant that all content you submit to the Platform — including but not limited to patterns inside the resource pack, text, font files, pack name, description, preview images, external links, as well as article titles, bodies, images, and explanatory text in submission emails — strictly complies with national laws and regulations as well as the rules of the Platform.</p>
+            <p>You must not create, upload, publish, distribute, or encourage discussion of any of the following:</p>
+            <ol class="plaza-terms-list">
+                <li>Discussing or encouraging others to discuss national leaders or highly sensitive political and historical events, or creating or distributing images and text that smear, insult, or tamper with national symbols or legal tender such as the national flag, national emblem, national anthem, or Renminbi;</li>
+                <li>Maliciously defaming or mocking historical and political figures, the national flag, or the national emblem; distorting, desecrating, or denying the deeds and spirit of heroes and martyrs, or infringing upon their reputation and honor; demeaning, tarnishing, or mocking the image, spirit, and character of the nation;</li>
+                <li>Glorifying negative figures, praising already-characterized negative figures, or distorting history; spreading, promoting, or glorifying historical wars of aggression and colonialism;</li>
+                <li>Damaging national honor, image, or interests, endangering national security, disclosing secrets of the Party and the State, subverting state power, overthrowing the socialist system, inciting secession, or undermining national unity and social stability;</li>
+                <li>Inciting illegal assemblies, associations, marches, demonstrations, or gatherings that disrupt social order, undermine social stability and public security, or promoting terrorism or extremism, or inciting terrorist or extremist activities;</li>
+                <li>Opposing the basic principles established by the Constitution;</li>
+                <li>Inciting ethnic hatred or ethnic discrimination, undermining ethnic unity; fabricating or spreading false information or internet rumors;</li>
+                <li>Spreading obscene, pornographic, vulgar, borderline, gambling, violent, murder-related, drug-related, terror-related, bloody, bizarre, or disgusting content that endangers the physical or mental health of oneself or others, or instigating crime;</li>
+                <li>Organizing, publicizing, or providing cheating information or services for large national examinations, including but not limited to the college entrance examination, postgraduate entrance examination, civil service examination, and driving license examination;</li>
+                <li>Embedding links or QR codes of phishing sites, fraudulent sites, pornographic or gambling sites, or illegal platforms in resource pack patterns (such as QR code patterns on signs), file text, or descriptions;</li>
+                <li>Insulting, abusing, or defaming others, infringing upon the lawful rights of others, maliciously disclosing others' private information (such as phone numbers, home addresses, ID numbers, real names), or engaging in fraudulent activities intended to unlawfully seize the property or rights of others;</li>
+                <li>Containing any content that may harm the physical or mental health of minors or infringe upon their personal safety and lawful rights;</li>
+                <li>Other content prohibited from being created, copied, published, or distributed by laws, administrative regulations, and national cyberspace authorities.</li>
+            </ol>
+        </div>
+
+        <!-- 4. 知识产权与版权授权声明 -->
+        <div class="plaza-section-card">
+            <h2>4. Intellectual Property and Licensing</h2>
+            <p>4.1 You warrant that you hold complete and lawful intellectual property rights to the submitted resource pack or article, or have obtained explicit authorization from the original rights holder (including but not limited to authorization for reposting, derivative works, and redistribution). If the pack or article contains materials not created by you, you must clearly state the original author, the original source, and the applicable license in the description or in the article.</p>
+            <p>4.2 When submissions involve fonts and third-party assets, you must comply with the following:</p>
+            <ol class="plaza-terms-list">
+                <li>If your pack contains custom font files (such as .ttf or .otf), you must confirm that the font is free for commercial use, open source (such as the OFL license), or that you have obtained lawful authorization to bundle and distribute it. Bundling or distributing commercially copyrighted fonts without authorization is strictly prohibited;</li>
+                <li>Do not misappropriate textures from other mods or resource packs. Derivative works involving real-world institutional logos, trademarks, or road signs must comply with applicable laws, regulations, and public order and good customs, and must not be used to impersonate official institutions or commit fraud;</li>
+                <li>Submissions must comply with the Minecraft End User License Agreement (EULA) and the open-source or usage licenses of dependency mods (Mishang Urban Construction and Ocelot Sign Mod).</li>
+            </ol>
+            <p>4.3 You retain the copyright of your original submissions. Once your submission is accepted, you grant the Platform a free, non-exclusive, worldwide right of information network dissemination and display, allowing the Platform to store, display, index, and provide your content for other players to download within the website and official promotional channels (the Platform will not use your original resources for commercial sales that violate your right of attribution).</p>
+            <p>4.4 Articles also retain the author's right of attribution. To support the bilingual website, you agree that the Platform may translate accepted articles, with the original author credited in translated versions. For screenshots, data, charts, and other materials quoted in an article, you must confirm their usability and cite the source; submitters bear responsibility for any third-party claims arising from quoted materials.</p>
+        </div>
+
+        <!-- 5. 审核、投诉与举报机制 -->
+        <div class="plaza-section-card">
+            <h2>5. Review, Complaints, and Reporting</h2>
+            <p>5.1 The Platform has the right to conduct formal review and compliance checks on submissions, and reserves the right to refuse, return for revision, or remove any submission that does not comply with this Agreement. However, limited by technical means and review capacity, the Platform's review does not constitute an absolute guarantee of the legality, security, or copyright ownership of any resource pack.</p>
+            <p>5.2 We have established a dedicated complaint and reporting mechanism and welcome supervision from users and rights holders. If you find a resource pack, article, or malicious file on the Platform that violates the rules above, or believe that a submission infringes your lawful rights (such as copyright, privacy, or reputation), please contact us through the following channels:</p>
+            <div class="plaza-terms-contact">
+                <span><strong>Report email:</strong> ocelot.moddev@outlook.com</span>
+                <span><strong>On-site reporting:</strong> <a href="plaza-report.html">Creative Plaza · Report Violations</a></span>
+            </div>
+            <p style="margin-top:16px;">5.3 To help us verify and handle reports quickly, please provide the following materials when filing a complaint or copyright infringement notice:</p>
+            <ol class="plaza-terms-list">
+                <li>The name of the allegedly violating or infringing resource pack or article title and the page link on the Platform;</li>
+                <li>A specific description of the violation or infringement;</li>
+                <li>For copyright complaints, proof of identity and proof of ownership (such as screenshots of the original publication date, project source screenshots, or authorization letters).</li>
+            </ol>
+            <p>We will verify valid reports as soon as possible after receipt, and may remove the content, request changes, or decline to act as appropriate.</p>
+        </div>
+
+        <!-- 6. 违规处理 -->
+        <div class="plaza-section-card">
+            <h2>6. Handling of Violations</h2>
+            <p>If you violate this Agreement or applicable laws and regulations, the Platform may, at its sole discretion and based on the severity of the violation, take one or more of the following measures without prior consent:</p>
+            <p>6.1 Reject, block, delete, or permanently remove the violating submission, and remove related violating descriptions and preview images.</p>
+            <p>6.2 Depending on the severity, we may refuse all future submissions from the violating author.</p>
+            <p>6.3 If your violating or infringing submission causes the Platform to face third-party claims, administrative penalties, or other losses, you shall bear full liability for compensation. For acts suspected of disseminating seriously illegal information, malicious trojans or viruses, fraud, or serious infringement of others' lawful rights, the Platform has the right to retain relevant records and report to competent authorities such as cyberspace administration and public security organs in accordance with the law, and cooperate with investigations.</p>
+        </div>
+
+        <!-- 7. 免责声明与协议变更 -->
+        <div class="plaza-section-card">
+            <h2>7. Disclaimer and Changes to This Agreement</h2>
+            <p>7.1 The Platform serves only as a catalog and technical exchange platform for resource pack and article information. All submissions are created, written, compiled, and submitted by the submitters themselves and do not represent the Platform's views. Submitters bear full legal responsibility for the legality, authenticity, completeness, and copyright compliance of the content they submit.</p>
+            <p>7.2 Before downloading and using a resource pack, players should assess compatibility with their own game client and mod versions, and are advised to back up their saves in advance.</p>
+            <p>7.3 The Platform may revise this Agreement in light of changes in laws and regulations and the needs of website operation. Revised versions will be published on this page and take effect immediately. If you continue to submit or retain submissions after a revision, you are deemed to accept the revised Agreement; if you disagree, you may stop submitting and contact us to withdraw your existing submissions.</p>
+        </div>
+
+        <p style="text-align:center;color:#888;font-size:13px;margin-top:12px;">If you have any questions about this Agreement, please contact us at ocelot.moddev@outlook.com.</p>
+
+    </div><!-- .plaza-body 结束 -->
+
+    <!-- 回到顶部按钮 -->
+    <div class="back-to-top" id="backToTop" title="Back to Top">
+        <svg class="back-to-top-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">TOP</span>
+    </div>
+
+    <script src="../../../js/components.js?v=c147b60a"></script>
+<script>
+(function() {
+  if (!('serviceWorker' in navigator)) return;
+
+  function detectSwPath() {
+    // 通过 components.js 的 src 推算站点根
+    var scripts = document.getElementsByTagName('script');
+    for (var i = 0; i < scripts.length; i++) {
+      var src = scripts[i].src || '';
+      if (src.indexOf('components.js') !== -1) {
+        try {
+          var u = new URL(src);
+          var segs = u.pathname.split('/').filter(Boolean);
+          segs.pop(); // components.js
+          segs.pop(); // js
+          return (segs.length === 0 ? '/' : '/' + segs.join('/') + '/') + 'sw.js';
+        } catch (e) { /* 忽略异常，继续走下一条分支 */ }
+      }
+    }
+    return 'sw.js';
+  }
+
+  function register() {
+    navigator.serviceWorker.register(detectSwPath()).then(function(reg) {
+      // 定时检查更新（30 分钟），用户长时间停留时也能拉到新版
+      setInterval(function() { reg.update().catch(function() {}); }, 30 * 60 * 1000);
+      // 切回标签页时也检查一次
+      document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) reg.update().catch(function() {});
+      });
+    }).catch(function(err) {
+      console.warn('[SW] registration failed:', err);
+    });
+  }
+
+  if (document.readyState === 'complete') {
+    register();
+  } else {
+    window.addEventListener('load', register);
+  }
+})();
+</script>
+</body>
+</html>

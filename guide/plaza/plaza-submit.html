@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <link rel="icon" href="../../favicon.svg?v=23f63ec1" type="image/svg+xml">
+    <link rel="icon" href="../../favicon.svg?v=c147b60a" type="image/svg+xml">
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>告示牌资源包投稿指南 | 豹猫指示牌模组</title>
-    <link rel="stylesheet" href="../../css/common.css?v=23f63ec1">
-    <link rel="stylesheet" href="../../css/icons.css?v=23f63ec1">
-    <link rel="stylesheet" href="../../css/plaza.css?v=23f63ec1">
+    <title>创意广场投稿指南 | 豹猫指示牌模组</title>
+    <link rel="stylesheet" href="../../css/common.css?v=c147b60a">
+    <link rel="stylesheet" href="../../css/icons.css?v=c147b60a">
+    <link rel="stylesheet" href="../../css/plaza.css?v=c147b60a">
     <style>
     /*
         plaza-submit.html —— 投稿指南专用样式
@@ -278,6 +278,85 @@
     }
     .plaza-email-template .plaza-field-content { flex: 1; color: #333; min-width: 200px; }
 
+    /* ---- 协议提示 ---- */
+    .plaza-agreement-notice {
+        margin: 0 0 28px;
+        padding: 20px 24px;
+        background: linear-gradient(135deg, #fff8e8 0%, #fff2d8 100%);
+        border: 1px solid rgba(240, 165, 0, 0.35);
+        border-left: 5px solid #f0a500;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(240, 165, 0, 0.1);
+        font-size: 14.5px;
+        line-height: 1.85;
+        color: #3d3d3d;
+    }
+    .plaza-agreement-notice-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+    .plaza-agreement-notice-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #f0a500;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1;
+        flex-shrink: 0;
+    }
+    .plaza-agreement-notice-head strong {
+        font-size: 16px;
+        color: #8f5f05;
+        letter-spacing: 0.3px;
+    }
+    .plaza-agreement-notice p { margin: 0 0 14px; }
+    .plaza-agreement-notice a {
+        color: #b8790a;
+        font-weight: 600;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(240, 165, 0, 0.45);
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .plaza-agreement-notice a:hover {
+        color: #8f5f05;
+        border-bottom-color: #8f5f05;
+        text-decoration: none;
+    }
+    .plaza-agreement-notice a.plaza-agreement-notice-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 18px;
+        background: #f0a500;
+        color: #fff;
+        font-size: 13.5px;
+        font-weight: 600;
+        border: none;
+        border-radius: 999px;
+        box-shadow: 0 3px 10px rgba(240, 165, 0, 0.28);
+        transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .plaza-agreement-notice a.plaza-agreement-notice-btn:hover {
+        background: #d99400;
+        color: #fff;
+        transform: translateY(-1px);
+        box-shadow: 0 5px 14px rgba(240, 165, 0, 0.34);
+    }
+    @media (max-width: 600px) {
+        .plaza-agreement-notice {
+            padding: 16px 18px;
+            font-size: 14px;
+        }
+        .plaza-agreement-notice-head strong { font-size: 15px; }
+    }
+
     /* ---- 响应式 ---- */
     @media (max-width: 900px) {
         .plaza-hero-submit { padding: 40px 24px 36px; }
@@ -346,8 +425,8 @@
                 返回
             </a>
         </div>
-        <h1>告示牌资源包投稿指南</h1>
-        <p>欢迎各位城建爱好者与模组玩家向<em>"豹猫苦力怕可乐·开发组"</em>投稿您精心制作的《豹猫指示牌模组》告示牌资源包！<br>请在投稿前仔细阅读以下规范，投稿邮箱如下：</p>
+        <h1>创意广场投稿指南</h1>
+        <p>欢迎各位城建爱好者与模组玩家向<em>"豹猫苦力怕可乐·开发组"</em>投稿您精心制作的《豹猫指示牌模组》告示牌资源包，或撰写与模组、城建相关的文章！<br>请在投稿前仔细阅读以下规范，投稿邮箱如下：</p>
         <div class="plaza-email-card">
             <div class="plaza-email-icon"><span class="ic ic-mail" aria-hidden="true"></span></div>
             <div class="plaza-email-text">
@@ -359,6 +438,29 @@
 
     <!-- 广场主体 -->
     <div class="plaza-body">
+
+        <!-- 协议提示 -->
+        <div class="plaza-agreement-notice" role="note">
+            <div class="plaza-agreement-notice-head">
+                <span class="plaza-agreement-notice-icon" aria-hidden="true">!</span>
+                <strong>投稿前请先阅读用户投稿协议</strong>
+            </div>
+            <p>投稿前请先阅读 <a href="plaza-terms.html">《豹猫指示牌模组·创意广场用户投稿协议》</a>。提交投稿即视为您已阅读、理解并同意该协议的全部内容，包括资源包与文章规范、内容合规要求、版权授权声明与违规处理规则。</p>
+            <a class="plaza-agreement-notice-btn" href="plaza-terms.html">查看完整协议 →</a>
+        </div>
+
+        <!-- 投稿类型切换 -->
+        <div class="plaza-type-switch" role="tablist" aria-label="投稿类型">
+            <button class="plaza-type-btn active" data-type="resource" role="tab" aria-selected="true">
+                <span class="ic ic-cube" aria-hidden="true"></span>资源包投稿
+            </button>
+            <button class="plaza-type-btn" data-type="article" role="tab" aria-selected="false">
+                <span class="ic ic-file-text" aria-hidden="true"></span>文章投稿
+            </button>
+        </div>
+
+        <!-- 资源包投稿 -->
+        <div class="plaza-type-pane active" id="type-resource">
 
         <!-- 第 1 节：投稿要求 -->
         <div class="plaza-section-card">
@@ -395,24 +497,9 @@
             </ol>
         </div>
 
-        <!-- 第 2 节：禁止内容 -->
-        <div class="plaza-section-card plaza-section-prohibited">
-            <h2>二、严禁内容清单（一经发现，永久拒收）</h2>
-            <p>您的资源包及配套文件中，<strong>严格禁止</strong>出现以下内容：</p>
-            <ol class="plaza-prohibited-list">
-                <li>涉及任何国家/地区近期或历史的敏感社会性事件。</li>
-                <li>政治人物、政党标志、政治口号等。</li>
-                <li>任何暗示或支持分裂、破坏领土完整的言论或图片。</li>
-                <li>任何露骨、R18、性暗示的图像或文字。</li>
-                <li>血腥、惊悚、引人不适的恶俗梗或暴力画面。</li>
-                <li>未经授权直接解包盗用其他游戏、模组或收费素材库的资源。</li>
-                <li>宣传广告、引流链接或恶意破坏性脚本。</li>
-            </ol>
-        </div>
-
-        <!-- 第 3 节：邮件模板 -->
+        <!-- 第 2 节：邮件模板 -->
         <div class="plaza-section-card">
-            <h2>三、投稿邮件模板</h2>
+            <h2>二、投稿邮件模板</h2>
             <p>准备好您的 <code>.zip</code> 格式资源包后，请使用以下模板发送邮件至 <strong>ocelot.moddev@outlook.com</strong>。</p>
             <div class="plaza-email-template">
                 <p><strong>收件人：</strong>ocelot.moddev@outlook.com</p>
@@ -435,18 +522,84 @@
             </div>
         </div>
 
+        </div><!-- #type-resource 结束 -->
+
+        <!-- 文章投稿 -->
+        <div class="plaza-type-pane" id="type-article">
+
+            <!-- 第 1 节：文章投稿说明 -->
+            <div class="plaza-section-card">
+                <h2>一、文章投稿说明</h2>
+                <p>除资源包外，创意广场也收录与模组、城建相关的原创文章。教程攻略、玩法心得、资源包制作经验、模组介绍与联动玩法等均可投稿。</p>
+                <ol class="plaza-info-list">
+                    <li>文章须为本人原创或已取得原作者的转载、改编授权，引用他人内容时请注明来源。</li>
+                    <li>通过审核的文章将由开发组翻译为<strong>中文与英文</strong>两个版本，并在本站中文、英文页面同步发布，投稿者保留署名权。</li>
+                    <li>正文可直接写在邮件中，也可用 <code>.md</code> 或 <code>.docx</code> 附件提交；配图请统一打包为 <code>.zip</code> 或在正文中按顺序插入。</li>
+                    <li>邮件主题统一为“<strong>【文章投稿】+ 文章标题</strong>”。</li>
+                </ol>
+            </div>
+
+            <!-- 第 2 节：文章邮件模板 -->
+            <div class="plaza-section-card">
+                <h2>二、投稿邮件模板</h2>
+                <p>准备好文章后，请使用以下模板发送邮件至 <strong>ocelot.moddev@outlook.com</strong>。</p>
+                <div class="plaza-email-template">
+                    <p><strong>收件人：</strong>ocelot.moddev@outlook.com</p>
+                    <p><strong>主题：</strong>【文章投稿】[文章标题]</p>
+                    <hr>
+                    <div class="plaza-field">
+                        <span class="plaza-field-label">作者：</span>
+                        <span class="plaza-field-content">_________________（圈名/ID，可附带主页链接）</span>
+                    </div>
+                    <div class="plaza-field">
+                        <span class="plaza-field-label">标题：</span>
+                        <span class="plaza-field-content">________________________________________________</span>
+                    </div>
+                    <div class="plaza-field">
+                        <span class="plaza-field-label">摘要：</span>
+                        <span class="plaza-field-content">__________________（100 字以内，概括文章主题）</span>
+                    </div>
+                    <div class="plaza-field">
+                        <span class="plaza-field-label">正文/附件：</span>
+                        <span class="plaza-field-content">_________（正文粘贴于此，或附 .md / .docx 文件）</span>
+                    </div>
+                    <div class="plaza-field">
+                        <span class="plaza-field-label">配图说明：</span>
+                        <span class="plaza-field-content">________________（图片来源与授权情况，可选）</span>
+                    </div>
+                    <hr>
+                    <p><strong>提示：</strong>文章已在其他平台发布过也可以投稿，请在邮件中附上原发布链接，便于我们核对原创性。</p>
+                </div>
+            </div>
+
+        </div><!-- #type-article 结束 -->
+
+        <!-- 第 3 节：禁止内容 -->
+        <div class="plaza-section-card plaza-section-prohibited">
+            <h2>三、严禁内容清单（一经发现，永久拒收）</h2>
+            <p>您的资源包、文章及配套文件中，<strong>严格禁止</strong>出现以下内容：</p>
+            <ol class="plaza-prohibited-list">
+                <li>涉及任何国家/地区近期或历史的敏感社会性事件。</li>
+                <li>政治人物、政党标志、政治口号等。</li>
+                <li>任何暗示或支持分裂、破坏领土完整的言论或图片。</li>
+                <li>任何露骨、R18、性暗示的图像或文字。</li>
+                <li>血腥、惊悚、引人不适的恶俗梗或暴力画面。</li>
+                <li>未经授权直接解包盗用其他游戏、模组或收费素材库的资源。</li>
+                <li>宣传广告、引流链接或恶意破坏性脚本。</li>
+            </ol>
+        </div>
+
         <!-- 第 4 节：审核流程 -->
         <div class="plaza-section-card">
             <h2>四、审核与收录说明</h2>
             <ol class="plaza-info-list">
                 <li>并非所有投稿都会被收录，通常每 <strong>1~2 个月</strong>集中审阅一次。</li>
                 <li>通过审核后会邮件通知；未通过则不回复，敬请谅解。</li>
-                <li>内容优秀但有格式小问题（如 JSON 错误、路径错误）的资源包，开发组会协助修改完善。</li>
-                <li>存在严重侵权、命名极其不规范或触犯"严禁清单"的资源包，将直接拒绝收录。</li>
+                <li>存在严重侵权、抄袭、命名极其不规范或触犯“严禁清单”的资源包与文章，将直接拒绝收录。</li>
             </ol>
         </div>
 
-        <p style="text-align:center;color:#888;font-size:13px;margin-top:12px;">感谢您对《豹猫指示牌模组》的支持与贡献，期待看到您的创意资源包！</p>
+        <p style="text-align:center;color:#888;font-size:13px;margin-top:12px;">感谢您对《豹猫指示牌模组》的支持与贡献，期待看到您的创意资源包与文章！</p>
 
     </div><!-- .plaza-body 结束 -->
 
@@ -458,7 +611,29 @@
         <span class="back-to-top-label">顶部</span>
     </div>
 
-    <script src="../../js/components.js?v=23f63ec1"></script>
+    <script>
+    // 投稿类型切换
+    document.addEventListener('DOMContentLoaded', function() {
+        const typeBtns = document.querySelectorAll('.plaza-type-btn');
+        const typePanes = document.querySelectorAll('.plaza-type-pane');
+
+        typeBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                typeBtns.forEach(function(b) {
+                    const on = b === btn;
+                    b.classList.toggle('active', on);
+                    b.setAttribute('aria-selected', on ? 'true' : 'false');
+                });
+
+                typePanes.forEach(function(p) {
+                    p.classList.toggle('active', p.id === 'type-' + btn.dataset.type);
+                });
+            });
+        });
+    });
+    </script>
+
+    <script src="../../js/components.js?v=c147b60a"></script>
 <script>
 (function() {
   if (!('serviceWorker' in navigator)) return;

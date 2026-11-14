@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" href="../../../favicon.svg?v=23f63ec1" type="image/svg+xml">
+    <link rel="icon" href="../../../favicon.svg?v=c147b60a" type="image/svg+xml">
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Resource Pack Submission Guide | Ocelot Sign Mod</title>
-    <link rel="stylesheet" href="../../../css/common.css?v=23f63ec1">
-    <link rel="stylesheet" href="../../../css/icons.css?v=23f63ec1">
-    <link rel="stylesheet" href="../../../css/plaza.css?v=23f63ec1">
+    <title>Creative Plaza Submission Guide | Ocelot Sign Mod</title>
+    <link rel="stylesheet" href="../../../css/common.css?v=c147b60a">
+    <link rel="stylesheet" href="../../../css/icons.css?v=c147b60a">
+    <link rel="stylesheet" href="../../../css/plaza.css?v=c147b60a">
     <style>
     /*
         plaza-submit.html —— 投稿指南专用样式
@@ -278,6 +278,85 @@
     }
     .plaza-email-template .plaza-field-content { flex: 1; color: #333; min-width: 200px; }
 
+    /* ---- 协议提示 ---- */
+    .plaza-agreement-notice {
+        margin: 0 0 28px;
+        padding: 20px 24px;
+        background: linear-gradient(135deg, #fff8e8 0%, #fff2d8 100%);
+        border: 1px solid rgba(240, 165, 0, 0.35);
+        border-left: 5px solid #f0a500;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(240, 165, 0, 0.1);
+        font-size: 14.5px;
+        line-height: 1.85;
+        color: #3d3d3d;
+    }
+    .plaza-agreement-notice-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+    .plaza-agreement-notice-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #f0a500;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1;
+        flex-shrink: 0;
+    }
+    .plaza-agreement-notice-head strong {
+        font-size: 16px;
+        color: #8f5f05;
+        letter-spacing: 0.3px;
+    }
+    .plaza-agreement-notice p { margin: 0 0 14px; }
+    .plaza-agreement-notice a {
+        color: #b8790a;
+        font-weight: 600;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(240, 165, 0, 0.45);
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .plaza-agreement-notice a:hover {
+        color: #8f5f05;
+        border-bottom-color: #8f5f05;
+        text-decoration: none;
+    }
+    .plaza-agreement-notice a.plaza-agreement-notice-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 18px;
+        background: #f0a500;
+        color: #fff;
+        font-size: 13.5px;
+        font-weight: 600;
+        border: none;
+        border-radius: 999px;
+        box-shadow: 0 3px 10px rgba(240, 165, 0, 0.28);
+        transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .plaza-agreement-notice a.plaza-agreement-notice-btn:hover {
+        background: #d99400;
+        color: #fff;
+        transform: translateY(-1px);
+        box-shadow: 0 5px 14px rgba(240, 165, 0, 0.34);
+    }
+    @media (max-width: 600px) {
+        .plaza-agreement-notice {
+            padding: 16px 18px;
+            font-size: 14px;
+        }
+        .plaza-agreement-notice-head strong { font-size: 15px; }
+    }
+
     /* ---- 响应式 ---- */
     @media (max-width: 900px) {
         .plaza-hero-submit { padding: 40px 24px 36px; }
@@ -346,8 +425,8 @@
                 Back
             </a>
         </div>
-        <h1>Sign Resource Pack Submission Guide</h1>
-        <p>Welcome! We invite all city-building enthusiasts and mod players to submit your crafted sign resource packs to the <em>Ocelot Creeper Cola Development Group</em>.<br>Please read the guidelines below carefully before submitting:</p>
+        <h1>Creative Plaza Submission Guide</h1>
+        <p>Welcome! We invite all city-building enthusiasts and mod players to submit your crafted sign resource packs, or articles about the mod and city building, to the <em>Ocelot Creeper Cola Development Group</em>.<br>Please read the guidelines below carefully before submitting:</p>
         <div class="plaza-email-card">
             <div class="plaza-email-icon"><span class="ic ic-mail" aria-hidden="true"></span></div>
             <div class="plaza-email-text">
@@ -359,6 +438,29 @@
 
     <!-- 广场主体 -->
     <div class="plaza-body">
+
+        <!-- 协议提示 -->
+        <div class="plaza-agreement-notice" role="note">
+            <div class="plaza-agreement-notice-head">
+                <span class="plaza-agreement-notice-icon" aria-hidden="true">!</span>
+                <strong>Read the Submission Agreement before submitting</strong>
+            </div>
+            <p>Please read the <a href="plaza-terms.html">Ocelot Sign Mod · Creative Plaza Submission Agreement</a> before submitting. Submitting a resource pack or article means you have read, understood, and agree to all of its terms, including the resource pack and article requirements, content rules, copyright licensing, and violation handling.</p>
+            <a class="plaza-agreement-notice-btn" href="plaza-terms.html">Read the full agreement →</a>
+        </div>
+
+        <!-- 投稿类型切换 -->
+        <div class="plaza-type-switch" role="tablist" aria-label="Submission type">
+            <button class="plaza-type-btn active" data-type="resource" role="tab" aria-selected="true">
+                <span class="ic ic-cube" aria-hidden="true"></span>Resource Pack
+            </button>
+            <button class="plaza-type-btn" data-type="article" role="tab" aria-selected="false">
+                <span class="ic ic-file-text" aria-hidden="true"></span>Article
+            </button>
+        </div>
+
+        <!-- 资源包投稿 -->
+        <div class="plaza-type-pane active" id="type-resource">
 
         <!-- 第 1 节：投稿要求 -->
         <div class="plaza-section-card">
@@ -395,24 +497,9 @@
             </ol>
         </div>
 
-        <!-- 第 2 节：禁止内容 -->
-        <div class="plaza-section-card plaza-section-prohibited">
-            <h2>2. Prohibited Content (Immediate &amp; Permanent Rejection)</h2>
-            <p>The following is <strong>strictly prohibited</strong> in your resource pack and any accompanying files:</p>
-            <ol class="plaza-prohibited-list">
-                <li>Recent or historical sensitive social events of any country.</li>
-                <li>Politicians, political party symbols, slogans, or any political content.</li>
-                <li>Any content implying or supporting division or undermining of territorial integrity.</li>
-                <li>Any explicit, R18, or sexually suggestive images or text.</li>
-                <li>Bloody, disturbing, or violent imagery or vulgar memes.</li>
-                <li>Unauthorized use of resources from other games, mods, or paid asset libraries.</li>
-                <li>Advertisements, referral links, or malicious/destructive scripts.</li>
-            </ol>
-        </div>
-
-        <!-- 第 3 节：邮件模板 -->
+        <!-- 第 2 节：邮件模板 -->
         <div class="plaza-section-card">
-            <h2>3. Submission Email Template</h2>
+            <h2>2. Submission Email Template</h2>
             <p>Once your <code>.zip</code> resource pack is ready, send your email to <strong>ocelot.moddev@outlook.com</strong> using the template below:</p>
             <div class="plaza-email-template">
                 <p><strong>To:</strong> ocelot.moddev@outlook.com</p>
@@ -435,18 +522,84 @@
             </div>
         </div>
 
+        </div><!-- #type-resource 结束 -->
+
+        <!-- 文章投稿 -->
+        <div class="plaza-type-pane" id="type-article">
+
+            <!-- 第 1 节：文章投稿说明 -->
+            <div class="plaza-section-card">
+                <h2>1. Article Submissions</h2>
+                <p>Besides resource packs, the Creative Plaza also features original articles related to the mod and city building. Tutorials, gameplay notes, resource pack creation experience, mod introductions, and crossover gameplay write-ups are all welcome.</p>
+                <ol class="plaza-info-list">
+                    <li>Articles must be your own original work or submitted with permission from the original author. Cite the source when quoting others' content.</li>
+                    <li>Accepted articles will be translated by the development team into <strong>both Chinese and English</strong> and published on the Chinese and English pages of this site. The author's attribution is retained.</li>
+                    <li>You can write the article directly in the email, or attach it as <code>.md</code> or <code>.docx</code>. Bundle images into a <code>.zip</code> or insert them in order in the body.</li>
+                    <li>Use the subject line "<strong>[Article Submission] + article title</strong>".</li>
+                </ol>
+            </div>
+
+            <!-- 第 2 节：文章邮件模板 -->
+            <div class="plaza-section-card">
+                <h2>2. Submission Email Template</h2>
+                <p>Once your article is ready, send your email to <strong>ocelot.moddev@outlook.com</strong> using the template below:</p>
+                <div class="plaza-email-template">
+                    <p><strong>To:</strong> ocelot.moddev@outlook.com</p>
+                    <p><strong>Subject:</strong> [Article Submission] [Article Title]</p>
+                    <hr>
+                    <div class="plaza-field">
+                        <span class="plaza-field-label">Author:</span>
+                        <span class="plaza-field-content">_________________ (Nickname/ID; optional homepage links)</span>
+                    </div>
+                    <div class="plaza-field">
+                        <span class="plaza-field-label">Title:</span>
+                        <span class="plaza-field-content">________________________________________________</span>
+                    </div>
+                    <div class="plaza-field">
+                        <span class="plaza-field-label">Abstract:</span>
+                        <span class="plaza-field-content">__________________ (within 100 words, summarizing the topic)</span>
+                    </div>
+                    <div class="plaza-field">
+                        <span class="plaza-field-label">Body/Attachment:</span>
+                        <span class="plaza-field-content">_________ (paste the article here, or attach .md / .docx)</span>
+                    </div>
+                    <div class="plaza-field">
+                        <span class="plaza-field-label">Image credits:</span>
+                        <span class="plaza-field-content">________________ (sources and permissions, optional)</span>
+                    </div>
+                    <hr>
+                    <p><strong>Note:</strong> Articles already published on other platforms are also welcome — just include the original link in your email so that we can verify originality.</p>
+                </div>
+            </div>
+
+        </div><!-- #type-article 结束 -->
+
+        <!-- 第 3 节：禁止内容 -->
+        <div class="plaza-section-card plaza-section-prohibited">
+            <h2>3. Prohibited Content (Immediate &amp; Permanent Rejection)</h2>
+            <p>The following is <strong>strictly prohibited</strong> in your resource pack, article, and any accompanying files:</p>
+            <ol class="plaza-prohibited-list">
+                <li>Recent or historical sensitive social events of any country.</li>
+                <li>Politicians, political party symbols, slogans, or any political content.</li>
+                <li>Any content implying or supporting division or undermining of territorial integrity.</li>
+                <li>Any explicit, R18, or sexually suggestive images or text.</li>
+                <li>Bloody, disturbing, or violent imagery or vulgar memes.</li>
+                <li>Unauthorized use of resources from other games, mods, or paid asset libraries.</li>
+                <li>Advertisements, referral links, or malicious/destructive scripts.</li>
+            </ol>
+        </div>
+
         <!-- 第 4 节：审核流程 -->
         <div class="plaza-section-card">
             <h2>4. Review &amp; Curation Policy</h2>
             <ol class="plaza-info-list">
                 <li>Not all submissions are guaranteed to be officially curated. Reviews are typically conducted once every <strong>1–2 months</strong>.</li>
                 <li>If your pack passes review and is selected, we will send a formal notification by email. If not selected, no reply will be sent — thank you for your understanding.</li>
-                <li>For high-quality submissions with minor formatting issues (JSON errors, incorrect paths), the development team will assist with corrections.</li>
-                <li>Serious copyright infringement, severely non-standard naming, or violation of the "Prohibited Content" list will result in outright rejection.</li>
+                <li>Serious copyright infringement, plagiarism, severely non-standard naming, or violation of the "Prohibited Content" list will result in outright rejection of the resource pack or article.</li>
             </ol>
         </div>
 
-        <p style="text-align:center;color:#888;font-size:13px;margin-top:12px;">Thank you for your support and contributions to the Ocelot Sign Mod!</p>
+        <p style="text-align:center;color:#888;font-size:13px;margin-top:12px;">Thank you for your support and contributions to the Ocelot Sign Mod — we look forward to your resource packs and articles!</p>
 
     </div><!-- .plaza-body 结束 -->
 
@@ -458,7 +611,29 @@
         <span class="back-to-top-label">TOP</span>
     </div>
 
-    <script src="../../../js/components.js?v=23f63ec1"></script>
+    <script>
+    // 投稿类型切换
+    document.addEventListener('DOMContentLoaded', function() {
+        const typeBtns = document.querySelectorAll('.plaza-type-btn');
+        const typePanes = document.querySelectorAll('.plaza-type-pane');
+
+        typeBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                typeBtns.forEach(function(b) {
+                    const on = b === btn;
+                    b.classList.toggle('active', on);
+                    b.setAttribute('aria-selected', on ? 'true' : 'false');
+                });
+
+                typePanes.forEach(function(p) {
+                    p.classList.toggle('active', p.id === 'type-' + btn.dataset.type);
+                });
+            });
+        });
+    });
+    </script>
+
+    <script src="../../../js/components.js?v=c147b60a"></script>
 <script>
 (function() {
   if (!('serviceWorker' in navigator)) return;

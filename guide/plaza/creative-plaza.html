@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <link rel="icon" href="../../favicon.svg?v=23f63ec1" type="image/svg+xml">
+    <link rel="icon" href="../../favicon.svg?v=c147b60a" type="image/svg+xml">
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>创意广场 | 豹猫指示牌模组</title>
-    <link rel="stylesheet" href="../../css/common.css?v=23f63ec1">
-    <link rel="stylesheet" href="../../css/icons.css?v=23f63ec1">
-    <link rel="stylesheet" href="../../css/layout.css?v=23f63ec1">
-    <link rel="stylesheet" href="../../css/content.css?v=23f63ec1">
-    <link rel="stylesheet" href="../../css/plaza.css?v=23f63ec1">
+    <link rel="stylesheet" href="../../css/common.css?v=c147b60a">
+    <link rel="stylesheet" href="../../css/icons.css?v=c147b60a">
+    <link rel="stylesheet" href="../../css/layout.css?v=c147b60a">
+    <link rel="stylesheet" href="../../css/content.css?v=c147b60a">
+    <link rel="stylesheet" href="../../css/plaza.css?v=c147b60a">
 </head>
 <body class="plaza-page">
     <div id="site-header"></div>
@@ -17,8 +17,12 @@
     <!-- 广场首屏 -->
     <section class="plaza-hero">
         <h1>创意广场</h1>
-        <p>展示社区优质资源包的精选空间，发现有趣的图案、字体与自定义模型灵感。<br>所有作品均来自社区作者投稿，经模组开发组审核后展示。</p>
-        <a class="plaza-submit-btn" href="plaza-submit.html"><span class="ic ic-mail" aria-hidden="true"></span>通过邮箱投稿资源包</a>
+        <p>展示社区优质资源包、模组优化与文章内容的精选空间，发现有趣的图案、字体与自定义模型灵感。<br>所有作品均来自社区作者投稿，经模组开发组审核后展示。</p>
+        <div class="plaza-hero-actions">
+            <a class="plaza-submit-btn" href="plaza-submit.html"><span class="ic ic-mail" aria-hidden="true"></span>通过邮箱投稿资源包 / 文章</a>
+            <a class="plaza-report-btn" href="plaza-report.html"><span class="ic ic-alert" aria-hidden="true"></span>举报违规内容</a>
+            <a class="plaza-report-btn" href="plaza-terms.html"><span class="ic ic-file-text" aria-hidden="true"></span>用户投稿协议</a>
+        </div>
     </section>
 
     <!-- 广场主体 -->
@@ -27,7 +31,22 @@
             <span class="plaza-coming-soon-icon ic ic-map-pin" aria-hidden="true"></span>
             <p>这是一个展示社区优质资源包的精选空间。我们会持续关注社区动态，筛选极具巧思的图案资源入驻广场。你也可以根据本模组开发其他国家或地区的交通标志。</p>
             <p>为保证资源包符合中国大陆相关法律规范，创意广场采取"官方定向采编"模式，不开放自助上传。经模组开发组审核通过的优质资源，我们将以"作者原链接"的形式进行推介。期待看到更多优秀作品！</p>
+            <p>除资源包外，创意广场也收录教程攻略、玩法心得、资源包制作经验、模组介绍与联动玩法等原创文章，具体格式与投稿方式详见投稿指南。</p>
         </div>
+
+        <!-- 一级分类 -->
+        <div class="plaza-category-nav">
+            <button class="plaza-category-btn active" data-category="resource">
+                <span class="plaza-category-name">资源包与模组（3）</span>
+                <span class="plaza-category-desc">图案包、字体包、材质包与模组优化</span>
+            </button>
+            <button class="plaza-category-btn" data-category="articles">
+                <span class="plaza-category-name">文章投稿（0）</span>
+                <span class="plaza-category-desc">教程、玩法心得与模组介绍</span>
+            </button>
+        </div>
+
+        <div class="plaza-category-pane active" id="cat-resource">
 
         <!-- 标签导航 -->
         <div class="plaza-tabs">
@@ -46,7 +65,7 @@
             <div class="plaza-card-grid">
                 <a href="road/1.html" class="plaza-card">
                     <div class="plaza-card-thumb">
-                        <img class="plaza-card-thumb-image" src="../../pic/plaza/road/1/cover.webp?v=23f63ec1" alt="中国香港交通标志封面">
+                        <img class="plaza-card-thumb-image" src="../../pic/plaza/road/1/cover.webp?v=c147b60a" alt="中国香港交通标志封面">
                     </div>
                     <div class="plaza-card-body">
                         <h3 class="plaza-card-title">中国香港交通标志</h3>
@@ -55,7 +74,7 @@
                 </a>
                 <a href="road/2.html" class="plaza-card">
                     <div class="plaza-card-thumb">
-                        <img class="plaza-card-thumb-image" src="../../pic/plaza/road/2/cover.webp?v=23f63ec1" alt="中国台湾交通标志封面">
+                        <img class="plaza-card-thumb-image" src="../../pic/plaza/road/2/cover.webp?v=c147b60a" alt="中国台湾交通标志封面">
                     </div>
                     <div class="plaza-card-body">
                         <h3 class="plaza-card-title">中国台湾交通标志</h3>
@@ -92,7 +111,7 @@
             <div class="plaza-card-grid">
                 <a href="mod_optimization/1.html" class="plaza-card">
                     <div class="plaza-card-thumb">
-                        <img class="plaza-card-thumb-image" src="../../pic/plaza/mod_optimization/1/cover.webp?v=23f63ec1" alt="迷上城建道路视觉优化封面">
+                        <img class="plaza-card-thumb-image" src="../../pic/plaza/mod_optimization/1/cover.webp?v=c147b60a" alt="迷上城建道路视觉优化封面">
                     </div>
                     <div class="plaza-card-body">
                         <h3 class="plaza-card-title">迷上城建道路视觉优化</h3>
@@ -113,6 +132,16 @@
                 <p>其他类型资源包正在征集中。</p>
             </div>
         </div>
+
+        </div><!-- #cat-resource 结束 -->
+
+        <!-- 文章投稿 -->
+        <div class="plaza-category-pane" id="cat-articles">
+            <div class="plaza-empty">
+                <div class="plaza-empty-icon"><span class="ic ic-file-text" aria-hidden="true"></span></div>
+                <p>文章投稿板块正在筹备中。教程攻略、玩法心得、资源包制作经验、模组介绍与联动玩法等原创文章均可投稿，欢迎通过邮箱提交。<br>具体要求与邮件模板请见<a href="plaza-submit.html">投稿指南</a>。</p>
+            </div>
+        </div>
     </div>
 
     <!-- 回到顶部按钮 -->
@@ -123,8 +152,27 @@
         <span class="back-to-top-label">顶部</span>
     </div>
 
-    <script src="../../js/components.js?v=23f63ec1"></script>
+    <script src="../../js/components.js?v=c147b60a"></script>
     <script>
+    // 一级分类切换
+    document.addEventListener('DOMContentLoaded', function() {
+        const categoryBtns = document.querySelectorAll('.plaza-category-btn');
+        const categoryPanes = document.querySelectorAll('.plaza-category-pane');
+
+        categoryBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                const targetId = 'cat-' + this.dataset.category;
+
+                categoryBtns.forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+
+                categoryPanes.forEach(function(p) {
+                    p.classList.toggle('active', p.id === targetId);
+                });
+            });
+        });
+    });
+
     // 标签切换
     document.addEventListener('DOMContentLoaded', function() {
         const tabs = document.querySelectorAll('.plaza-tab');

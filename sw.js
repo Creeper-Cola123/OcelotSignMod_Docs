@@ -1,7 +1,7 @@
 // sw.js — Service Worker for Ocelot Sign Mod Wiki
 // 本文件由 build.js 自动生成，不要手动修改下面这行 VERSION。
 // 当 build.js 替换 VERSION 时，浏览器检测到字节变化 → install 新 SW。
-const VERSION = '23f63ec1';
+const VERSION = 'c147b60a';
 
 self.addEventListener('install', (event) => {
   // 新 SW 立即激活，不等旧 tab 关闭

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" href="../../../favicon.svg?v=23f63ec1" type="image/svg+xml">
+    <link rel="icon" href="../../../favicon.svg?v=c147b60a" type="image/svg+xml">
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Creative Plaza | Ocelot Sign Mod</title>
-    <link rel="stylesheet" href="../../../css/common.css?v=23f63ec1">
-    <link rel="stylesheet" href="../../../css/icons.css?v=23f63ec1">
-    <link rel="stylesheet" href="../../../css/layout.css?v=23f63ec1">
-    <link rel="stylesheet" href="../../../css/content.css?v=23f63ec1">
-    <link rel="stylesheet" href="../../../css/plaza.css?v=23f63ec1">
+    <link rel="stylesheet" href="../../../css/common.css?v=c147b60a">
+    <link rel="stylesheet" href="../../../css/icons.css?v=c147b60a">
+    <link rel="stylesheet" href="../../../css/layout.css?v=c147b60a">
+    <link rel="stylesheet" href="../../../css/content.css?v=c147b60a">
+    <link rel="stylesheet" href="../../../css/plaza.css?v=c147b60a">
 </head>
 <body class="plaza-page">
     <div id="site-header"></div>
@@ -17,8 +17,12 @@
     <!-- 广场首屏 -->
     <section class="plaza-hero">
         <h1>Creative Plaza</h1>
-        <p>A curated space showcasing high-quality community resource packs — discover interesting patterns, fonts, and custom model inspiration.<br>All works come from community submissions and are reviewed by the mod development team before display.</p>
-        <a class="plaza-submit-btn" href="plaza-submit.html"><span class="ic ic-mail" aria-hidden="true"></span>Submit a resource pack via email</a>
+        <p>A curated space showcasing high-quality community resource packs, mod optimizations, and articles — discover interesting patterns, fonts, and custom model inspiration.<br>All works come from community submissions and are reviewed by the mod development team before display.</p>
+        <div class="plaza-hero-actions">
+            <a class="plaza-submit-btn" href="plaza-submit.html"><span class="ic ic-mail" aria-hidden="true"></span>Submit a resource pack / article via email</a>
+            <a class="plaza-report-btn" href="plaza-report.html"><span class="ic ic-alert" aria-hidden="true"></span>Report inappropriate content</a>
+            <a class="plaza-report-btn" href="plaza-terms.html"><span class="ic ic-file-text" aria-hidden="true"></span>Submission Agreement</a>
+        </div>
     </section>
 
     <!-- 广场主体 -->
@@ -27,7 +31,22 @@
             <span class="plaza-coming-soon-icon ic ic-map-pin" aria-hidden="true"></span>
             <p>This is a curated space that showcases high-quality community resource packs. We will keep tracking community activity and select creative patterns to be featured in the Plaza. You are also welcome to develop traffic signs for other countries or regions using this mod.</p>
             <p>To ensure that resource packs comply with Chinese Mainland laws and regulations, the Creative Plaza currently operates in a "curated submission" mode rather than open self-service upload. For high-quality resources reviewed and approved by the mod development team, we will promote them in the form of "original links from the authors". We apologize for the inconvenience and look forward to seeing more outstanding works!</p>
+            <p>Besides resource packs, the Creative Plaza also features original articles such as tutorials, gameplay notes, resource pack creation experience, mod introductions, and crossover gameplay write-ups. See the submission guide for formats and how to submit.</p>
         </div>
+
+        <!-- 一级分类 -->
+        <div class="plaza-category-nav">
+            <button class="plaza-category-btn active" data-category="resource">
+                <span class="plaza-category-name">Resource Packs &amp; Mods (3)</span>
+                <span class="plaza-category-desc">Pattern packs, font packs, resource packs, and mod optimizations</span>
+            </button>
+            <button class="plaza-category-btn" data-category="articles">
+                <span class="plaza-category-name">Articles (0)</span>
+                <span class="plaza-category-desc">Tutorials, gameplay notes, and mod introductions</span>
+            </button>
+        </div>
+
+        <div class="plaza-category-pane active" id="cat-resource">
 
         <!-- 标签导航 -->
         <div class="plaza-tabs">
@@ -46,7 +65,7 @@
             <div class="plaza-card-grid">
                 <a href="road/1.html" class="plaza-card">
                     <div class="plaza-card-thumb">
-                        <img class="plaza-card-thumb-image" src="../../../pic/plaza/road/1/cover.webp?v=23f63ec1" alt="Hong Kong, China Traffic Signs Cover">
+                        <img class="plaza-card-thumb-image" src="../../../pic/plaza/road/1/cover.webp?v=c147b60a" alt="Hong Kong, China Traffic Signs Cover">
                     </div>
                     <div class="plaza-card-body">
                         <h3 class="plaza-card-title">Hong Kong, China Traffic Signs</h3>
@@ -55,7 +74,7 @@
                 </a>
                 <a href="road/2.html" class="plaza-card">
                     <div class="plaza-card-thumb">
-                        <img class="plaza-card-thumb-image" src="../../../pic/plaza/road/2/cover.webp?v=23f63ec1" alt="Taiwan, a Province of China Traffic Signs Cover">
+                        <img class="plaza-card-thumb-image" src="../../../pic/plaza/road/2/cover.webp?v=c147b60a" alt="Taiwan, a Province of China Traffic Signs Cover">
                     </div>
                     <div class="plaza-card-body">
                         <h3 class="plaza-card-title">Taiwan, a Province of China Traffic Signs</h3>
@@ -92,7 +111,7 @@
             <div class="plaza-card-grid">
                 <a href="mod_optimization/1.html" class="plaza-card">
                     <div class="plaza-card-thumb">
-                        <img class="plaza-card-thumb-image" src="../../../pic/plaza/mod_optimization/1/cover.webp?v=23f63ec1" alt="Mishang Urban Construction Road Visual Optimization Cover">
+                        <img class="plaza-card-thumb-image" src="../../../pic/plaza/mod_optimization/1/cover.webp?v=c147b60a" alt="Mishang Urban Construction Road Visual Optimization Cover">
                     </div>
                     <div class="plaza-card-body">
                         <h3 class="plaza-card-title">Mishang Urban Construction Road Visual Optimization</h3>
@@ -113,6 +132,16 @@
                 <p>Other resource packs coming soon.</p>
             </div>
         </div>
+
+        </div><!-- #cat-resource 结束 -->
+
+        <!-- 文章投稿 -->
+        <div class="plaza-category-pane" id="cat-articles">
+            <div class="plaza-empty">
+                <div class="plaza-empty-icon"><span class="ic ic-file-text" aria-hidden="true"></span></div>
+                <p>The article section is being prepared. Original tutorials, gameplay notes, resource pack creation experience, mod introductions, and crossover gameplay write-ups are all welcome — submit them by email.<br>See the <a href="plaza-submit.html">submission guide</a> for requirements and the email template.</p>
+            </div>
+        </div>
     </div>
 
     <!-- 回到顶部按钮 -->
@@ -123,8 +152,27 @@
         <span class="back-to-top-label">TOP</span>
     </div>
 
-    <script src="../../../js/components.js?v=23f63ec1"></script>
+    <script src="../../../js/components.js?v=c147b60a"></script>
     <script>
+    // 一级分类切换
+    document.addEventListener('DOMContentLoaded', function() {
+        const categoryBtns = document.querySelectorAll('.plaza-category-btn');
+        const categoryPanes = document.querySelectorAll('.plaza-category-pane');
+
+        categoryBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                const targetId = 'cat-' + this.dataset.category;
+
+                categoryBtns.forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+
+                categoryPanes.forEach(function(p) {
+                    p.classList.toggle('active', p.id === targetId);
+                });
+            });
+        });
+    });
+
     // 标签切换
     document.addEventListener('DOMContentLoaded', function() {
         const tabs = document.querySelectorAll('.plaza-tab');

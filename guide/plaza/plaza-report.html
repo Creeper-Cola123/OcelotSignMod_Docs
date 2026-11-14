@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="icon" href="../../favicon.svg?v=c147b60a" type="image/svg+xml">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>违规内容举报 | 豹猫指示牌模组</title>
+    <link rel="stylesheet" href="../../css/common.css?v=c147b60a">
+    <link rel="stylesheet" href="../../css/icons.css?v=c147b60a">
+    <link rel="stylesheet" href="../../css/plaza.css?v=c147b60a">
+    <style>
+    /*
+        plaza-report.html —— 举报指南专用样式
+        首屏与分区卡片复用了投稿指南（plaza-submit.html）的视觉规范。
+    */
+
+    /* ---- 广场首屏条带 —— 与创意广场首屏相同的分层渐变 + 光晕 + 点阵网格 ---- */
+    .plaza-hero-submit {
+        position: relative;
+        overflow: hidden;
+        padding: 56px 60px 44px;
+        text-align: center;
+        color: #fff;
+        background:
+            radial-gradient(circle at 18% 28%, rgba(74, 144, 217, 0.32), transparent 55%),
+            radial-gradient(circle at 82% 78%, rgba(240, 165, 0, 0.22), transparent 60%),
+            linear-gradient(135deg, #15152b 0%, #1f1f3d 55%, #15152b 100%);
+        isolation: isolate;
+    }
+    .plaza-hero-submit::before {
+        /* 与 .plaza-hero 相同的细腻点阵网格，营造高级质感 */
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+        background-size: 22px 22px;
+        background-position: 0 0;
+        z-index: 0;
+        pointer-events: none;
+    }
+    .plaza-hero-submit > * {
+        position: relative;
+        z-index: 1;
+    }
+    .plaza-hero-submit h1 {
+        font-size: 32px;
+        color: #fff;
+        margin-bottom: 14px;
+        letter-spacing: 2px;
+        font-weight: 700;
+        text-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    }
+    .plaza-hero-submit p {
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.78);
+        max-width: 640px;
+        margin: 0 auto 28px;
+        line-height: 1.85;
+    }
+
+    /* ---- 广场主体 ---- */
+    .plaza-body {
+        padding: 48px 60px 72px;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    /* ---- 分区卡片 —— 与广场的暖色卡片表面保持一致 ---- */
+    .plaza-section-card {
+        position: relative;
+        background: linear-gradient(135deg, #fafaf5 0%, #fff 100%);
+        border: 1px solid rgba(212, 201, 168, 0.3);
+        border-radius: 12px;
+        padding: 28px 32px;
+        margin-bottom: 24px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+    .plaza-section-card h2 {
+        font-size: 20px;
+        color: #1a1a2e;
+        margin: 0 0 20px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid rgba(212, 201, 168, 0.4);
+        letter-spacing: 0.5px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .plaza-section-card h2::before {
+        /* 竖向黄色渐变装饰条，与 plaza.css 中的区块标题保持一致 */
+        content: "";
+        width: 4px;
+        height: 18px;
+        background: linear-gradient(180deg, #f0a500, #ffc233);
+        border-radius: 2px;
+        flex-shrink: 0;
+    }
+    .plaza-section-card p {
+        font-size: 14px;
+        color: #444;
+        line-height: 1.85;
+        margin-bottom: 12px;
+    }
+    .plaza-section-card p:last-child { margin-bottom: 0; }
+    .plaza-section-card a {
+        color: #b8790a;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(240, 165, 0, 0.45);
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .plaza-section-card a:hover {
+        color: #8f5f05;
+        border-bottom-color: #8f5f05;
+        text-decoration: none;
+    }
+
+    /* ---- 邮箱卡片 —— 与投稿指南的邮箱卡片一致 ---- */
+    .plaza-email-card {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 18px 24px;
+        background: linear-gradient(135deg, #fffaf0 0%, #fff5e0 100%);
+        border: 1px solid rgba(240, 165, 0, 0.18);
+        border-left: 4px solid #f0a500;
+        border-radius: 12px;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+        box-shadow: 0 4px 16px rgba(240, 165, 0, 0.07);
+    }
+    .plaza-email-card .plaza-email-icon { font-size: 28px; flex-shrink: 0; color: #f0a500; }
+    .plaza-email-card .plaza-email-icon .ic { width: 28px; height: 28px; }
+    .plaza-email-card .plaza-email-text { flex: 1; min-width: 200px; }
+    .plaza-email-card .plaza-email-text strong {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 4px;
+        color: #1a1a2e;
+    }
+    .plaza-email-card .plaza-email-text span { font-size: 13px; color: #666; }
+
+    /* 位于首屏语境中的邮箱卡片使用半透明白色，保证深色渐变上的可读性 */
+    .plaza-hero-submit .plaza-email-card {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-left: 4px solid rgba(255, 255, 255, 0.25);
+        box-shadow: none;
+        max-width: 560px;
+        margin: 0 auto 4px;
+    }
+    .plaza-hero-submit .plaza-email-card .plaza-email-text strong { color: #fff; }
+    .plaza-hero-submit .plaza-email-card .plaza-email-text span { color: rgba(255, 255, 255, 0.7); }
+
+    /* ---- 信息列表 ---- */
+    .plaza-info-list {
+        list-style: none;
+        counter-reset: plaza-info;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .plaza-info-list li {
+        position: relative;
+        counter-increment: plaza-info;
+        padding-left: 22px;
+        font-size: 14px;
+        line-height: 1.85;
+        color: #333;
+    }
+    .plaza-info-list li::before {
+        content: counter(plaza-info) ".";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #1a1a2e;
+        font-weight: 700;
+        line-height: 1.85;
+    }
+    .plaza-info-list li strong { color: #1a1a2e; }
+    .plaza-info-list li code {
+        background: rgba(240, 165, 0, 0.12);
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-size: 13px;
+        color: #1a1a2e;
+        font-weight: 500;
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    /* ---- 邮件模板 ---- */
+    .plaza-email-template {
+        background: linear-gradient(135deg, #fff 0%, #fffaf0 100%);
+        border: 1px solid rgba(212, 201, 168, 0.4);
+        border-radius: 12px;
+        padding: 20px 24px;
+        font-size: 14px;
+        line-height: 2;
+        margin-top: 16px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+    .plaza-email-template p { margin: 0 0 8px; color: #444; }
+    .plaza-email-template p:last-child { margin-bottom: 0; }
+    .plaza-email-template hr {
+        width: 100%; margin: 14px auto; border: none; border-top: 1px dashed rgba(212, 201, 168, 0.5);
+    }
+    .plaza-email-template .plaza-field {
+        display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .plaza-email-template .plaza-field-label {
+        font-weight: 600;
+        min-width: 80px;
+        color: #1a1a2e;
+    }
+    .plaza-email-template .plaza-field-content { flex: 1; color: #333; min-width: 200px; }
+
+    /* ---- 响应式 ---- */
+    @media (max-width: 900px) {
+        .plaza-hero-submit { padding: 40px 24px 36px; }
+        .plaza-body { padding: 32px 24px 56px; }
+        .plaza-back-btn-wrap { top: 40px; left: 24px; }
+    }
+    @media (max-width: 600px) {
+        .plaza-section-card { padding: 20px 18px; }
+        .plaza-hero-submit h1 { font-size: 26px; letter-spacing: 1.5px; }
+        .plaza-back-btn-wrap { top: 32px; left: 16px; }
+    }
+
+    /* ---- 入场动画 ---- */
+    .plaza-hero-submit h1 { animation: anim-pop-in 0.7s cubic-bezier(0.2, 0.8, 0.3, 1.3) 0.2s both; }
+    .plaza-hero-submit p  { animation: anim-fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.35s both; }
+
+    /* ---- 返回链接（浮动在与 h1 同高的位置、正文左缘） ---- */
+    .plaza-back-btn-wrap {
+        position: absolute;
+        top: 56px;
+        left: 60px;
+        z-index: 2;
+        text-align: left;
+        animation: anim-fade-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+    .plaza-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: color 0.2s;
+        letter-spacing: 0.3px;
+    }
+    .plaza-back-btn:hover {
+        color: #fff;
+        text-decoration: none;
+    }
+    .plaza-back-btn-arrow {
+        width: 14px;
+        height: 14px;
+        fill: currentColor;
+        display: block;
+        flex-shrink: 0;
+    }
+    </style>
+</head>
+<body class="plaza-page">
+    <div id="site-header"></div>
+
+    <!-- 举报首屏 -->
+    <section class="plaza-hero-submit">
+        <div class="plaza-back-btn-wrap">
+            <a class="plaza-back-btn" href="creative-plaza.html">
+                <svg class="plaza-back-btn-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+                返回
+            </a>
+        </div>
+        <h1>违规内容举报</h1>
+        <p>创意广场的投稿均经开发组审核后展示。若您发现资源包、模组或文章投稿中存在反动、侵权、色情或其他违法违规内容，欢迎通过邮件向我们举报。<br>请先阅读以下说明，以便我们更快核实与处理。</p>
+        <div class="plaza-email-card">
+            <div class="plaza-email-icon"><span class="ic ic-mail" aria-hidden="true"></span></div>
+            <div class="plaza-email-text">
+                <strong>举报邮箱</strong>
+                <span>ocelot.moddev@outlook.com</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 举报主体 -->
+    <div class="plaza-body">
+
+        <!-- 第 1 节：举报范围 -->
+        <div class="plaza-section-card">
+            <h2>一、可举报的内容类型</h2>
+            <p>所有投稿均依据<a href="plaza-terms.html">《豹猫指示牌模组·创意广场用户投稿协议》</a>审核后展示，但受技术与人力所限，仍可能出现疏漏。若您发现以下情况，请及时告知我们：</p>
+            <ol class="plaza-info-list">
+                <li><strong>反动与政治敏感内容</strong>：违背相关法律法规、危害国家统一与领土完整的言论或图像。</li>
+                <li><strong>侵权内容</strong>：未经授权使用他人的图案、模型、字体或素材，或抄袭、洗稿、未经授权转载他人文章，侵犯著作权、商标权等知识产权。</li>
+                <li><strong>色情低俗内容</strong>：露骨、R18 或带有性暗示的图像与文字。</li>
+                <li><strong>暴力血腥内容</strong>：惊悚、引人不适的恶俗梗或暴力画面。</li>
+                <li><strong>恶意与欺诈内容</strong>：广告引流、诈骗链接、破坏性脚本等危害用户安全的内容。</li>
+                <li><strong>其他违规内容</strong>：违反中国大陆法律法规或<a href="plaza-terms.html">《豹猫指示牌模组·创意广场用户投稿协议》</a>的其他信息。</li>
+            </ol>
+        </div>
+
+        <!-- 第 2 节：举报方式 -->
+        <div class="plaza-section-card">
+            <h2>二、举报方式</h2>
+            <ol class="plaza-info-list">
+                <li>请使用下方邮件模板，将举报信息发送至 <strong>ocelot.moddev@outlook.com</strong>。</li>
+                <li>邮件主题统一为“<strong>【举报】+ 被举报资源名称或文章标题</strong>”。</li>
+                <li>请写明<strong>页面链接、资源包名称或文章标题</strong>，以便我们准确定位被举报内容。</li>
+                <li>请简要说明问题类型与具体位置，如有截图或录屏证据请一并附上。</li>
+                <li>如需了解处理结果，可在邮件中留下常用邮箱；我们<strong>不会公开举报人信息</strong>。</li>
+            </ol>
+        </div>
+
+        <!-- 第 3 节：举报邮件模板 -->
+        <div class="plaza-section-card">
+            <h2>三、举报邮件模板</h2>
+            <p>可直接复制以下格式填写，内容越具体，核实效率越高。</p>
+            <div class="plaza-email-template">
+                <p><strong>收件人：</strong>ocelot.moddev@outlook.com</p>
+                <p><strong>主题：</strong>【举报】[被举报资源名称或文章标题]</p>
+                <hr>
+                <div class="plaza-field">
+                    <span class="plaza-field-label">被举报内容：</span>
+                    <span class="plaza-field-content">______________________________（页面链接、资源包名称或文章标题）</span>
+                </div>
+                <div class="plaza-field">
+                    <span class="plaza-field-label">问题类型：</span>
+                    <span class="plaza-field-content">__________________（反动 / 侵权 / 色情 / 暴力 / 诈骗 / 其他）</span>
+                </div>
+                <div class="plaza-field">
+                    <span class="plaza-field-label">问题说明：</span>
+                    <span class="plaza-field-content">______________________________（具体位置与情况描述）</span>
+                </div>
+                <div class="plaza-field">
+                    <span class="plaza-field-label">附件：</span>
+                    <span class="plaza-field-content">________________________（截图或录屏，可选）</span>
+                </div>
+                <hr>
+                <p><strong>提示：</strong>若您是权利人或其代理人，请附上权属证明，以便我们加快处理。</p>
+            </div>
+        </div>
+
+        <!-- 第 4 节：处理说明 -->
+        <div class="plaza-section-card">
+            <h2>四、处理流程与说明</h2>
+            <ol class="plaza-info-list">
+                <li>收到举报后，开发组将尽快核实。</li>
+                <li>核实属实的内容会立即下架，并视情节决定是否拒绝该作者的后续投稿。</li>
+                <li>存在争议的内容可能先行隐藏，待补充说明后再作判定。</li>
+                <li>证据不足、重复提交或明显恶意的举报，我们将不予处理。</li>
+                <li>若您在邮件中留下联系方式，处理结果将通过邮件反馈。</li>
+            </ol>
+        </div>
+
+        <p style="text-align:center;color:#888;font-size:13px;margin-top:12px;">感谢您帮助我们维护创意广场的内容环境！</p>
+
+    </div><!-- .plaza-body 结束 -->
+
+    <!-- 回到顶部按钮 -->
+    <div class="back-to-top" id="backToTop" title="回到顶部">
+        <svg class="back-to-top-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">顶部</span>
+    </div>
+
+    <script src="../../js/components.js?v=c147b60a"></script>
+<script>
+(function() {
+  if (!('serviceWorker' in navigator)) return;
+
+  function detectSwPath() {
+    // 通过 components.js 的 src 推算站点根
+    var scripts = document.getElementsByTagName('script');
+    for (var i = 0; i < scripts.length; i++) {
+      var src = scripts[i].src || '';
+      if (src.indexOf('components.js') !== -1) {
+        try {
+          var u = new URL(src);
+          var segs = u.pathname.split('/').filter(Boolean);
+          segs.pop(); // components.js
+          segs.pop(); // js
+          return (segs.length === 0 ? '/' : '/' + segs.join('/') + '/') + 'sw.js';
+        } catch (e) { /* 忽略异常，继续走下一条分支 */ }
+      }
+    }
+    return 'sw.js';
+  }
+
+  function register() {
+    navigator.serviceWorker.register(detectSwPath()).then(function(reg) {
+      // 定时检查更新（30 分钟），用户长时间停留时也能拉到新版
+      setInterval(function() { reg.update().catch(function() {}); }, 30 * 60 * 1000);
+      // 切回标签页时也检查一次
+      document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) reg.update().catch(function() {});
+      });
+    }).catch(function(err) {
+      console.warn('[SW] registration failed:', err);
+    });
+  }
+
+  if (document.readyState === 'complete') {
+    register();
+  } else {
+    window.addEventListener('load', register);
+  }
+})();
+</script>
+</body>
+</html>

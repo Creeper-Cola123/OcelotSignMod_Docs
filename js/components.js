@@ -99,6 +99,8 @@
     // 创意广场
     { zh: 'guide/plaza/creative-plaza.html',     en: 'en/guide/plaza/creative-plaza.html' },
     { zh: 'guide/plaza/plaza-submit.html',       en: 'en/guide/plaza/plaza-submit.html' },
+    { zh: 'guide/plaza/plaza-report.html',       en: 'en/guide/plaza/plaza-report.html' },
+    { zh: 'guide/plaza/plaza-terms.html',        en: 'en/guide/plaza/plaza-terms.html' },
     { zh: 'guide/plaza/road/1.html',             en: 'en/guide/plaza/road/1.html' },
     { zh: 'guide/plaza/road/2.html',             en: 'en/guide/plaza/road/2.html' },
     { zh: 'guide/plaza/mod_optimization/1.html', en: 'en/guide/plaza/mod_optimization/1.html' },

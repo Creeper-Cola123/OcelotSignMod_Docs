@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="icon" href="../../favicon.svg?v=c147b60a" type="image/svg+xml">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户投稿协议 | 豹猫指示牌模组</title>
+    <link rel="stylesheet" href="../../css/common.css?v=c147b60a">
+    <link rel="stylesheet" href="../../css/icons.css?v=c147b60a">
+    <link rel="stylesheet" href="../../css/plaza.css?v=c147b60a">
+    <style>
+    /*
+        plaza-terms.html —— 用户投稿协议专用样式
+        首屏与条款卡片复用举报指南（plaza-report.html）的视觉规范。
+    */
+
+    /* ---- 广场首屏条带 —— 与创意广场首屏相同的分层渐变 + 光晕 + 点阵网格 ---- */
+    .plaza-hero-submit {
+        position: relative;
+        overflow: hidden;
+        padding: 56px 60px 44px;
+        text-align: center;
+        color: #fff;
+        background:
+            radial-gradient(circle at 18% 28%, rgba(74, 144, 217, 0.32), transparent 55%),
+            radial-gradient(circle at 82% 78%, rgba(240, 165, 0, 0.22), transparent 60%),
+            linear-gradient(135deg, #15152b 0%, #1f1f3d 55%, #15152b 100%);
+        isolation: isolate;
+    }
+    .plaza-hero-submit::before {
+        /* 与 .plaza-hero 相同的细腻点阵网格，营造高级质感 */
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+        background-size: 22px 22px;
+        background-position: 0 0;
+        z-index: 0;
+        pointer-events: none;
+    }
+    .plaza-hero-submit > * {
+        position: relative;
+        z-index: 1;
+    }
+    .plaza-hero-submit h1 {
+        font-size: 32px;
+        color: #fff;
+        margin-bottom: 14px;
+        letter-spacing: 2px;
+        font-weight: 700;
+        text-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    }
+    .plaza-hero-submit p {
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.78);
+        max-width: 720px;
+        margin: 0 auto 20px;
+        line-height: 1.85;
+    }
+    .plaza-terms-meta {
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px 20px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.6);
+        letter-spacing: 0.3px;
+    }
+
+    /* ---- 正文 ---- */
+    .plaza-body {
+        padding: 48px 60px 72px;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .plaza-section-card {
+        position: relative;
+        background: linear-gradient(135deg, #fafaf5 0%, #fff 100%);
+        border: 1px solid rgba(212, 201, 168, 0.3);
+        border-radius: 12px;
+        padding: 28px 32px;
+        margin-bottom: 24px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+    .plaza-section-card h2 {
+        font-size: 20px;
+        color: #1a1a2e;
+        margin: 0 0 20px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid rgba(212, 201, 168, 0.4);
+        letter-spacing: 0.5px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .plaza-section-card h2::before {
+        /* 竖向黄色渐变装饰条，与其他广场页的区块标题保持一致 */
+        content: "";
+        width: 4px;
+        height: 18px;
+        background: linear-gradient(180deg, #f0a500, #ffc233);
+        border-radius: 2px;
+        flex-shrink: 0;
+    }
+    .plaza-section-card p {
+        font-size: 14px;
+        color: #444;
+        line-height: 1.9;
+        margin: 0 0 12px;
+    }
+    .plaza-section-card p:last-child { margin-bottom: 0; }
+    .plaza-section-card a {
+        color: #b8790a;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(240, 165, 0, 0.45);
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .plaza-section-card a:hover {
+        color: #8f5f05;
+        border-bottom-color: #8f5f05;
+        text-decoration: none;
+    }
+
+    /* ---- 违纪行为清单（红色序号，与严禁内容清单的警示语义一致） ---- */
+    .plaza-terms-list {
+        list-style: none;
+        counter-reset: plaza-terms;
+        padding: 0;
+        margin: 16px 0 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .plaza-terms-list li {
+        position: relative;
+        counter-increment: plaza-terms;
+        padding-left: 26px;
+        font-size: 14px;
+        line-height: 1.85;
+        color: #333;
+    }
+    .plaza-terms-list li::before {
+        content: counter(plaza-terms) ".";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #c0392b;
+        font-weight: 700;
+        line-height: 1.85;
+    }
+
+    /* ---- 联系信息行 ---- */
+    .plaza-terms-contact {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 8px;
+        font-size: 14px;
+        line-height: 1.85;
+        color: #333;
+    }
+    .plaza-terms-contact strong {
+        display: inline-block;
+        min-width: 132px;
+        color: #1a1a2e;
+    }
+
+    /* ---- 响应式 ---- */
+    @media (max-width: 900px) {
+        .plaza-hero-submit { padding: 40px 24px 36px; }
+        .plaza-body { padding: 32px 24px 56px; }
+        .plaza-back-btn-wrap { top: 40px; left: 24px; }
+    }
+    @media (max-width: 600px) {
+        .plaza-section-card { padding: 20px 18px; }
+        .plaza-hero-submit h1 { font-size: 24px; letter-spacing: 1px; }
+        .plaza-back-btn-wrap { top: 32px; left: 16px; }
+        .plaza-section-card h2 { font-size: 17px; }
+        .plaza-terms-contact strong { min-width: 0; }
+    }
+
+    /* ---- 入场动画 ---- */
+    .plaza-hero-submit h1 { animation: anim-pop-in 0.7s cubic-bezier(0.2, 0.8, 0.3, 1.3) 0.2s both; }
+    .plaza-hero-submit p  { animation: anim-fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.35s both; }
+
+    /* ---- 返回链接（浮动在与 h1 同高的位置、正文左缘） ---- */
+    .plaza-back-btn-wrap {
+        position: absolute;
+        top: 56px;
+        left: 60px;
+        z-index: 2;
+        text-align: left;
+        animation: anim-fade-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+    .plaza-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: color 0.2s;
+        letter-spacing: 0.3px;
+    }
+    .plaza-back-btn:hover {
+        color: #fff;
+        text-decoration: none;
+    }
+    .plaza-back-btn-arrow {
+        width: 14px;
+        height: 14px;
+        fill: currentColor;
+        display: block;
+        flex-shrink: 0;
+    }
+    </style>
+</head>
+<body class="plaza-page">
+    <div id="site-header"></div>
+
+    <!-- 协议首屏 -->
+    <section class="plaza-hero-submit">
+        <div class="plaza-back-btn-wrap">
+            <a class="plaza-back-btn" href="creative-plaza.html">
+                <svg class="plaza-back-btn-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+                返回
+            </a>
+        </div>
+        <h1>用户投稿协议</h1>
+        <p>豹猫指示牌模组·创意广场 用户投稿协议<br>请在提交投稿前仔细阅读并充分理解本协议的全部内容。</p>
+        <div class="plaza-terms-meta">
+            <span>更新日期：2026 年 11 月 15 日</span>
+            <span>生效日期：2026 年 11 月 15 日</span>
+        </div>
+    </section>
+
+    <!-- 协议正文 -->
+    <div class="plaza-body">
+
+        <!-- 1. 导言 -->
+        <div class="plaza-section-card">
+            <h2>1. 导言</h2>
+            <p>1.1 欢迎使用"豹猫指示牌模组·创意广场"（以下简称"本平台"或"我们"）。本平台致力于收集、展示与分享适用于 Minecraft《豹猫指示牌模组》（Ocelot Sign Mod）与《迷上城建》（MishangUC）的各类玩家自制资源包（包括但不限于自定义指示牌图案包、字体包、材质包及相关配置文件等），以及与之相关的教程、玩法心得与模组介绍类文章。</p>
+            <p>1.2 《豹猫指示牌模组·创意广场用户投稿协议》（以下简称"本协议"）是您（以下简称"投稿者"或"您"）与本平台之间关于资源包与文章投稿的提交、审核、展示、更新及分享所订立的协议。</p>
+            <p>1.3 请您在提交投稿前仔细阅读并充分理解本协议的全部内容。一旦您通过邮件或其他官方渠道提交投稿，或向本平台提供任何文件及信息，即视为您已阅读、理解并同意受本协议约束。</p>
+        </div>
+
+        <!-- 2. 资源包投稿基本规范 -->
+        <div class="plaza-section-card">
+            <h2>2. 资源包与文章投稿基本规范</h2>
+            <p>为保障所有玩家的游戏体验、设备安全与阅读体验，您在本平台投稿的资源包、文章及附属信息需满足以下要求：</p>
+            <p>2.1 投稿内容必须与 Minecraft、《豹猫指示牌模组》或《迷上城建》（及与其联动的前置模组生态）直接相关，不得提交无关文件或纯广告内容。</p>
+            <p>2.2 严禁在资源包压缩文件（如 .zip）中夹带任何病毒、木马、恶意脚本、后门程序或与资源包无关的可执行文件。</p>
+            <p>2.3 资源包的名称、适用游戏版本、模组兼容版本、功能说明及预览截图应当与实际压缩包内容相符，不得使用虚假宣传或误导性标题欺骗用户下载。</p>
+            <p>2.4 文章投稿须为本人原创或已取得原作者的转载、改编授权，不得抄袭、洗稿、拼接他人内容；引用他人观点、数据或图片时，应在文中注明来源与出处。</p>
+        </div>
+
+        <!-- 3. 信息内容发布规范 -->
+        <div class="plaza-section-card">
+            <h2>3. 信息内容发布规范</h2>
+            <p>您承诺并保证，您向本平台提交的全部内容——包括但不限于资源包内的贴图图案、文字内容、字体文件、资源包名称、简介说明、预览截图、外部链接，以及文章的标题、正文、配图与投稿邮件中的说明文字——均严格遵守国家法律法规及本平台规定。</p>
+            <p>您不得制作、上传、发布、传播或引导讨论以下信息或内容：</p>
+            <ol class="plaza-terms-list">
+                <li>讨论或引导他人讨论国家领导人、具有重大敏感性的政治及历史事件，或制作、传播抹黑、侮辱、篡改国旗、国徽、国歌、人民币等国家象征或法定货币的图片及文字；</li>
+                <li>恶意丑化、恶搞历史及政治人物、国旗、国徽的；歪曲、亵渎、否定英雄烈士事迹和精神，侵害英雄烈士名誉、荣誉的；贬损、玷污、恶搞国家和民族形象、精神和气质的；</li>
+                <li>美化反面人物，对已定性的负面人物歌功颂德、曲解历史的；传播、宣扬、美化历史上侵略战争和殖民史的相关内容的；</li>
+                <li>损害国家荣誉、形象和利益，危害国家安全，泄露党和国家秘密，颠覆国家政权，推翻社会主义制度，煽动分裂国家，破坏国家统一和社会稳定的；</li>
+                <li>煽动非法集会、结社、游行、示威、聚众扰乱社会秩序，破坏社会稳定与公共安全，宣扬恐怖主义、极端主义或者煽动实施恐怖活动、极端主义活动的；</li>
+                <li>反对宪法所确定的基本原则的；</li>
+                <li>煽动民族仇恨、民族歧视，破坏民族团结的；编造、散布虚假信息或网络谣言的；</li>
+                <li>散布淫秽、色情、低俗、擦边、赌博、暴力、凶杀、毒品、恐怖、血腥、猎奇、恶心、危害自身或他人身心健康的内容，或者教唆犯罪的；</li>
+                <li>组织、宣传或提供包括但不限于高考、硕士研究生、公务员、驾驶人资格等各类大型国家级考试作弊信息及服务的；</li>
+                <li>在资源包图案（如指示牌二维码图案）、文件文本或简介中嵌入钓鱼网站、诈骗网站、色情赌博网站或违法违规平台的链接或二维码的；</li>
+                <li>侮辱、谩骂或者诽谤他人，侵害他人合法权益，恶意泄露他人个人隐私信息（如电话号码、家庭住址、身份证号、真实姓名等）的；或从事欺诈活动，意图非法侵占他人财产或权益的；</li>
+                <li>包含任何可能危害未成年人身心健康、侵害未成年人人身安全和合法权益内容的；</li>
+                <li>法律、行政法规及国家网信部门禁止制作、复制、发布、传播的其他内容。</li>
+            </ol>
+        </div>
+
+        <!-- 4. 知识产权与版权授权声明 -->
+        <div class="plaza-section-card">
+            <h2>4. 知识产权与版权授权声明</h2>
+            <p>4.1 您保证对所投稿的资源包或文章拥有完整、合法的知识产权，或已取得原权利人的明确授权（包括但不限于转载授权、二次创作及再分发授权）。若资源包或文章中包含非您原创的素材，您必须在简介或正文中清晰注明原作者、原始出处及所遵循的授权协议。</p>
+            <p>4.2 投稿内容涉及字体及第三方素材时，您应遵守以下要求：</p>
+            <ol class="plaza-terms-list">
+                <li>若您的资源包包含自定义字体文件（如 .ttf、.otf 等），请务必确认该字体为免费可商用、开源（如 OFL 协议）或您已取得合法的打包分发授权，严禁未经授权打包、传播受商业版权保护的字体文件；</li>
+                <li>不得违规盗用他人模组或资源包贴图；涉及现实中的机构标识、商标、道路标志等二次创作时，应当符合相关法律法规及公序良俗，不得用于冒充官方机构或进行欺诈；</li>
+                <li>投稿内容应遵守《Minecraft 最终用户许可协议》（EULA）及前置模组（《迷上城建》《豹猫指示牌模组》）的相关开源或使用许可协议要求。</li>
+            </ol>
+            <p>4.3 您保留您原创投稿内容的著作权。自您的投稿被收录之时起，即表示您授予本平台一项免费的、非独家的、全球范围内的信息网络传播权及展示权，允许本平台在网站及配套官方宣传渠道中存储、展示、索引并提供给其他玩家下载使用（本平台不会将您的原创资源用于违背您署名权的商业售卖）。</p>
+            <p>4.4 文章投稿同样保留作者署名权。为便于中英文站点展示，您同意本平台对收录的文章进行翻译，翻译版本将同样标注原作者署名。文章中引用的截图、数据、图表等素材，须由您自行确认其可用性并注明来源；因引用素材引发第三方权利主张的，由投稿者自行承担相应责任。</p>
+        </div>
+
+        <!-- 5. 审核、投诉与举报机制 -->
+        <div class="plaza-section-card">
+            <h2>5. 审核、投诉与举报机制</h2>
+            <p>5.1 本平台有权对用户提交的投稿进行形式审核与合规检查，并保留拒绝收录、退回修改或事后下架不符合本协议内容之投稿的权利。但受限于技术手段与审核能力，本平台对资源包的审核不代表对其合法性、安全性或版权归属做出绝对担保。</p>
+            <p>5.2 我们设立了专门的投诉与举报机制，欢迎广大用户及权利人对违规内容进行监督。如果您发现本平台存在违反上述规范的资源包、恶意文件，或认为某项投稿侵犯了您的合法权益（如著作权、隐私权、名誉权等），请通过以下方式联系我们：</p>
+            <div class="plaza-terms-contact">
+                <span><strong>举报邮箱：</strong>ocelot.moddev@outlook.com</span>
+                <span><strong>站内举报通道：</strong><a href="plaza-report.html">创意广场 · 违规内容举报</a></span>
+            </div>
+            <p style="margin-top:16px;">5.3 为便于我们快速核实处理，您在提交投诉或版权侵权通知时，请尽量提供以下材料：</p>
+            <ol class="plaza-terms-list">
+                <li>涉嫌违规或侵权的资源包名称、文章标题及本平台页面链接；</li>
+                <li>具体的违规事实描述或侵权说明；</li>
+                <li>若涉及版权投诉，请提供您的身份证明及权属证明材料（如原作发布时间截图、源文件工程截图、授权书等）。</li>
+            </ol>
+            <p>我们会在收到有效举报后尽快核查，并视情况作出下架、要求修改或不予处理等决定。</p>
+        </div>
+
+        <!-- 6. 违规处理 -->
+        <div class="plaza-section-card">
+            <h2>6. 违规处理</h2>
+            <p>若您违反本协议或国家相关法律法规，本平台有权视违规行为的情节严重程度，独立判断并采取以下一项或多项处理措施，且无需事先征得您的同意：</p>
+            <p>6.1 对违规投稿予以驳回、屏蔽、删除或永久下架处理，并清除相关违规简介及预览图片。</p>
+            <p>6.2 视情节轻重，拒绝违规作者的后续一切投稿。</p>
+            <p>6.3 因您的违规或侵权投稿导致本平台遭受第三方索赔、行政处罚或产生其他损失的，您应承担全部赔偿责任；对于涉嫌传播严重违法信息、恶意木马病毒、诈骗、侵犯他人重大合法权益等行为，本平台有权保存相关记录，并依法向网信、公安等有关主管机关报告，配合开展调查。</p>
+        </div>
+
+        <!-- 7. 免责声明与协议变更 -->
+        <div class="plaza-section-card">
+            <h2>7. 免责声明与协议变更</h2>
+            <p>7.1 本平台仅作为资源包与文章的信息收录与技术交流展示平台，所有投稿均由投稿者个人制作、撰写或整理后提交，不代表本平台立场。投稿者应对其提交内容的合法性、真实性、完整性及版权合规性承担全部法律责任。</p>
+            <p>7.2 玩家下载及使用资源包前，请自行评估与自身游戏客户端、模组版本的兼容性，并建议提前备份游戏存档。</p>
+            <p>7.3 本平台有权根据法律法规的变动及网站运营需要，适时对本协议进行修订。修订后的协议将在本页面公布并即时生效。若您在协议修订后继续在本平台提交或保留投稿，即视为您接受修改后的协议；如您不同意修改内容，可停止投稿并联系我们撤回您的现有投稿。</p>
+        </div>
+
+        <p style="text-align:center;color:#888;font-size:13px;margin-top:12px;">如对本协议有任何疑问，欢迎通过 ocelot.moddev@outlook.com 与我们联系。</p>
+
+    </div><!-- .plaza-body 结束 -->
+
+    <!-- 回到顶部按钮 -->
+    <div class="back-to-top" id="backToTop" title="回到顶部">
+        <svg class="back-to-top-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+        <span class="back-to-top-label">顶部</span>
+    </div>
+
+    <script src="../../js/components.js?v=c147b60a"></script>
+<script>
+(function() {
+  if (!('serviceWorker' in navigator)) return;
+
+  function detectSwPath() {
+    // 通过 components.js 的 src 推算站点根
+    var scripts = document.getElementsByTagName('script');
+    for (var i = 0; i < scripts.length; i++) {
+      var src = scripts[i].src || '';
+      if (src.indexOf('components.js') !== -1) {
+        try {
+          var u = new URL(src);
+          var segs = u.pathname.split('/').filter(Boolean);
+          segs.pop(); // components.js
+          segs.pop(); // js
+          return (segs.length === 0 ? '/' : '/' + segs.join('/') + '/') + 'sw.js';
+        } catch (e) { /* 忽略异常，继续走下一条分支 */ }
+      }
+    }
+    return 'sw.js';
+  }
+
+  function register() {
+    navigator.serviceWorker.register(detectSwPath()).then(function(reg) {
+      // 定时检查更新（30 分钟），用户长时间停留时也能拉到新版
+      setInterval(function() { reg.update().catch(function() {}); }, 30 * 60 * 1000);
+      // 切回标签页时也检查一次
+      document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) reg.update().catch(function() {});
+      });
+    }).catch(function(err) {
+      console.warn('[SW] registration failed:', err);
+    });
+  }
+
+  if (document.readyState === 'complete') {
+    register();
+  } else {
+    window.addEventListener('load', register);
+  }
+})();
+</script>
+</body>
+</html>
